@@ -1,3 +1,3 @@
-# BCs-Thesis
-It should be BSc
+# BSc-Thesis
+
 
