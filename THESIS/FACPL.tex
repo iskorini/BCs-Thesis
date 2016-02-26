@@ -1,0 +1,37 @@
+\myChapter{Formal Access Control Policy Language}
+Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è stato rilasciato nel 2003 da parte di OASIS ed il suo nome è \textit{eXtensible Access Control Markup Language} (XACML). Questo linguaggio ha una sintassi basata su XML e fornisce caratteristiche avanzate per l'access control. \textit{Formal Access Control Policy Language} (FACPL) è parzialmente inspirato a XACML, e ridefinisce alcuni aspetti introducendo nuove caratteristiche. Il suo scopo però non è sostituire XACML, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.
+\section{Il processo di valutazione di FACPL}
+
+
+\MyFigure{FACPL_EVALUATION.jpg}{Il processo di valutaizone di FACPL}{1}
+In figura \ref{fig:FACPL_EVALUATION.jpg} è mostrato il processo di valutazioen delle policy definite in FACPL.
+I componenti principali sono tre:
+\begin{itemize}
+\item{Policy Repository (PR)}
+\item{Policy Decision Point (PDP)}
+\item{Policy Enforcement Point (PEP)}
+\end{itemize}
+Le policy sono memorizzate nel PR, il quale le rende disponibili al PDP che deciderà se garantire l'accesso o meno (Primo step).
+Nello step 2, quando il PEP riceve una richiesta, le credenziali di quest'ultima vengono codificate in una sequenza di attributi (ogni attributo è una coppia stringa valore) che, nello step 3, andranno a loro volta a formare una \textit{FACPL Request}.
+Al quarto step il \textit{context handler} aggiungerà attributi di ambiente (per esempio l'ora di ricezione della richiesta) e manderà la richiesta al PDP.
+A questo punto il PDP, tra il quinto e l'ottavo step, valuterà la richiesta e fornirà un risultato, il quale può eventualmente contenere delle \textit{obligations}.
+La decisione del PDP può essere di quattro tipi, \texttt{permit}, \texttt{deny}, \texttt{not-applicable} o \texttt{indeterminate}.
+Il significato delle prime due decisioni è facilmente intuibile, mentre per le ultime due vuol dire che c'è stato un errore durante la valutazione.
+Gli errori possono essere di diverso tipo, e vengono gestiti attraverso algoritmi che combinano le decisioni delle varie policy per ottenere un risultato finale.
+Le \textit{obligations} sono azioni, eseguite dal PEP, correlate al sistema di controllo degli accessi. Queste azioni possono essere di svariati tipi, come per esempio generare un file di log, o mandare una mail.
+Allo step 13, sulla base del risultato delle \textit{obligations}, il PEP esegue un processo chiamato\textit{Enforcement} il quale restituirà un'altra decisione.
+Quest'ultima decisione corrisponde alla decisione finale del sistema e può differire da quella del PDP.
+
+
+\section{La sintassi di FACPL}
+INSERIRE TABELLA DELLA SINTASSI ORIGINALE \\
+
+La sintassi di FACPL è definita nella tabella (RIFERIMENTO ALLA TABELLA DA INSERIRE).
+La sintassi è fornita come una grammatica di tipo EBNF, dove il simbolo ? corrisponde ad un elemento opzionale, il simbolo $*$ corrisponde ad una sequenza con un numero arbitrario di elementi (anche 0), ed il simbolo $+$ corrisponde ad una sequenza non vuota con un numero arbitrario di elementi.
+Al livello più alto c'è il \texttt{Policy Authorisation System (PAS)}, il quale definisce le specifiche del PEP e del PDP.
+Il PEP è definito semplicemente come un \texttt{enforcing algorithm} che sarà applicato per decidere quali decisioni verrà eseguito il processo di \texttt{enforcement}. 
+Il PDP invece è definito come una sequenza (non vuota) di \texttt{Policy}, ed un algoritmo di combining che combinerà i risultati di queste policy per ottenere un unico risultato finale.
+Una \texttt{policy} può essere una semplice \texttt{rule} o una \texttt{policy set}, quest'ultima avrà al suo interno altre \texttt{policy set} o \texttt{rule}, ed in questo modo viene formata una gerarchia di policy.
+Un \texttt{policy set} individua un target, che è una espressione che indica il set di richieste di accesso alla quale si applica la policy, una lista di \texttt{obligations}, che definiscono azioni obbligatorie o opzionali che devono essere eseguite nel processo di \texttt{enforcement}, una sequenza di altre \texttt{policy}, ed un algoritmo per combinarle.
+Una \texttt{rule} includerà un \texttt{effect}, che sarà permit o deny quando la regola è valutata correttamente, un target ed una lista di \texttt{obligations}.
+
