@@ -1,4 +1,6 @@
+\newcommand{\radac}{RAdAC}
 \myChapter{Access Control}
+\label{cap:accessControl}
 Ai giorni d'oggi esistono moltissimi sistemi capaci di condividere dati e risorse computazionali, 
 ed impedire accessi non autorizzati è diventata una priorità inderogabile.
 Per esempio molti dati personali possono essere raccolti durante alcune attività quotidiane, e proteggere questi dati
@@ -6,4 +8,34 @@ da malintenzionati è molto importante.
 Questo, e moltre altre ragioni, sono il motivo per cui esistono sistemi di Access Control, ovvero dei sistemi definiti da un insieme di condizioni 
 che permettono di creare una prima linea difensiva contro accessi indesiderati.
 \section{Storia dell'Access Control}
+\label{sec:history}
 Negli anni sono stati proposti diversi approcci per cercare di definire un modello efficiente e scalabile.
+Il primo di questi si chiama \textit{Access Control Lists (ACLs)} ed è stato proposto intorno agli anni 1970 spinto dall'avvento dei primi sistemi multi utente.\\
+Successivamente è nato un nuovo modello chiamato \textit{Role-based Access Control (RBAC)} che modifica alcuni aspetti di ACL  in modo da rimuovere molte delle limitazioni di quest'ultimo.\\
+Uno dei problemi di RBAC è l'impossibilità di differenziare membri di uno stesso gruppo in modo da negare o permettere accessi sulla base di singoli attributi, ed è per venire in contro a questa necessità che è stato implementato un nuovo modello chiamato \textit{Attribute Based Access Control (ABAC)}, dove le decisioni vengono prese in base ad un set di attributi legati al richiedente, all'ambiente ed alla risorsa per cui si chiede l'accesso.\\
+Anche questo modello però ha delle limitazioni che vengono fuori quando il numero di risorse da gestire è elevato, motivo per cui nasce \textit{Policy-based Access Control (PBAC)}.
+PBAC migliora e standardizza il modello ABAC combinando attributi dalle risorse, dall'ambiente e dal richiedente con informazioni di un particolare insieme di circostanze sotto le quali la richiesta è stata effettuata.\\
+Le organizzazioni non sono statiche, si evolvono e devono rispondere ad una varietà di stimoli, che possono essere legali, economici, finanziari, di mercato o una varietà di fattori di rischio.
+Anche tecniche avanzate, come per esempio ABAC e PBAC, non riescono in maniera sufficiente a rispondere ai bisogni di dinamismo e cambiamenti dei livelli di rischio, motivo per cui è nato \textit{Risk-adaptive Access Control (\radac)} che fornisce un modello adattabile al settore enterprise.
+
+\subsection{Access Control Lists (ACLs)}
+\label{sub:ACL}
+
+ACL è il più datato e basico modello di controllo agli accessi. Prende piede intorno agli anni 70
+grazie all'avvento dei sistemi multi utente i quali necessitano di limitare l'accesso a file e dati condivisi, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX.\\
+Con la comparsa della multiutenza per sistemi ad uso personale lo standard ACL è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows.
+
+Nonostante negli anni sono stati sviluppati modelli più complessi ACL viene comunque usato nei sistemi operativi recenti, come si può vedere in figura \ref{fig:acl_osx} OS X sfrutta questo standard per la gestione dei permessi sul filesystem.\\
+Il concetto dietro ACL è uno dei più semplici, in quanto ogni risorsa del sistema che deve essere controllata ha una sua lista che ad ogni soggetto associa le azioni che può effettuare sulla risorsa ed il sistema operativo, quando viene fatta richiesta decide in base alla lista se dare il permesso o meno.\\
+Per esempio, sempre in figura \ref{fig:acl_osx}, si può vedere come \textit{test\_folder} sia la risorsa da controllare, \textit{federicoschipani}, \textit{staff} e \textit{everyone} siano i soggetti e le azioni associate sono, in questo caso, \textit{Read \& Write} al primo soggetto e \textit{Read only} agli altri due.
+\MyFigure{acl_osx}{ACL in OS X}{1}\\
+La semplicità di questo modello non richiede grandi infrastrutture sottostanti, infatti implementarlo dal punto di vista applicativo risulta abbastanza semplice attraverso l'uso di linguaggi ad alto livello come Python o Java, poiché le strutture che servono per implementare questo standard sono già definite.\\
+Questo elevato grado di relativa facilità di implementazione però ha anche un aspetto negativo che si manifesta quando si ha a che fare con grandi quantità di risorse. Ogni volta che viene richiesto l'accesso ad una risorsa da parte di un entità, utente o applicazione che sia, bisogna verificare nella lista associata, il che lo rende abbastanza oneroso dal punto di vista computazionale.\\
+Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di una determinata risorsa, in quanto bisogna andare ad operare sulla lista di quest'ultima, il che rende questo compito incline ad errori ed oneroso dal punto di vista del tempo.
+
+
+\subsection{Role-based Access Control (RBAC)} % (fold)
+\label{sub:role_based_access_control}
+
+RBAC 
+% subsection role_based_access_control (end)

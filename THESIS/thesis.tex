@@ -11,7 +11,7 @@
 %   Andr\'e Miede http://www.miede.de   
 %--------------------------------------------------------------
 \documentclass[twoside,openright,titlepage,fleqn,
-	headinclude,12pt,a4paper,BCOR5mm,footinclude]{scrbook}
+headinclude,12pt,a4paper,BCOR5mm,footinclude]{scrbook}
 %--------------------------------------------------------------
 \newcommand{\myItalianTitle}{Titolo italiano\xspace}
 \newcommand{\myEnglishTitle}{Titolo inglese\xspace}
@@ -20,20 +20,20 @@
 %\newcommand{\myDegree}{
 	%Corso di Laurea Specialistica in Scienze e Tecnologie 
 	%dell'Informazione\xspace}
-\newcommand{\myName}{Nome candidato\xspace}
-\newcommand{\myProf}{Relatore\xspace}
-\newcommand{\myOtherProf}{Correlatore\xspace}
-\newcommand{\mySupervisor}{Nome Cognome\xspace}
-\newcommand{\myFaculty}{
+	\newcommand{\myName}{Federico Schipani\xspace}
+	\newcommand{\myProf}{Relatore\xspace}
+	\newcommand{\myOtherProf}{Correlatore\xspace}
+	\newcommand{\mySupervisor}{Nome Cognome\xspace}
+	\newcommand{\myFaculty}{
 	Scuola di Scienze Matematiche, Fisiche e Naturali\xspace}
-\newcommand{\myUni}{\protect{
+	\newcommand{\myUni}{\protect{
 	Universit\`a degli Studi di Firenze}\xspace}
-\newcommand{\myLocation}{Firenze\xspace}
-\newcommand{\myTime}{Anno Accademico 2014-2015\xspace}
-\newcommand{\myVersion}{Version 0.1\xspace}
+	\newcommand{\myLocation}{Firenze\xspace}
+	\newcommand{\myTime}{Anno Accademico 2014-2015\xspace}
+	\newcommand{\myVersion}{Version 0.1\xspace}
 %--------------------------------------------------------------
 \usepackage[italian]{babel}
-\usepackage[latin1]{inputenc} 
+\usepackage[utf8x]{inputenc} 
 \usepackage[T1]{fontenc} 
 \usepackage[square,numbers]{natbib} 
 \usepackage[fleqn]{amsmath}  
@@ -43,6 +43,8 @@
 \usepackage{caption}
 \usepackage{appendix}
 \usepackage{siunitx}
+\usepackage{float}
+
 %--------------------------------------------------------------
 \usepackage{dia-classicthesis-ldpkg}
 %--------------------------------------------------------------
@@ -58,33 +60,52 @@ parts]{classicthesis}
 \newcommand{\myfloatalign}{\centering} 
 \setlength{\extrarowheight}{3pt} % increase table row height
 \captionsetup{format=hang,font=small}
+
+
+
+%--------------------------------------------------------------
+% Comandi personali
+%--------------------------------------------------------------
+\graphicspath{{Chapters/Image/}}
+\newcommand{\MyFigure}[3]{
+	\begin{figure}[h]
+
+		\centering
+		\includegraphics[width=#3\linewidth]{#1}
+		\caption{ #2 }
+		\label{fig:#1}
+	\end{figure}
+}
+
+\input{syntax_original/macro}
+
 %--------------------------------------------------------------
 % Layout setting
 %--------------------------------------------------------------
 \usepackage{geometry}
 \geometry{
-	a4paper,
-	ignoremp,
-	bindingoffset = 1cm, 
-	textwidth     = 13.5cm,
-	textheight    = 21.5cm,
+a4paper,
+ignoremp,
+bindingoffset = 1cm, 
+textwidth     = 13.5cm,
+textheight    = 21.5cm,
 	lmargin       = 3.5cm, % left margin
 	tmargin       = 4cm    % top margin 
-}
+	}
 
-\lstset{
-  	frame=tb,
+	\lstset{
+	frame=tb,
 	language=Matlab,
-  	aboveskip=3mm,
-  	belowskip=3mm,
-  	showstringspaces=false,
-  	columns=flexible,
-  	basicstyle={\small\ttfamily},
-  	numbers=none,
-  	breaklines=true,
-  	breakatwhitespace=true,
-  	tabsize=3
-}
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+	}
 %--------------------------------------------------------------
 \begin{document}
 \frenchspacing
@@ -108,10 +129,14 @@ parts]{classicthesis}
 \thispagestyle{empty}
 \begin{flushright}
 \null\vspace{\stretch {1}}
-\emph{"Inserire citazione" \break --- Inserire autore citazione} \vspace{\stretch{2}}\null
+\emph{"With great power comes great responsibility" \break --- Uncle Ben} \vspace{\stretch{2}}\null
 \end{flushright}
 \cleardoublepage
-\include{esercizi}
+\include{Chapters/introduzione}
+\include{Chapters/usagecontrol}
+\include{Chapters/FACPL}
+\include{Chapters/estensioni}
+\include{Chapters/conclusioni}
 \include{Chapters/bibliografia}
 %--------------------------------------------------------------
 \end{document}

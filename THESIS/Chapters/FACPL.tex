@@ -1,12 +1,14 @@
 \myChapter{Formal Access Control Policy Language}
-Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è stato rilasciato nel 2003 da parte di OASIS ed il suo nome è \textit{eXtensible Access Control Markup Language} (XACML). Questo linguaggio ha una sintassi basata su XML e fornisce caratteristiche avanzate per l'access control. \textit{Formal Access Control Policy Language} (FACPL) è parzialmente inspirato a XACML, e ridefinisce alcuni aspetti introducendo nuove caratteristiche. Il suo scopo però non è sostituire XACML, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.
+Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è stato rilasciato nel 2003 da parte di OASIS ed il suo nome è \textit{eXtensible Access Control Markup Language} (XACML). Questo linguaggio ha una sintassi basata su XML e fornisce caratteristiche avanzate per l'access control. Il problema fondamentale di XACML è che non ha una sintassi facile da leggere e da scrivere. \\
+L'obiettivo di \textit{Formal Access Control Policy Language} (FACPL) è definire una sintassi alternativa per XACML in modo da renderlo più agevole da usare.
+FACPL quindi è parzialmente inspirato a XACML, ma oltre ad introdurre una nuova sintassi ridefinisce alcuni aspetti aggiungendo nuove caratteristiche. Il suo scopo però non è sostituire XACML, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.
 
 \section{Il processo di valutazione di FACPL}
 \label{sec:valutazione_facpl}
 
 
-\MyFigure{FACPL_EVALUATION.jpg}{Il processo di valutaizone di FACPL}{1}
-In figura \ref{fig:FACPL_EVALUATION.jpg} è mostrato il processo di valutazioen delle policy definite in FACPL.
+\MyFigure{FACPL_EVALUATION.jpg}{Il processo di valutazione di FACPL}{1}
+In figura \ref{fig:FACPL_EVALUATION.jpg} è mostrato il processo di valutazione delle policy definite in FACPL.
 I componenti principali sono tre:
 \begin{itemize}
 \item{Policy Repository (PR)}
@@ -26,6 +28,8 @@ Quest'ultima decisione corrisponde alla decisione finale del sistema e può diff
 
 
 \section{La sintassi di FACPL}
+\label{sec:facpl_syntax}
+
 \input{syntax_original/facpl_syntax}
 
 La sintassi di FACPL è definita nella tabella \ref{tab:facpl_syntax}.
@@ -47,3 +51,5 @@ La valutazione in due step, descritta precedentemente in sezione~\ref{sec:valuta
 La decisione del PDP, nel caso in cui ritorni \texttt{permit} o \texttt{deny}, viene associata ad una lista, anche vuota, di fulfilled obligations.\\
 Una \textit{fulfilled obligation} è una semplice coppia formata da un tipo (M o O) ed una azione i quali argomenti sono ottenuti dalla valutazione del PDP.
 
+\section{Esempi con FACPL}
+\label{sec:esempi_facpl}

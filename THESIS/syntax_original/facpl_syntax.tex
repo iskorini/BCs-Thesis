@@ -29,7 +29,9 @@ $
 \mathit{Policy} & ::= &
 \ruleOpt{\mathit{Effect}\ \ \x{target:} \, Expr\ \ \x{obl:} \, \mathit{Obligation}^{*} \, } \\
 && \mid &
-\{ \algNT\ \ \x{target:} \, Expr\ \ \x{policies:} \, \mathit{Policy}^{+} \ \ \x{obl:} \, \mathit{Obligation}^{*} \, \}
+\{ \algNT\ \ \x{target:} \, Expr\ \ \\ 
+&&  &
+\x{policies:} \, \mathit{Policy}^{+} \ \ \x{obl:} \, \mathit{Obligation}^{*} \, \}
 \\[.2cm]
 {\textbf{Effects}} &
 \mathit{Effect} & ::= & \permit \Sep \deny
