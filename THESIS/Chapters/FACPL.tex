@@ -51,5 +51,28 @@ La valutazione in due step, descritta precedentemente in sezione~\ref{sec:valuta
 La decisione del PDP, nel caso in cui ritorni \texttt{permit} o \texttt{deny}, viene associata ad una lista, anche vuota, di fulfilled obligations.\\
 Una \textit{fulfilled obligation} è una semplice coppia formata da un tipo (M o O) ed una azione i quali argomenti sono ottenuti dalla valutazione del PDP.
 
+\section{La semantica di FACPL}
+
+Molteplici sono le componenti di FACPL, e la semantica ora verrà informalmente analizzata.\cite{fullfacpl}
+Prima verrà presentato il processo che porterà ad una risposta del PDP, successivamente il processo di enforcement del PEP.\\
+Quando il PDP riceve una richiesta, per prima cosa valuta la richiesta sulle basi delle policy disponibili, successivamente determinerà un risultato combinando le decisioni ritornate da queste policy attraverso degli algoritmi di combining.\\
+La valutazione della policy rispetto alla richiesta comincia verificando l'applicabilità alla richiesta, che è fatta valutando un espressione definita \textit{target}.\\
+Si possono valutare due casi distinti:
+\begin{itemize}
+\item[-] Supponiamo che l'applicabilità dia esito positivo, nel caso ci sia una \textit{rule} sarà ritornato il valore risultato dalla valutazione di quest'ultima, mentre se c'è un \textit{policy set} il risultato è ottenuto valutando le policy contenute all'interno, e combinando i loro valori con un algoritmo specificato in fase di creazione del PDP. Successivamente a queste valutazioni verrà effettuato il fulfilment delle obligation contenute all'interno delle policy.
+\item[-] Supponiamo ora che l'applicabilità non dia esito positivo, ovvero la valutaizone del \textit{target} restituisca \texttt{false}. In questo caso il risultato della policy sarà \texttt{not-app}. Mentre se \textit{target} restituisce un valore non booleano o ritorna un errore il risultato della policy sarà \texttt{indet}.
+\end{itemize}
+Valutare le espressioni corrisponde ad applicare degli operatori e risolvere i nomi degli attributi che contengono, e di conseguenza ricavarne un valore.\\
+Se non è possibile trovare un attributo, magari perché non esiste, viene ritornato un valore speciale, chiamato \texttt{BOTTOM}. Questo valore può essere usato per implementare diverse strategie per gestire l'assenza di attributi. FACPL gestisce questo valore come una specie di \texttt{false}, quindi permette la mancanza di attributi senza la generazione di errori.\\
+La valutazione di un espressione tiene conto anche dei tipi degli argomenti. Se l'argomento è del tipo aspettato l'operatore viene applicato correttamente, sennò, se un argomento è \texttt{BOTTOM} e nessun'altro è \texttt{error} viene ritornato \texttt{BOTTOM}, mentre se almeno uno di essi è \texttt{error}, viene ritornato \texttt{error}.\\
+Con l'operatore \texttt{and} o \texttt{or} il trattamento sarà leggermente dievrso, in quanto \texttt{BOTTOM} viene ritornato solo se un argomento è tale e nessun'altro è \texttt{false} o \texttt{error}, mentre in caso contrario viene ritornato \texttt{error}.\\
+La valutazione di una policy termina con il fulfillment di tutte le \texttt{obligations} le quali hanno il valore di applicabilità coincidente con quello ritornato dalla valutazione della policy. Quest'operazione consisten nel valutare tutte le espressioni presenti al interno delle \texttt{obligations} coinvolte nel processo. Se ci sarà un errore nel processo di fulfilment allora il risultato della policy sarà \texttt{indet}, altrimenti il risultato del fulfilment sarà uguale a quello della valutazione del PDP.\\
+Gli algoritmi di combining, come detto prima hanno lo scopo di combinare le decisioni risultanti dalla valutazione delle richieste in accordo con le policy. Un'altra funzione che hanno è ritornare le \textit{obligations} corrette nel caso in cui la valutazione finale risulti \texttt{permit} o \texttt{deny}. Questa famiglia di algoritmi ha una strategia $\delta$ che viene usata per restituire le \textit{obligation}, e può essere di due tipi.
+Il primo tipo è la strategia \texttt{all} (tutto), ovvero richiede la valtuazione di tutte le policy e ritorna le \texttt{fulfilled obligation} pertinenti a tutte le decisioni.\\
+Il secondo tipo è la strategia \texttt{greedy} (golosa) prescrive che appena è ottenuta una decisione che non può cambiare a causa della valutazione di susseguenti policy nella sequenza di input, l'esecuzione si arresta.\\
+Come ultimo step il risultato del PDP viene mandato al PEP per l'enforcement.
+Il PEP per effettuare questo processo deve eseguire l'azione all'interno di ogni \texttt{fulfilled obligation} e decidere come comportarsi per le decisioni di tipo \texttt{not-app} e \texttt{indet.}\\
+Per fare questo processo usa delle strategie. In particolare, l'algoritmo \texttt{deny-biased} (rispettivamente, \texttt{permit-based}) effettua l'enforcement dei \texttt{permit} (rispettivamente \texttt{deny}) solo quando tutte le corrispondenti obligations sono correttamente scaricate, mentre effettua l'enforcement dei \texttt{deny} (rispettivamente \texttt{permit}) in tutti gli altri casi. Invece, l'algoritmo di base lascia tutte le decisioni non cambiate ma, in caso di decisioni \texttt{permit} e \texttt{deny}, effettua l'enforcement di \texttt{indet} se un errore occorre quando si stanno rilasciando le \texttt{obligations}. Questo evidenzia che le \texttt{obligations} non solo influenzano il processo di autorizzazione, ma anche l'enforcement. Gli errori causati dalle \texttt{obligations} con tipo O vengono ignorati.
+
 \section{Esempi con FACPL}
 \label{sec:esempi_facpl}

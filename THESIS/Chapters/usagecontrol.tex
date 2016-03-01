@@ -1,5 +1,5 @@
 \newcommand{\radac}{RAdAC\ }
-\myChapter{Access Control}
+\myChapter{Access Control e Usage Control}
 \label{cap:accessControl}
 Ai giorni d'oggi esistono moltissimi sistemi capaci di condividere dati e risorse computazionali, 
 ed impedire accessi non autorizzati è diventata una priorità inderogabile.
@@ -9,7 +9,7 @@ Questo, e moltre altre ragioni, sono il motivo per cui esistono sistemi di Acces
 che permettono di creare una prima linea difensiva contro accessi indesiderati.
 \section{Storia dell'Access Control}
 \label{sec:history}
-Negli anni sono stati proposti diversi approcci per cercare di definire un modello efficiente e scalabile.
+Negli anni sono stati proposti diversi approcci per cercare di definire un modello efficiente e scalabile. Secondo il NIST, in \cite{NISTACM}, una classificazione dei modelli di Access Control è la seguente. 
 Il primo di questi si chiama \textit{Access Control Lists (ACLs)} ed è stato proposto intorno agli anni 1970 spinto dall'avvento dei primi sistemi multi utente.\\
 Successivamente è nato un nuovo modello chiamato \textit{Role-based Access Control (RBAC)} che modifica alcuni aspetti di ACL  in modo da rimuovere molte delle limitazioni di quest'ultimo.\\
 Uno dei problemi di RBAC è l'impossibilità di differenziare membri di uno stesso gruppo in modo da negare o permettere accessi sulla base di singoli attributi, ed è per venire in contro a questa necessità che è stato implementato un nuovo modello chiamato \textit{Attribute Based Access Control (ABAC)}, dove le decisioni vengono prese in base ad un set di attributi legati al richiedente, all'ambiente ed alla risorsa per cui si chiede l'accesso.\\
@@ -18,7 +18,7 @@ PBAC migliora e standardizza il modello ABAC combinando attributi dalle risorse,
 Le organizzazioni non sono statiche, si evolvono e devono rispondere ad una varietà di stimoli, che possono essere legali, economici, finanziari, di mercato o una varietà di fattori di rischio.
 Anche tecniche avanzate, come per esempio ABAC e PBAC, non riescono in maniera sufficiente a rispondere ai bisogni di dinamismo e cambiamenti dei livelli di rischio, motivo per cui è nato \textit{Risk-adaptive Access Control (\radac)} che fornisce un modello adattabile al settore enterprise.
 
-\subsection{Access Control Lists (ACLs)}
+\subsection*{Access Control Lists (ACLs)}
 \label{sub:ACL}
 
 ACL è il più datato e basico modello di controllo agli accessi. Prende piede intorno agli anni 70
@@ -34,7 +34,7 @@ Questo elevato grado di relativa facilità di implementazione però ha anche un 
 Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di una determinata risorsa, in quanto bisogna andare ad operare sulla lista di quest'ultima, il che rende questo compito incline ad errori ed oneroso dal punto di vista del tempo.
 
 
-\subsection{Role-based Access Control (RBAC)} % (fold)
+\subsection*{Role-based Access Control (RBAC)} % (fold)
 \label{sub:role_based_access_control}
 
 RBAC è un po' l'evoluzione di ACL, in quanto tende a correggerne alcuni, se così si possono chiamare, difetti.\\
@@ -52,7 +52,7 @@ Non è tutto oro quel che luccica poiché anche RBAC ha i suoi difetti, uno dei 
 
 % subsection role_based_access_control (end)
 
-\subsection{Attribute-based Access Control (ABAC)} % (fold)
+\subsection*{Attribute-based Access Control (ABAC)} % (fold)
 \label{sub:attribute_based_access_control_}
 
 ABAC è un modello di controllo all'accesso  nel quale le decisioni sono prese in base ad un insieme 
@@ -64,14 +64,14 @@ Un vantaggio di ABAC è che non c'è la necessità che il richiedente conosca in
 la risorsa o il sistema a cui dovrà accedere. Finché gli attributi che il richiedente fornisce 
 coincidono con i requisiti l'accesso sarà garantito. ABAC perciò è utilizzato in situazioni in 
 cui i proprietari delle risorse vogliono far accedere utenti che non conoscono direttamente a patto che però rispettino i criteri preposti, il che rende il tutto molto più dinamico.\\
-Diversamente da \ref{sub:role_based_access_control} e \ref{sub:ACL} questo tipo di controllo agli 
+Diversamente da RBAC e ACL questo tipo di controllo agli 
 accessi non è implementato nei sistemi operativi, ma è largamente usato a livello applicativo.
 Spesso si usano applicazioni intermedie per mediare gli accessi da parte degli utenti a specifiche risorse.
 Implementazioni semplici di questo modello non richiedono grandi database o altre infrastrutture,tuttavia in ambienti dove non basta una semplice applicazione c'è necessità di grandi database.\\
 Una limitazione di ABAC è che in grandi ambienti, con tante risorse, individui e applicazioni ci saranno grandi moli di attributi da gestire.
 
 
-\subsection{Policy-based Access Control (PBAC)} % (fold)
+\subsection*{Policy-based Access Control (PBAC)} % (fold)
 \label{sub:policy_based_access_control_}
 
 PBAC è stato sviluppato per far fronte alle carenze di ABAC, infatti è una sua naturale evoluzione e tende ad uniformare ed armonizzare il sistema di controllo accessi.
@@ -92,7 +92,7 @@ In più bisogna instaurare un meccanismo per la verificare che questi attributi 
 Come detto prima può sembrare facile fare una cosa del genere, ma bisogna considerare il caso in cui più aziende lavorano insieme e devono implementare un sistema di controllo degli accessi in comune. Un problema si può verificare quando un'azienda valuta la gestione dell'AAS tramite una particolare repository, ma un'altra azienda non è d'accordo a questo tipo di soluzione.
 
 
-\subsection{Risk-Adaptive Access Control (\radac)} % (fold)
+\subsection*{Risk-Adaptive Access Control (\radac)} % (fold)
 \label{sub:risk_adaptive_access_control_}
 
 Le organizzazioni non sono statiche. Si evolvono costantemente e rispondono ad una varietà di stimoli sempre maggiore. La loro natura dinamica porta ad avere la necessità di policy che si adattino al sistema che le circonda. Con l'avanzare del tempo cambia anche le minacce, ed un organizzazione deve costantamente tenere sott'occhio il rischio, quindi si inizia a parlare anche di livello di rischio.\\
@@ -119,6 +119,41 @@ Il quinto problema invece è legato all'affidamento che questo sistema fa sull'
 euristica per le decisioni. Questo problema, come prima è condizionato dall'
 immaturità degli algoritmi usati in questo ambito.
 
+\section{Usage Control} % (fold)
+\label{sec:usage_control}
+Come detto ad inizio capitolo, ai giorni d'oggi proteggere l'accesso alle nostre risorse digitali è uno dei problemi fondamentali nell'ambito della sicurezza. \\
+Oggi sono presenti differenti tipi di sistemi diversi che richiedono un modello più flessibile e corposo per gestire la sicurezza. Questa sezione parlerà di un nuovo modello, chiamato \textit{Usage Control} \cite{SurveyUsageControl}.\\
+\textit{Usage Control} si propone come un nuovo e promettente approccio per l'Access Control, prendendo spunto e migliorando sistemi come \textit{Trust Management} (TM) e \textit{Digital Rights Management}(DRM). In particolare verrà trattato un particolare modello, inizialmente proposto da Sandhu e Park\cite{SurveyUsageControl}, chiamato UCON.\\
+UCON migliora l'access control in due aspetti fondamentali, la mutabilità degli attributi e la continuità delle decisioni sull'accesso. La mutabilità degli attributi significa che questi valori possono cambiare nel corso del tempo, e visto che UCON è basato su quest'ultimi le decisioni di accesso devono essere rivalutate ogni volta che vengono aggiornati.\\
+La continuità delle decisioni invece significa che non vengono più prese decisioni solo a priori, ma anche durante l'accesso. Quindi, se durante l'utilizzo, qualche attributo cambia e la policy non è più soddisfatta viene revocato l'accesso.\\
+Il vantaggio di Usage Control è la sua capacità di esprimere vari scenari, riuscendo così a includere e migliorare sistemi descritti in \ref{sec:history}.
+Il passaggio da Access Control a Usage Control è importante soprattutto quando si va a considerare ambienti \textit{network related}, come possono essere il web, il cloud o il grid computing.\\
+Il processo decisionale in Usage Control è diviso in due fasi \cite{UsageControlCloud}. la prima fase è una fase di \textit{pre decision} che fondamentalmente è la classica decisione presa in Access Control, questa decisione viene presa al momento in cui è effettuata la prima richiesta per produrre la decisione di accesso.
+La seconda fase è chiamata \textit{ongoing decision}, ed è un processo che implementa il concetto di continuità.
+I componenti necessari a questo tipo di processo decisionale sono dei predicati, chiamati \textit{authorizations}, che vengono valutati sul soggetto e sugli attributi dell'oggetto, degli altri predicati, questa volta chiamati \textit{conditions}, valutati sulle variabili d'ambiente, ed infine delle azioni chiamate \textit{obligations} che devono essere eseguite durante l'accesso.
+Un altro componente di cui necessita UCON è ovviamente un predicato, come nell'access control che viene valutato per l'accesso iniziale, chiamato questa volta \textit{Rights}.\\
+\MyFigure{Usage}{Insieme dei componenti di UCON \cite{ucon}}{1}
+Verranno ora proposti alcuni esempi di utilizzo di Usage Control.
+
+\subsection*{Primo Esempio di Usage Control} % (fold)
+Dentro ad un sistema ci sono vari file, ai quali per questione di consistenza, possono accedere massimo due persone in lettura oppure una sola in scrittura.\\
+In un primo momento nessuno sta visualizzando o scrivendo un determinato file, ed un utente genenrico 
+chiederà l'accesso in lettura per questo file, ovviamente il responso sarà positivo in quanto non viola nessuna regola preposta prima.\\
+Dopo un po' di tempo, mentre il primo sta ancora leggendo, un altro utente chiede l'accesso in scrittura, che gli viene negato.
+In un istante di tempo successivo il primo utente sta continuando a leggere, ed anche il secondo utente vuole leggere. In questo caso viene dato responso positivo.\\
+Infine, entrambi gli utenti smettono di leggere, ma uno di loro vuole apportare una modifica, allora richiede l'accesso in scrittura, che questa volta gli viene consentito poiché nessuno sta leggendo.
+
+\subsection*{Secondo Esempio di Usage Control}
+Un altro utilizzo possibile di Usage Control riguarda l'analisi del comportamento passato. Un'azienda fornisce  ai propri clienti 
+la possibilità di effettuare noleggi o acquisti di contenuti multimediali (musica, video, film, serie tv e via discorrendo).\\
+In caso il contenuto fosse stato acquistato l'acquirente potrà ottenere l'accesso infinite volte per infinito tempo. Mentre in caso di noleggio
+saranno presenti delle condizioni, come per esempio il massimo numero di fruizioni del contenuto o una data di scadenza che, una volta oltrepassata, impedirà l'ulteriore visione del contenuto noleggiato in precedenza.
+
+
+
+% subsection utilizzi_di_usage_control (end)
+
+% section usage_control (end)
 
 
 % subsection risk_adaptive_access_control_ (end)
