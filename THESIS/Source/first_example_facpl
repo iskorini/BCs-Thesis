@@ -1,0 +1,19 @@
+Policy example < permit-overrides
+  target:equal("Bob",name/id) && equal("read", action/id) 
+  rules: 
+    Rule access ( 
+      permit target: less-than(status/counter, 2))
+    obl: 
+      [permit M add(counter, 1)]
+>
+
+PAS { 
+  Combined Decision : false ;
+  Extended Indeterminate : false ;
+  Java Package : "example" ;
+  Requests To Evaluate : Request_example ;
+  pep: deny-biased
+  pdp: deny-unless-permit
+  status: [(int counter = 0)]
+  include example
+}

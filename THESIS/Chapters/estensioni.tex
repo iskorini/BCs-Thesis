@@ -1,2 +1,94 @@
 \myChapter{Implementare Usage Control in FACPL}
-asd asd asd
+
+FACPL, fino alla versione descritta nel capitolo~\ref{cap:facpl}, non aveva la possibilità
+di essere sfruttato per \textit{Usage Control}.\\
+Grazie a delle nuove strutture implementate insieme al mio collega Filippo Mameli, adesso è possibile
+usare FACPL per \textit{Usage Control}, introducendo miglioramenti descritti in~\ref{sec:usage_control}.\\
+La nuova funzionalità consiste nel prendere decisioni tenendo conto delle richieste già effettuate.
+Introdurre questa nuova estensione ha richiesto del lavoro sulla libreria, in quanto è stato necessario aggiungere
+nuove componenti e di conseguenza modificare il processo di valutazione di una policy.
+Infine è stato necessario anche introdurre delle modifiche alla sintassi del linguaggio in modo da poterle sfruttare 
+facilmente.
+
+\section{Estensione del processo di Valutazione} % (fold)
+\label{sec:estensione_del_processo_di_valutazione}
+Il processo di valutazione è stato esteso per via delle modifiche introdotte. 
+Rispetto al processo di valutazione standard, descritto in sezione~\ref{sec:valutazione_facpl}, sono state aggiunte
+componenti al grafico, rendendolo così adatto allo \textit{Usage Control}, in particolare alla valutazione di 
+richieste basate sul comportamento passato.
+\MyFigure{evalStatus}{Nuovo processo di valutazione in FACPL}{1}
+Come si nota in figura \ref{img:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
+Questo componente è lo \status \ (Stato), ovvero un semplice contenitore di un nuovo tipo di attributi.
+I nuovi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente in modo da gestire correttamente la presenza di esso.\\
+Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo stato è presente. Inizialmente viene definito il sistema, che ora ha quattro componenti principali:
+\begin{itemize}
+	\item[-]{Policy Repository (PR)}
+	\item[-]{Policy Decision Point (PDP)}
+	\item[-]{Policy Enforcement Point (PEP)}
+	\item[-]{Status}
+\end{itemize}
+Fino al quarto step il comportamento è analogo a quello precedente, mentre cambia negli step successivi.\\
+Al quinto step il \textit{PDP} non necessiterà solo dei normali attributi d'ambiente, ma necessiterà anche degli \statusattribute \ coinvolti nella richiesta effettuata. Il \textit{Context Handler} quindi non andrà solo a fare la ricerca all'interno dell'environment, ma andrà a cercare anche gli \statusattribute \ all'interno dello \status.\\
+A questo punto, quando il PDP avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre.\\
+Nel caso in cui viene restituto \texttt{Permit} o \texttt{Deny} è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite. Una volta effettuato l'enforcement viene restituta la decisione finale.\\
+Prendendo il primo esempio citato in sezione \ref{sec:usage_control} la valutazione procederebbe in questo modo. Bob richiederà la lettura di un determinato file. Quindi la richiesta conterrà tre attributi, uno che indica il nome dell'utente che effettua la richiesta, il secondo che contiene il nome del file a cui si effettuerà l'accesso, e il terzo che conterrà il nome dell'azione da effettuare. La policy invece sarà strutturata come \textit{"Se il nome è Bob, il file è corretto e nessuno sta scrivendo o ci sono meno di due utenti che leggono, allora permetti, altrimenti nega" }.\\
+Il PDP però ha bisogno di più attributi per valutare la richiesta, in quanto necessita anche di attributi esterni alla policy che riguardano il numero di utenti che stanno accedendo al file richiesto, questi attributi sono gli \statusattribute. Per la loro gestione sarà necessario utilizzare la funzionalità che riguarda l'Usage Control, il PDP richiederà al \textit{Context Handler} questi attributi, il quale andrà cercarli nello \status. Quest'ultimo li fornirà e verranno direttamente mandati al PDP per la valutazione della richiesta.\\
+Se la richiesta avrà esito positivo, allora vuol dire che Bob avrà accesso al file, e quindi lo stato andrà aggiornato. La risposta del PDP a questo punto andrà al PEP per l'enforcement il quale avrà il compito di aggiornare lo stato. Sostanzialmente lo stato viene aggiornato semplicemente incrementando l'attributo riguardante il numero di lettori di un'unità.
+
+
+
+% section estensione_del_processo_di_valutazione (end)
+
+\section{Estensione Linguistica} % (fold)
+\label{sec:estensione_linguistica}
+Per implementare queste nuove funzionalità è stata modificata anche la grammatica di FACPL.
+Nella grammatica estesa sono state aggiunte nuove regole di produzione e simboli terminali che 
+codificano le nuove funzionalità.\\
+\input{syntax_original/facpl_new_syntax}
+Come è facilmente osservabile dalla consultazione della tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono.\\
+La prima modifica che risulta evidente è nel PAS, ovvero nella definizione del sistema. L'aggiunta è stata lo \status, ovvero un contenitore di attributi.
+Uno \status \ è della forma $$(status: Attribute^+)^?$$ questo significa che se lo \status \ è presente sarà formato da uno o più \textit{Attribute}.\\
+Passiamo ora a descrivere \textit{Attribute} che è della forma $$(Type\ Identifier (= Value)^?)$$
+questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.\\
+\textit{Type} è il tipo che avrà l'attributo di stato, e potrà essere \texttt{int, boolean, date o float}.\\
+La regola \textit{PepAction} è stata modificata in modo tale che includesse nuove funzioni per operare matematicamente sugli attributi di stato.
+Queste nuove funzioni sono:
+\begin{itemize}
+	\item \textit{add(Attribute, \texttt{int})}
+	\item \textit{add(Attribute, \texttt{float})}
+	\item \textit{div(Attribute, \texttt{int})}
+	\item \textit{div(Attribute, \texttt{float})}
+	\item \textit{sub(Attribute, \texttt{int})}
+	\item \textit{sub(Attribute, \texttt{float})}
+	\item \textit{mul(Attribute, \texttt{int})}
+	\item \textit{mul(Attribute, \texttt{float})}
+	\item \textit{flag(Attribute, \texttt{boolean})}
+	\item \textit{sumDate(Attribute, \texttt{date})} 
+	 
+\end{itemize}
+Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata semplicemente aggiunto, a fianco di \textit{Identifier/Identifier}, una nuova produzione \textit{Status/Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
+La sintassi delle risposte è rimasta invariata.
+Vediamo ora un esempio di questa nuova sintassi, prenderemo spunto da un caso già trattato in precedenza nella sezione~\ref{sec:estensione_del_processo_di_valutazione}.
+%SOSTITUIRE CON LISTINGS PER FACPL
+\lstinputlisting[language = FACPL, caption = {Esempio per la sintassi}\label{lst:esempio_sintassi}]{./Source/first_example_facpl}
+In questo esempio (Codice \ref{lst:esempio_sintassi}) si può vedere come nel PAS è stato definito uno stato, con al suo interno uno solo attributo inizializzato con valore 0.
+Successivamente si può notare nella \textit{Rule} che viene fatto un controllo sul valore di quest'attributo.
+Infine nella \textit{Obligation} si può notare come viene aggiornato lo stato dell'attributo in base al risultato della valutazione della \textit{Rule}.
+% section estensione_linguistica (end)
+
+\section{Semantica} % (fold)
+\label{sec:semantica}
+
+% section semantica (end)
+
+
+\section{Esempi} % (fold)
+\label{sec:esempi}
+
+% section esempi (end)
+
+
+\section{Estensione della libreria FACPL} % (fold)
+\label{sec:estensione_della_libreria_facpl}
+
+% section estensione_della_libreria_facpl (end)

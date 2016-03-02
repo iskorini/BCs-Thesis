@@ -1,4 +1,5 @@
 \myChapter{Formal Access Control Policy Language}
+\label{cap:facpl}
 Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è stato rilasciato nel 2003 da parte di OASIS ed il suo nome è \textit{eXtensible Access Control Markup Language} (XACML). Questo linguaggio ha una sintassi basata su XML e fornisce caratteristiche avanzate per l'access control. Il problema fondamentale di XACML è che non ha una sintassi facile da leggere e da scrivere. \\
 L'obiettivo di \textit{Formal Access Control Policy Language} (FACPL) è definire una sintassi alternativa per XACML in modo da renderlo più agevole da usare.
 FACPL quindi è parzialmente inspirato a XACML, ma oltre ad introdurre una nuova sintassi ridefinisce alcuni aspetti aggiungendo nuove caratteristiche. Il suo scopo però non è sostituire XACML, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.
@@ -15,7 +16,7 @@ I componenti principali sono tre:
 \item{Policy Decision Point (PDP)}
 \item{Policy Enforcement Point (PEP)}
 \end{itemize}
-Le policy sono memorizzate nel PR, il quale le rende disponibili al PDP che deciderà se garantire l'accesso o meno (Primo step).
+Le policy sono memorizzate nel PR, il quale le rende disponibili al PDP che deciderà, successivamente, se garantire l'accesso o meno (Primo step).
 Nello step 2, quando il PEP riceve una richiesta, le credenziali di quest'ultima vengono codificate in una sequenza di attributi (ogni attributo è una coppia stringa valore) che, nello step 3, andranno a loro volta a formare una \textit{FACPL Request}.
 Al quarto step il \textit{context handler} aggiungerà attributi di ambiente (per esempio l'ora di ricezione della richiesta) e manderà la richiesta al PDP.
 A questo punto il PDP, tra il quinto e l'ottavo step, valuterà la richiesta e fornirà un risultato, il quale può eventualmente contenere delle \textit{obligations}.
@@ -76,3 +77,4 @@ Per fare questo processo usa delle strategie. In particolare, l'algoritmo \textt
 
 \section{Esempi con FACPL}
 \label{sec:esempi_facpl}
+bla bla bla 

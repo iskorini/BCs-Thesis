@@ -13,17 +13,17 @@
 \documentclass[twoside,openright,titlepage,fleqn,
 headinclude,12pt,a4paper,BCOR5mm,footinclude]{scrbook}
 %--------------------------------------------------------------
-\newcommand{\myItalianTitle}{Titolo italiano\xspace}
-\newcommand{\myEnglishTitle}{Titolo inglese\xspace}
+\newcommand{\myItalianTitle}{Estensione del linguaggio FACPL per esprimere politiche di accesso alle risorse di un sistema di calcolo basate sul comportamento passato\xspace}
+\newcommand{\myEnglishTitle}{Extension of FACPL language for expression of access policy to resource of a system
+based on the past behaviour\xspace}
 % use the right myDegree option
 \newcommand{\myDegree}{Corso di Laurea in Informatica\xspace}
 %\newcommand{\myDegree}{
 	%Corso di Laurea Specialistica in Scienze e Tecnologie 
 	%dell'Informazione\xspace}
 	\newcommand{\myName}{Federico Schipani\xspace}
-	\newcommand{\myProf}{Relatore\xspace}
-	\newcommand{\myOtherProf}{Correlatore\xspace}
-	\newcommand{\mySupervisor}{Nome Cognome\xspace}
+	\newcommand{\myProf}{Rosario Pugliese\xspace}
+	\newcommand{\myOtherProf}{Andrea Margheri\xspace}
 	\newcommand{\myFaculty}{
 	Scuola di Scienze Matematiche, Fisiche e Naturali\xspace}
 	\newcommand{\myUni}{\protect{
@@ -86,7 +86,29 @@ parts]{classicthesis}
 		
 	\end{figure}
 }
+
+\newcommand{\statusattribute}{\textit{Status Attribute}}
+\newcommand{\status}{\textit{Status}}
 \input{syntax_original/macro}
+\renewcommand{\lstlistingname}{Codice}
+\renewcommand{\lstlistlistingname}{Lista di Codici}
+
+
+% Define Language
+\lstdefinelanguage{FACPL}
+{
+  % list of keywords
+  morekeywords={
+    policy,
+    rule,
+    target,
+    equal, {less-than}, obl, pep, pdp, status
+  },
+  sensitive=false, % keywords are not case-sensitive
+  morecomment=[l]{//}, % l is for line comment
+  morecomment=[s]{/*}{*/}, % s is for start and end delimiter
+  morestring=[b]" % defines that strings are enclosed in double quotes
+}
 
 %--------------------------------------------------------------
 % Layout setting
@@ -104,7 +126,7 @@ textheight    = 21.5cm,
 
 	\lstset{
 	frame=tb,
-	language=Matlab,
+	language=Java,
 	aboveskip=3mm,
 	belowskip=3mm,
 	showstringspaces=false,
