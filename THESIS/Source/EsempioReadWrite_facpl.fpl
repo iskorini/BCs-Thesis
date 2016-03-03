@@ -1,0 +1,50 @@
+PolicySet ReadWrite_Policy { deny-unless-permit
+  target: equal ( "Bob" , name / id ) && ("Alice, name/id") 
+  
+  policies:
+
+  PolicySet Write_Policy { deny-unless-permit
+    target:equal("file", file/id) && ("write", action/id)
+    policies:
+      Rule write ( permit target: 
+        equal ( status / isWriting , false )  &&
+        equal ( status / counterReadFile1, 0)
+
+        )
+    obl:
+    [ permit M flagStatus(isWriting, true) ]
+  }
+
+  PolicySet Read_Policy { deny-unless-permit
+    target:equal("file", file/id) && ("read", action/id)
+    policies:
+      Rule write ( permit target: 
+        equal ( status / isWriting , false ) &&
+        less-than (status / counterReadFile1, 2)  
+        )
+    obl:
+    [ permit M addStatus(counterReadFile1, 1) ]
+  }
+
+  PolicySet StopWrite_Policy { deny-unless-permit
+    target:equal("file", file/id) && ("stopWrite", action/id)
+    policies:
+      Rule write ( permit target: 
+        equal ( status / isWriting , true )  
+        )
+    obl:
+    [ permit M flagStatus(isWriting, false) ]
+  }
+
+  PolicySet StopRead_Policy { deny-unless-permit
+    target:equal("file", file/id) && ("stopRead", action/id)
+    policies:
+      Rule write ( permit target: 
+        greater-than ( status / counterReadFile1 , 0 )  
+        )
+    obl:
+    [ permit M subStatus(counterReadFile1, 1) ]
+  }
+
+}
+
