@@ -1,2 +1,22 @@
 \myChapter{Estensione della libreria FACPL}
 \label{cap:estensione_libreria}
+
+Il linguaggio FACPL è basato interamente su una libreria scritta in Java. 
+Per implementare la valutazione di richieste basate sul comportamnento passato è stato necessario estendere questa libreria con nuove classi e modificarne alcune.\\
+In questo capitolo verranno mostrate le novità introdotte nel capitolo \ref{cap:usagecontrolfacpl} sotto il punto di vista implementativo.
+
+\section{Status e Status Attribute} % (fold)
+\label{sec:status_e_status_attribute}
+Il primo passo per estendere la libreria è stato la creazione di uno \status, che è modellato da una semplice classe 
+di cui ne verrà mostrato un pezzo nel codice~\ref{lst:PezzoStatus1}.
+\myIjava{status.java}{Stralcio della classe Status}{1}{15}{PezzoStatus1}
+Questa classe ha un campo essenziale per la logica del sistema, ed è una LinkedList di \statusattribute.
+In questa classe, oltre ad i costruttori ed alcuni getter sono stati implementati due metodi mostrati in Codice~\ref{lst:PezzoStatus2}, uno per andare a cercare lo \statusattribute, e l'altro per restituirne il valore.
+\myIjava{status.java}{Metodi per gli \statusattribute}{22}{32}{PezzoStatus2}
+Gli \statusattribute sono modellati da una singola classe, anch'essa molto breve e facile da capire.
+Come facilmente intuibile dai costruttori in Codice~\ref{lst:costruttoriSA} questa classe ha tre campi, un \texttt{id}, un valore, ed un tipo. 
+\myIjava{SA.java}{Costruttori di Status Attribute}{5}{22}{costruttoriSA}
+Il senso del secondo costruttore è facilmente intuibile, mentre il primo è stato creato appositamente per dare un valore di default all'attributo nel caso non venisse inizializzato.\\
+Di seguito è mostrato un grafico UML che mostra interamente queste due classi e la relazione che intercorre tra di loro.
+\MyFigure{statusUML.png}{Grafico UML delle classi Status e StatusAttribute}{0.9}
+% section status_e_status_attribute (end)
