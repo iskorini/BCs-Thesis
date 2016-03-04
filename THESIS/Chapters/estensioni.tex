@@ -1,5 +1,5 @@
 \myChapter{Implementare Usage Control in FACPL}
-
+\label{cap:usagecontrolfacpl}
 FACPL, fino alla versione descritta nel capitolo~\ref{cap:facpl}, non aveva la possibilità
 di essere sfruttato per \textit{Usage Control}.\\
 Grazie a delle nuove strutture implementate insieme al mio collega Filippo Mameli, adesso è possibile
@@ -64,7 +64,8 @@ Queste nuove funzioni sono:
 	\item \textit{mul(Attribute, \texttt{float})}
 	\item \textit{flag(Attribute, \texttt{boolean})}
 	\item \textit{sumDate(Attribute, \texttt{date})} 
-	 
+	\item \textit{sumString(Attribute, \texttt{string})}
+	\item \textit{setValue(Attribute, \texttt{string})}
 \end{itemize}
 Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata semplicemente aggiunto, a fianco di \textit{Identifier/Identifier}, una nuova produzione \textit{Status/Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
 La sintassi delle risposte è rimasta invariata.
@@ -84,7 +85,7 @@ Lo stato serve per l'appunto per memorizzare il comportamento passato del sistem
 Nel linguaggio questo nuovo tipo di attributi viene considerato al pari di normali attributi, quindi si ha la possibilità di effettuare tutte le operazioni di confronto tra di essi, ma in più si deve avere la possibilità di modificarli e memorizzarli in modo da poterli sfruttare per \textit{Usage Control}.\\
 Gli \statusattribute \ vengono inizialmente definiti nel PAS, ed avranno un tipo, un identificatore ed eventualmente un valore. Per esempio uno \statusattribute definito in questo modo \textit{(boolean isWriting = false)} codifica un attributo di stato di tipo booleano chiamato "isWriting" ed inizializzato a \texttt{false}.\\
 Come detto prima bisogna avere la possibilità di modificare questi nuovi attributi, e per questo sono state aggiunte delle \textit{Pep Action}, ovvero delle azioni eseguite dal PEP in seguito alla valutazione di \textit{Obligations}.
-\subsubsection*{\textit{add(Attribute, int)} e \textit{add(Attribute, float)}} % (fold)
+\subsection*{\textit{add(Attribute, int)} e \textit{add(Attribute, float)}} % (fold)
 \label{ssub:opadd}
 Queste due \textit{Pep Actions} effettuano un'azione su un attributo di stato. Questa \textit{Pep Action} permette, in seguito alla valutazione di una \textit{Obligations}, l'aggiunta di un valore numerico ad uno \statusattribute \ di tipo \texttt{float} o \texttt{int}. Effettuare questa operazione su un tipo non permesso porterà ad un errore in fase di valutazione.
 \begin{verbatim}
@@ -98,8 +99,8 @@ Mentre l'esecuzione di questo
      [permit M add(counter, "foo")]
 \end{verbatim}
 porterà ad un errore per incoerenza sul tipo.
-% subsubsection add (end)
-\subsubsection*{\textit{sub(Attribute, int)} e \textit{sub(Attribute, float)}} % (fold)
+% subsection add (end)
+\subsection*{\textit{sub(Attribute, int)} e \textit{sub(Attribute, float)}} % (fold)
 \label{ssub:opsub}
 Questo insieme \textit{Pep Actions} è semplicemente il duale della precedente, ciò vuol dire che invece che effettuare la somma di un valore numerico ad uno \statusattribute \ farà una sottrazione.\\
 Quindi, riprendendendo l'esempio citato per la add:
@@ -108,9 +109,9 @@ Quindi, riprendendendo l'esempio citato per la add:
      [permit M sub(counter, 2)]
 \end{verbatim}
 l'esecuzione corretta di questa \textit{Obligation} porterà nuovamente l'attributo ad il suo valore originale, ovvero 0. Ovviamente riguardo gli errori vale lo stesso discorso fatto in precedenza.
-% subsubsection subsubsection_name (end)
+% subsection subsection_name (end)
 
-\subsubsection*{\textit{div(Attribute, int)} e \textit{div(Attribute, float)}} % (fold)
+\subsection*{\textit{div(Attribute, int)} e \textit{div(Attribute, float)}} % (fold)
 \label{ssub:opdiv}
 Le \textit{Pep Actions} di questa categoria effettuano una divisione tra un attributo ed un numero passatogli come parametro.
 \begin{verbatim}
@@ -118,9 +119,9 @@ Le \textit{Pep Actions} di questa categoria effettuano una divisione tra un attr
      [permit M div(number, 2)]
 \end{verbatim}
 Presupponendo che il valore dell'attributo \textit{number} sia inizialmente 6 l'esecuzione di questa operazione lo porterà a $6/2$, ovvero 3.
-% subsubsection div(attribute, int)_e_div(attribute, float) (end)
+% subsection div(attribute, int)_e_div(attribute, float) (end)
 
-\subsubsection*{\textit{mul(Attribute, int)} e \textit{mul(Attribute, float)}} % (fold)
+\subsection*{\textit{mul(Attribute, int)} e \textit{mul(Attribute, float)}} % (fold)
 \label{ssub:opdiv}
 Quest'azione, come facilmente intuibile dal nome effettua la moltiplicazione.
 Considerando l'esempio fatto per la div
@@ -131,9 +132,9 @@ Considerando l'esempio fatto per la div
 Visto che il valore dell'attributo, modificato in precedenza dalla div, è 3 l'operazione effettuata sarà $3*3$ che darà come risultato 9.
 
 
-% subsubsection div(attribute, int)_e_div(attribute, float) (end)
+% subsection div(attribute, int)_e_div(attribute, float) (end)
 
-\subsubsection*{flag(Attribute, boolean)} % (fold)
+\subsection*{flag(Attribute, boolean)} % (fold)
 \label{ssub:opflag}
 Quest'operazione, definita solo sul tipo \texttt{boolean} modifica il valore di uno \statusattribute \ di tipo booleano.
 \begin{verbatim}
@@ -141,9 +142,9 @@ Quest'operazione, definita solo sul tipo \texttt{boolean} modifica il valore di 
      [permit M flag(isFoo, true)]
 \end{verbatim}
 L'esecuzione con successo di questa \textit{Obligation} porterà l'attributo \textit{flag} ad avere un valore \texttt{true}.
-% subsubsection subsubsection_name (end)
+% subsection subsection_name (end)
 
-\subsubsection*{sumDate(Attribute, date)}
+\subsection*{sumDate(Attribute, date)}
 \label{ssub:opdate}
 
 Anche questa azione, come quella di prima è definita su un solo tipo, ma questa volta il tipo è \texttt{Date}. Il tipo \texttt{Date} può essere espresso con in tre forme diverse
@@ -159,16 +160,90 @@ Per fare un altro esempio consideriamo uno \statusattribute \ di tipo \texttt{da
 \end{verbatim}
 La corretta esecuzione di questa \textit{Obligation} porterà il valoer di \textit{foo} al giorno successivo, ovvero il \texttt{21 Aprile 2016}.
 
+\subsection*{sumString(Attribute, string)}
+\label{ssub:opsumstring}
+
+L'operazione ora descritta coinvolge il tipo \texttt{string}. Passandogli un attributo
+di tipo \texttt{String} ed una stringa effettuerà la concatenazione.
+\begin{verbatim}
+	 obl:
+     [permit M sumString(Pablo, " Neruda")]
+\end{verbatim}
+Se \texttt{Pablo} avesse il valore \textit{"Pablo"}, il risultato di questa operazione farebbe cambiare valore all'attributo in \textit{"Pablo Neruda"}.
+
+\subsection*{setValue(Attribute, string)}
+\label{ssub:opsetvalue}
+
+Quest'operazione è molto simile alla precedente, ma invece che concatenare le stringhe sostituisce il valore presente dentro l'attributo con quello passatogli come parametro.
+\begin{verbatim}
+	 obl:
+     [permit M setValue(Pablo, "Aghiò Aghiò")]
+\end{verbatim}
+Quindi l'esecuzione corretta di quest'azione porterà l'attributo che precedentemente aveva il valore 
+\textit{"Pablo Neruda"} ad avere il valore \textit{"Aghiò Aghiò"}.
 % section semantica (end)
 
 
 \section{Esempi} % (fold)
 \label{sec:esempi}
 
+Queste nuove funzionalità introdotte servono allo scopo descritto in sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.
+Mostreremo ora l'implementazione in FACPL dei due esempi trattati in sezione~\ref{sec:usage_control}. 
+\subsection{Primo esempio} % (fold)
+\label{ssub:primo_esempio}
+\lstinputlisting[language = FACPL, caption = {Primo esempio}\label{lst:PrimoEsempio_FACPL}]{./Source/EsempioReadWrite_facpl.fpl}
+Per semplicità, in questo codice, vengono mostrate le policy di accesso per un solo file.
+L'esempio citato in precedenza metteva una regola sull'accesso ai file, ovvero permetteva un massimo di due persone in contemporanea che potevano effettuare l'accesso in lettura oppure un massimo di una persona che poteva ottenere l'accesso in scrittura.\\
+Tutte le policy del codice~\ref{lst:PrimoEsempio_FACPL} sono chiuse in un \textit{PolicySet}. Il target del PolicySet \texttt{ReadWrite\_Policy} verifica che le richieste provengano da utenti che hanno nome \textit{Alice} o \textit{Bob}, in caso contrario il responso sarà \texttt{Not Applicable}.\\
+Successivamente sono state create quattro policy per gestire le quattro operazioni possibili, ovvero \texttt{read}, \texttt{write}, \texttt{stopRead} ed infine \texttt{stopWrite}.\\
+Prendiamo in considerazione la prima policy, quella per la \texttt{write}. Come prima è presente un target, che richiede questa volta due diverse condizioni, la prima riguarda l'id del file richiesto, la seconda invece richiede che l'azione sia \texttt{write}. Le parti interessanti di questa policy sono due, la prima riguarda la \textit{Rule}, la seconda la \textit{Obligation}.\\
+La \textit{Rule} restituisce \texttt{permit} se le due condizioni dell'equal sono vere, come si può facilmente notare l'operazione di confronto non viene fatta tra una stringa ed un normale attributo, ma tra una stringa ed uno \statusattribute.\\
+L'ultima cosa da notare è l'unica \textit{Obligation} presente per questa policy. Questo tipo particolare di \textit{Obligation}, ha sempre al suo interno un'azione che verrà eseguita dal PEP, ma questa volta l'azione andrà a modificare lo stato del sistema, mettendo il valore \texttt{true} all'attributo \textit{isWriting}.\\
+Prendiamo ora una serie di richieste.
+\lstinputlisting[language = FACPL, caption = {Richieste del primo esempio}\label{lst:PrimoEsempioRichieste_FACPL}]{./Source/EsempioReadWrite_facpl_richieste.fpl}
+L'output di queste richieste sarà il sguente
+\begin{verbnobox}[\small]
+ Request1:
+	  PDP Decision=
+ 	  Decision: PERMIT Obligations: PERMIT M AddStatus([INT/counterReadFile1/0, 1])
+	  PEP Decision= PERMIT
+ 	
+ Request2:
+	  PDP Decision=
+ 	  Decision: DENY Obligations: 
+	  PEP Decision= DENY
+ 	
+ Request3:
+	  PDP Decision=
+ 	  Decision: PERMIT Obligations: PERMIT M AddStatus([INT/counterReadFile1/1, 1])
+	  PEP Decision= PERMIT
+ 	
+ Request4:
+	  PDP Decision=
+ 	  Decision: PERMIT Obligations: SubStatus([INT/counterReadFile1/2, 1])
+	  PEP Decision= PERMIT
+ 	
+ Request5
+	  PDP Decision=
+ 	  Decision: PERMIT Obligations: PERMIT M SubStatus([INT/counterReadFile1/1, 1])
+	  PEP Decision= PERMIT
+ 	
+ Request6:
+	  PDP Decision=
+ 	  Decision: PERMIT Obligations: PERMIT M FlagStatus([BOOLEAN/isWriting/false, true])
+	  PEP Decision= PERMIT
+ \end{verbnobox}
+Analizziamo ora il motivo di queste decisioni. Nella prima richiesta ovviamente nessuno sta leggendo o scrivendo, quindi viene tranquillamente restituito \permit, visto che è presente una \textit{obligation} lo stato verrà aggiornato, sommando un'unità al contatore di letture.
+Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo, però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa.\\
+La quarta e la quinta richiesta vengono fatte per avvisare il sistema che la lettura è terminata, ovviamente la risposta è \permit, e la \textit{obligation} corrispondente decrementerà il contatore.
+La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, poiché nessuno sta scrivendo o leggendo.
+
+
+% subsection primo_esempio (end)
+
+\subsection{Secondo Esempio} % (fold)
+\label{sub:secondo_esempio}
+
+% subsection secondo_esempio (end)
+
 % section esempi (end)
-
-
-\section{Estensione della libreria FACPL} % (fold)
-\label{sec:estensione_della_libreria_facpl}
-
-% section estensione_della_libreria_facpl (end)

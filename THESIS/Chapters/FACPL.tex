@@ -76,6 +76,3 @@ Come ultimo step il risultato del PDP viene mandato al PEP per l'enforcement.
 Il PEP per effettuare questo processo deve eseguire l'azione all'interno di ogni \texttt{fulfilled obligation} e decidere come comportarsi per le decisioni di tipo \texttt{not-app} e \texttt{indet.}\\
 Per fare questo processo usa delle strategie. In particolare, l'algoritmo \texttt{deny-biased} (rispettivamente, \texttt{permit-based}) effettua l'enforcement dei \texttt{permit} (rispettivamente \texttt{deny}) solo quando tutte le corrispondenti obligations sono correttamente scaricate, mentre effettua l'enforcement dei \texttt{deny} (rispettivamente \texttt{permit}) in tutti gli altri casi. Invece, l'algoritmo di base lascia tutte le decisioni non cambiate ma, in caso di decisioni \texttt{permit} e \texttt{deny}, effettua l'enforcement di \texttt{indet} se un errore occorre quando si stanno rilasciando le \texttt{obligations}. Questo evidenzia che le \texttt{obligations} non solo influenzano il processo di autorizzazione, ma anche l'enforcement. Gli errori causati dalle \texttt{obligations} con tipo O vengono ignorati.
 
-\section{Esempi con FACPL}
-\label{sec:esempi_facpl}
-bla bla bla 

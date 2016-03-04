@@ -66,6 +66,7 @@ parts]{classicthesis}
 %--------------------------------------------------------------
 % Comandi personali
 %--------------------------------------------------------------
+\usepackage{verbatimbox}
 \graphicspath{{Chapters/Image/}}
 \newcommand{\MyFigure}[3]{
 	\begin{figure}[H]
@@ -93,21 +94,51 @@ parts]{classicthesis}
 \renewcommand{\lstlistingname}{Codice}
 \renewcommand{\lstlistlistingname}{Lista di Codici}
 
+\definecolor{eclipsePurple}{RGB}{127,0,85}
+\definecolor{dkgreen}{rgb}{0,.6,0}
+\definecolor{brightpink}{rgb}{1.0, 0.0, 0.5}
+\definecolor{burgundy}{rgb}{0.5, 0.0, 0.13}
 
-% Define Language
-\lstdefinelanguage{FACPL}
-{
+\lstdefinelanguage{FACPL} {
   % list of keywords
-  morekeywords={
-    policy,
-    rule,
-    target,
-    equal, {less-than}, obl, pep, pdp, status
-  },
-  sensitive=false, % keywords are not case-sensitive
-  morecomment=[l]{//}, % l is for line comment
-  morecomment=[s]{/*}{*/}, % s is for start and end delimiter
-  morestring=[b]" % defines that strings are enclosed in double quotes
+	keywords = [1] {
+		deny-biased, permit-biased, deny-unless-permit, unless, biased
+	},
+  	morekeywords = [2] {
+		target, policies, obl
+	},
+	keywords = [3] {
+		addStatus, subStatus, equal, flagstatus,
+		less-than, greater-than
+	},
+	keywords = [4] { 
+		Policy, PolicySet, Rule, Request
+	},
+	keywords = [5] {
+		permit, deny
+	},
+  %style
+	keywordstyle = [1]{		
+		\color{dkgreen}
+	},
+	keywordstyle = [2]{
+		\color{burgundy}\bfseries
+	},
+	keywordstyle = [3]{
+		\color{dkgreen}
+	},
+	keywordstyle = [4]{
+		\color{orange}\bfseries
+	},
+	keywordstyle = [5]{
+		\color{brightpink}\bfseries
+	},
+	sensitive=false, 
+	morecomment=[l]{//}, 
+	morecomment=[s]{/*}{*/}, 
+	morestring=[b]",
+	morestring=[b]',
+	stringstyle=\color{blue}\ttfamily
 }
 
 %--------------------------------------------------------------
@@ -168,6 +199,7 @@ textheight    = 21.5cm,
 \include{Chapters/usagecontrol}
 \include{Chapters/FACPL}
 \include{Chapters/estensioni}
+\include{Chapters/estensionelibreria}
 \include{Chapters/conclusioni}
 \include{Chapters/bibliografia}
 %--------------------------------------------------------------
