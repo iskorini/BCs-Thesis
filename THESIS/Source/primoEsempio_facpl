@@ -48,14 +48,3 @@ PolicySet ReadWrite_Policy { deny-unless-permit
 
 }
 
-PAS { 
-  Combined Decision : false ;
-  Extended Indeterminate : false ;
-  Java Package : "example" ;
-  Requests To Evaluate : Request1, Request2, Request3, Request4, Request5, Request6 ;
-  pep: deny-biased
-  pdp: deny-unless-permit
-  status: [(boolean isWriting = false), (int counterReadFile1 = 0), ]
-  include example
-
-}
