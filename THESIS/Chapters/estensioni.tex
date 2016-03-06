@@ -217,32 +217,32 @@ L'output di queste richieste sarà il sguente
 \begin{verbnobox}[\small]
  Request1:
 	  PDP Decision=
- 	  Decision: PERMIT Obligations: PERMIT M AddStatus([INT/counterReadFile1/0, 1])
+ 	  Decision: PERMIT 
+ 	  Obligations: PERMIT M AddStatus([INT/counterReadFile1/0, 1])
 	  PEP Decision= PERMIT
- 	
  Request2:
 	  PDP Decision=
  	  Decision: DENY Obligations: 
 	  PEP Decision= DENY
- 	
  Request3:
 	  PDP Decision=
- 	  Decision: PERMIT Obligations: PERMIT M AddStatus([INT/counterReadFile1/1, 1])
+ 	  Decision: PERMIT 
+ 	  Obligations: PERMIT M AddStatus([INT/counterReadFile1/1, 1])
 	  PEP Decision= PERMIT
- 	
  Request4:
 	  PDP Decision=
- 	  Decision: PERMIT Obligations: SubStatus([INT/counterReadFile1/2, 1])
+ 	  Decision: PERMIT
+ 	  Obligations: SubStatus([INT/counterReadFile1/2, 1])
 	  PEP Decision= PERMIT
- 	
  Request5
 	  PDP Decision=
- 	  Decision: PERMIT Obligations: PERMIT M SubStatus([INT/counterReadFile1/1, 1])
+ 	  Decision: PERMIT
+ 	  Obligations: PERMIT M SubStatus([INT/counterReadFile1/1, 1])
 	  PEP Decision= PERMIT
- 	
  Request6:
 	  PDP Decision=
- 	  Decision: PERMIT Obligations: PERMIT M FlagStatus([BOOLEAN/isWriting/false, true])
+ 	  Decision: PERMIT 
+ 	  Obligations: PERMIT M FlagStatus([BOOLEAN/isWriting/false, true])
 	  PEP Decision= PERMIT
  \end{verbnobox}
 Analizziamo ora il motivo di queste decisioni. Nella prima richiesta ovviamente nessuno sta leggendo o scrivendo, quindi viene tranquillamente restituito \permit, visto che è presente una \textit{obligation} lo stato verrà aggiornato, sommando un'unità al contatore di letture.
@@ -256,6 +256,18 @@ La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, 
 \subsection{Secondo Esempio} % (fold)
 \label{sub:secondo_esempio}
 
+In questo secondo esempio analizzeremo il caso di un'azienda di distribuzione di contenuti multimediali che vuole regolare l'accesso di quest'ultimi attraverso policy.
+Faremo un breve esempio con un solo file e due utenti, uno dei due utenti comprerà il file, l'altro lo noleggierà a tempo determinato.
+Nel codice~\ref{lst:SecondoEsempio_FACPL} vengono mostrate solo una parte delle policy presenti nel codice completo.
+\lstinputlisting[firstline = 1, lastline = 39, language = FACPL, caption = {Secondo Esempio}\label{lst:SecondoEsempio_FACPL}]{./Source/second_example_facpl}
+Queste due policy, e anche le altre che non sono state mostrate, sono racchiuse tutte all'interno del \textit{Policy Set} Negozio il quale come prima cosa verifica se chi ha fatto la richiesta ha un determinato nome, in questo caso \textit{Bob} o \textit{Alice}.\\
+Successivamente, se uno dei due effettua la richiesta di \texttt{BUY}, ovvero l'acquisto senza alcun tipo di limitazione, si entra nella prima policy e, tramite le \textit{Obligation} si cambia l'attributo di stato. Invece se un utente decidesse di effettuare il noleggio con un numero limitato di volte si entra nella seconda \textit{Policy Set} la quale, attraverso \textit{Obligations} aumenterà il numero di visioni di due unità. Analogo è il caso del noleggio a tempo.\\
+Per disciplinare la visione è presente un altro \textit{Policy Set}, mostrato anch'esso parzialmente in codice~\ref{lst:secondo_esempio_view}.
+\lstinputlisting[firstline = 59, lastline = 71, language = FACPL, caption = {Secondo Esempio}\label{lst:secondo_esempio_view}]{./Source/second_example_facpl}
+Mostriamo ora in Codice~\ref{lst:richieste_2} alcune richieste che possono essere fatte al sistema ed analizziamo le risposte che produrranno.
+\lstinputlisting[language = FACPL, caption = {Richieste del Secondo Esempio}\label{lst:richieste_2}]{./Source/second_example_request}
+La prima e la seconda richiesta sono richieste di visione, che ovviamente restituiranno entrambe \deny, in quanto nessun utente ha effettuato acquisti o noleggi.
+Successivamente Alice effettuerà un acquisto ed una visione ed entrambi andranno a buon fine. A questo punto Bob, a cui prima era stata negata la visione effettuerà una richiesta di noleggio e dopo una richiesta di visione, il risultato di entrambe sarà \permit.
 % subsection secondo_esempio (end)
 
 % section esempi (end)

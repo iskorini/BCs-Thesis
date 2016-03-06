@@ -1,0 +1,101 @@
+PolicySet Negozio { deny-unless-permit
+  target: equal ( "Bob" , name / id ) || ("Alice, name/id") 
+  policies:
+
+  PolicySet Buy_Policy { deny-unless-permit
+    target:equal("file1", file/id) && ("buy", action/id)
+    policies:
+      Rule alice_buy ( permit target: (
+        equal ( action / id , "buy" )  &&
+        equal ( name / id, "Alice"))
+        obl:
+          [ permit M setString("accessTypeAlice", "BUY") ]
+        )
+      Rule bob_buy ( permit target: (
+        equal ( action / id , "buy" )  &&
+        equal ( name / id, "Alice"))
+        obl:
+          [ permit M setString("accessTypeBob", "BUY") ]
+        )
+  }
+
+  PolicySet NUMBER_Policy { deny-unless-permit
+    target:equal("file1", file/id) && ("number", action/id)
+    policies:
+      Rule alice_buy ( permit target: (
+        equal ( action / id , "number" )  &&
+        equal ( name / id, "Alice"))
+        obl:
+          [ permit M setString("accessTypeAlice", "NUMBER") ]
+          [ permit M addStatus("aliceFile1viewNumber", 2) ]
+        )
+      Rule bob_buy ( permit target: (
+        equal ( action / id , "number" )  &&
+        equal ( name / id, "Alice"))
+        obl:
+          [ permit M setString("accessTypeBob", "NUMBER") ]
+          [ permit M addStatus("bobFile1viewNumber", 2) ]
+        )
+  }
+  PolicySet TIME_Policy { deny-unless-permit
+    target:equal("file1", file/id) && ("TIME", action/id)
+    policies:
+      Rule alice_buy ( permit target: (
+        equal ( action / id , "time" )  &&
+        equal ( name / id, "Alice"))
+        obl:
+          [ permit M setString("accessTypeAlice", "TIME") ]
+          [ permit M sumDate("aliceFile1expiration", "0000/00/00-48:00:00") ]
+        )
+      Rule bob_buy ( permit target: (
+        equal ( action / id , "time" )  &&
+        equal ( name / id, "Alice"))
+        obl:
+          [ permit M setString("accessTypeBob", "TIME") ]
+          [ permit M sumDate("bobFile1expiration", "0000/00/00-48:00:00") ]
+        )
+  }
+
+  PolicySet VIEW { deny-unless-permit
+    target:equal("file1", file/id) && ("view", action/id)
+    policies:
+      Rule buy ( permit target: (
+        equal ( status / accessTypeBob , "BUY" )  &&
+        equal ( status / accessTypeAlice, "BUY"))
+        )
+      Rule number_alice ( permit target: (
+        equal ( status / accessTypeAlice, "NUMBER" )  &&
+        equal ( name / id, "Alice") && greater-than( status / aliceFile1viewNumber, 0)) 
+        obl:
+          [ permit M subStatus("aliceFile1viewNumber", 1) ]
+        )
+      Rule number_bob ( permit target: (
+        equal ( status / accessTypeBob, "NUMBER" )  &&
+        equal ( name / id, "Bob") && greater-than( status / bobFile1viewNumber, 0)) 
+        obl:
+          [ permit M subStatus("bobFile1viewNumber", 1) ]
+        )
+      Rule time_alice ( permit target: (
+        equal ( status / accessTypeAlice, "TIME" )  &&
+        equal ( name / id, "Alice") && greater-than( status / aliceFile1expiration, today)) 
+        )
+      Rule number_alice ( permit target: (
+        equal ( status / accessTypeAlice, "TIME" )  &&
+        equal ( name / id, "Bob") && greater-than( status / bobFile1expiration, today)) 
+        )
+  }
+
+
+
+}
+PAS { 
+  Combined Decision : false ;
+  Extended Indeterminate : false ;
+  Java Package : "example" ;
+  Requests To Evaluate : Request1, Request2, Request3, Request4, Request5, Request6 ;
+  pep: deny-biased
+  pdp: deny-unless-permit
+  status: [ (date aliceFile1expiration = today), (date bobFile1expiration = today),
+   (int bobFile1viewNumber = 0), (int aliceFile1viewNumber = 0), 
+   (String accessTypeAlice = "no"), (String accessTypeBob = "no")]
+}

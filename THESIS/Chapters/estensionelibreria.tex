@@ -91,6 +91,29 @@ Il PEP nella fase di enforcement effettua la valutazione delle \textit{Obligatio
 
 \section{Esempio} % (fold)
 \label{sec:esempio}
+[TODO: CORREGGERE PARTE SU XTEND E MAGARI ALLUNGARE]
+Il progetto è basato su Java, ed il codice formalizzato in FACPL viene successivamente convertito in codice Java attraverso un processo di autogenerazione.
+Per fare questo si usa un linguaggio chiamato XTend.
+\MyFigure{xtendLogo.png}{Logo di Xtend}{0.35}
+XTend ha le sue radici in Java, ma si concentra maggiormente su aspetti come una sintassi più concisa, ed altre funzionalità come l'inferenza sui tipi, l'overload degli operatori o l'estensione dei metodi (?). 
+È principalmente un linguaggio \textit{Object-oriented}, ma integra caratteristiche tipiche di un linguaggio funzionale, come ad esempio le Lambda Expression. Il sistema dei tipi di XTend è lo stesso di Java, ed è quindi statico.\\
+In questa sezione verrà mostrato come sarà in Java il corrispettivo del Codice \ref{lst:PrimoEsempio_FACPL} e del Codice \ref{lst:PrimoEsempioRichieste_FACPL}.\\
+Tutto parte dalla classe dove è presente il metodo Main (Codice~\ref{lst:mainprimoesempio.java}. In questo stesso modulo viene preparato il sistema all'esecuzione attraverso l'inizializzazione di tutti i componenti necessari al sistema.\\
+I due componenti più importanti sono il PDP e il PEP che vengono inizializazati nel costruttore, in quest'ultimo vengono anche aggiunte le \textit{Policy} e creato un contesto. Successivamente all'inizializzazione verranno inserite tutte le richieste in una lista e partirà un ciclo che effettuerà l'operazione di autorizzazione del PDP e di enforcement del PEP.
+\myjava{mainprimoesempio.java}{Main di uno scenario FACPL}
+Per esigienze di comodità il contesto è stato integrato in un'unica classe insieme alle richieste.
+\myjava{esempiocontesto.java}{Richiesta e contesto}
+Il metodo che si occupa della creazione dello stato è \textit{createStatus()}, il quale non farà altro che crearsi una serie di attributi ed inseririrli in un nuovo oggetto di tipo \textit{FacplStatus}, per poi restituirlo.
+La richiesta invece viene restituita sottoforma di un oggetto di tipo \textit{ContextRequest\_Status}, il quale verrà restituto dal primo dei due metodi. La richiesta è formata da diverse \textit{Hashmap} che sono come le categorie degli attributi che verranno inseriti al loro interno.
+Queste hashmap poi vengono aggiunte ad un oggetto \textit{Request} insieme ad una stringa che racchiude l'informazione riguardante la categoria dell'oggetto appena inserito.
+Alice, in Codice \ref{lst:PrimoEsempioRichieste_FACPL}, richiede ad un certo punto un'azione identificata come \textit{(action / id , "stopRead")}, ed insieme a questo attributo manderà anche altri due attributi, uno che rappresenta il suo nome, e l'altro che contiene il nome del file su cui deve essere effettuata l'azione. L'attributo riguardante l'azione viene codificato alle righe 11 e 15.\\
+Come ultima cosa vediamo come viene codificato un set di \textit{Policy}. Come detto in precedenza una \textit{Policy} è formata da un \textit{Target}, eventualmente altre \textit{Policy} o \textit{Rule} e delle \textit{Obligation}. Prendiamo ora in esempio una \textit{Policy} che contiene tutti e tre questi elementi.
+\myIjava{richiestajavaprimoesempio.java}{Policy StopRead}{92}{122}{polstopread}
+In particolare è stata presa in considerazione la \textit{Policy} che permette di fermare la lettura, ovvero quella che verrà valutata quando verrà effettuata la richiesta in Codice \ref{lst:esempiocontesto.java}.\\
+Tutte le \textit{Policy} derivano da una classe astratta che verrà estesa secondo le necessità. Come detto prima questa \textit{Policy} contiene tutti e tre gli elementi che la caratterizzano, in particolare la \textit{Obligation} che in questo caso è una \textit{ObligationStatus}. Questa \textit{Obligation} viene aggiunta come tutte le altre, ovvero chiamando l'apposito metodo della superclasse, ed è costruita passandogli come parametro un'azione da effettuare e gli argomenti, in questo caso l'azione è la sottrazione e gli argomenti è l'attributo che rappresenta il numero di lettori e l'intero 1. \\
+\myIjava{richiestajavaprimoesempio.java}{Expression Function che valuta un attributo di stato}{42}{45}{expressionfunctstat}
+Nel Codice \ref{lst:expressionfunctstat} si può vedere come una \textit{ExpressionFunction} riesca a valutare un attributo di stato.
+
 
 % section esempio (end)
     
