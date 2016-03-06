@@ -66,6 +66,7 @@ Queste nuove funzioni sono:
 	\item \textit{sumDate(Attribute, \texttt{date})} 
 	\item \textit{sumString(Attribute, \texttt{string})}
 	\item \textit{setValue(Attribute, \texttt{string})}
+	\item \textit{setDate(Attribute, \texttt{date})}
 \end{itemize}
 Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata semplicemente aggiunto, a fianco di \textit{Identifier/Identifier}, una nuova produzione \textit{Status/Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
 La sintassi delle risposte è rimasta invariata.
@@ -181,6 +182,17 @@ Quest'operazione è molto simile alla precedente, ma invece che concatenare le s
 \end{verbatim}
 Quindi l'esecuzione corretta di quest'azione porterà l'attributo che precedentemente aveva il valore 
 \textit{"Pablo Neruda"} ad avere il valore \textit{"Aghiò Aghiò"}.
+
+
+\subsection*{setDate(Attribute, date)}
+\label{ssub:opsetvalue}
+
+Quest'operazione è uguale alla precedente, ma invece che operare sul tipo stringa opera sul tipo Data.
+\begin{verbatim}
+	 obl:
+     [permit M setDate(foo, 2016/12/25)]
+\end{verbatim}
+L'esecuzione di questa \textit{Obligation} modificherà il valore di \textit{foo} al 25 Dicembre 2016.
 % section semantica (end)
 
 
