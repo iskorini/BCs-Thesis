@@ -10,7 +10,7 @@ che permettono di creare una prima linea difensiva contro accessi indesiderati.
 \section{Storia dell'Access Control}
 \label{sec:history}
 Negli anni sono stati proposti diversi approcci per cercare di definire un modello efficiente e scalabile. Secondo il NIST, in \cite{NISTACM}, una classificazione dei modelli di Access Control è la seguente. 
-Il primo di questi si chiama \textit{Access Control Lists (ACLs)} ed è stato proposto intorno agli anni 1970 spinto dall'avvento dei primi sistemi multi utente.\\
+Il primo di questi si chiama \textit{Access Control Lists (ACLs)} ed è stato proposto intorno al 1970 spinto dall'avvento dei primi sistemi multi utente.\\
 Successivamente è nato un nuovo modello chiamato \textit{Role-based Access Control (RBAC)} che modifica alcuni aspetti di ACL  in modo da rimuovere molte delle limitazioni di quest'ultimo.\\
 Uno dei problemi di RBAC è l'impossibilità di differenziare membri di uno stesso gruppo in modo da negare o permettere accessi sulla base di singoli attributi, ed è per venire in contro a questa necessità che è stato implementato un nuovo modello chiamato \textit{Attribute Based Access Control (ABAC)}, dove le decisioni vengono prese in base ad un set di attributi legati al richiedente, all'ambiente ed alla risorsa per cui si chiede l'accesso.\\
 Anche questo modello però ha delle limitazioni che vengono fuori quando il numero di risorse da gestire è elevato, motivo per cui nasce \textit{Policy-based Access Control (PBAC)}.
@@ -23,15 +23,15 @@ Anche tecniche avanzate, come per esempio ABAC e PBAC, non riescono in maniera s
 
 ACL è il più datato e basico modello di controllo agli accessi. Prende piede intorno agli anni 70
 grazie all'avvento dei sistemi multi utente i quali necessitano di limitare l'accesso a file e dati condivisi, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX.\\
-Con la comparsa della multiutenza per sistemi ad uso personale lo standard ACL è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows.
+Con la comparsa della multiutenza per sistemi ad uso personale lo standard ACL è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows.\\
 
-Nonostante negli anni sono stati sviluppati modelli più complessi ACL viene comunque usato nei sistemi operativi recenti, come si può vedere in figura \ref{fig:acl_osx} OS X sfrutta questo standard per la gestione dei permessi sul filesystem.\\
+Nonostante negli anni sono stati sviluppati modelli più complessi ACL viene comunque usato nei sistemi operativi recenti, come si può vedere in figura \ref{fig:acl_osx} OS X sfrutta questo standard per la gestione dei permessi sul filesystem.
 Il concetto dietro ACL è uno dei più semplici, in quanto ogni risorsa del sistema che deve essere controllata ha una sua lista che ad ogni soggetto associa le azioni che può effettuare sulla risorsa ed il sistema operativo, quando viene fatta richiesta decide in base alla lista se dare il permesso o meno.\\
 Per esempio, sempre in figura \ref{fig:acl_osx}, si può vedere come \textit{test\_folder} sia la risorsa da controllare, \textit{federicoschipani}, \textit{staff} e \textit{everyone} siano i soggetti e le azioni associate sono, in questo caso, \textit{Read \& Write} al primo soggetto e \textit{Read only} agli altri due.
 \MyFigure{acl_osx}{ACL in OS X}{1}
 La semplicità di questo modello non richiede grandi infrastrutture sottostanti, infatti implementarlo dal punto di vista applicativo risulta abbastanza semplice attraverso l'uso di linguaggi ad alto livello come Python o Java, poiché le strutture che servono per implementare questo standard sono già definite.\\
-Questo elevato grado di relativa facilità di implementazione però ha anche un aspetto negativo che si manifesta quando si ha a che fare con grandi quantità di risorse. Ogni volta che viene richiesto l'accesso ad una risorsa da parte di un entità, utente o applicazione che sia, bisogna verificare nella lista associata, il che lo rende abbastanza oneroso dal punto di vista computazionale.\\
-Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di una determinata risorsa, in quanto bisogna andare ad operare sulla lista di quest'ultima, il che rende questo compito incline ad errori ed oneroso dal punto di vista del tempo.
+Questo elevato grado di relativa facilità di implementazione però ha anche un aspetto negativo che si manifesta quando si ha a che fare con grandi quantità di risorse. Ogni volta che viene richiesto l'accesso ad una risorsa da parte di un entità, utente o applicazione che sia, è necessario verificare nella lista associata, il che lo rende abbastanza oneroso dal punto di vista computazionale.\\
+Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di una determinata risorsa, in quanto è necessario andare ad operare sulla lista di quest'ultima, il che rende questo compito incline ad errori ed oneroso dal punto di vista del tempo.
 
 
 \subsection*{Role-based Access Control (RBAC)} % (fold)
@@ -48,7 +48,7 @@ Un utente può anche far parte di più gruppi, per esempio un contabile di un az
 Come si può vedere in figura \ref{fig:group1} e in figura \ref{fig:group2} il concetto di gruppo è implementato nei sistemi operativi moderni, in particolare in OS X, Windows e sistemi UNIX-Like.
 \MyFigure{group1}{Gruppo in OS X}{0.8}
 \MyFigure{group2}{Gruppo in OS X}{0.65}
-Non è tutto oro quel che luccica poiché anche RBAC ha i suoi difetti, uno dei più evidenti è l'impossibilità di gestire le autorizzazioni al livello di singola persona, ed è quindi necessario creare diversi gruppi o trovare altri escamotage per autorizzare, o non autorizzare, singoli utenti appartenti a determinati gruppi. Per questo nasce \textit{Attribute-based Access Control (ABAC)}
+Non è tutto oro quel che luccica poiché anche RBAC ha i suoi difetti, uno dei più evidenti è l'impossibilità di gestire le autorizzazioni a livello di singola persona, ed è quindi necessario creare diversi gruppi o trovare altri escamotage per autorizzare, o non autorizzare, singoli utenti appartenti a determinati gruppi. Per questo nasce \textit{Attribute-based Access Control (ABAC)}
 
 % subsection role_based_access_control (end)
 
@@ -67,7 +67,7 @@ cui i proprietari delle risorse vogliono far accedere utenti che non conoscono d
 Diversamente da RBAC e ACL questo tipo di controllo agli 
 accessi non è implementato nei sistemi operativi, ma è largamente usato a livello applicativo.
 Spesso si usano applicazioni intermedie per mediare gli accessi da parte degli utenti a specifiche risorse.
-Implementazioni semplici di questo modello non richiedono grandi database o altre infrastrutture,tuttavia in ambienti dove non basta una semplice applicazione c'è necessità di grandi database.\\
+Implementazioni semplici di questo modello non richiedono grandi \textit{database} o altre infrastrutture,tuttavia in ambienti dove non basta una semplice applicazione c'è necessità di grandi banche di dati.\\
 Una limitazione di ABAC è che in grandi ambienti, con tante risorse, individui e applicazioni ci saranno grandi moli di attributi da gestire.
 
 
@@ -75,21 +75,23 @@ Una limitazione di ABAC è che in grandi ambienti, con tante risorse, individui 
 \label{sub:policy_based_access_control_}
 
 PBAC è stato sviluppato per far fronte alle carenze di ABAC, infatti è una sua naturale evoluzione e tende ad uniformare ed armonizzare il sistema di controllo accessi.
-Questo modello cerca di aiutare le imprese a indirizzarsi verso la necessità di implementare un sistema di controglo agli accessi basato su policy.\\
+Questo modello cerca di aiutare le imprese a indirizzarsi verso la necessità di implementare un sistema di controllo agli accessi basato su policy.\\
 PBAC combina attributi dalle risorse, dall'ambiente e dal richiedente con informazioni su determinate circostanze sotto le quali la richiesta è stata effettuata ed inoltre si serve di 
 ruoli per determinare quando l'accesso è garantito.\\
 Nei sistemi ABAC gli attributi richiesti per avere accesso ad una particolare risorsa sono determinati a livello locale e possono variare da organizzazione ad organizzazione.
 Per esempio, un'unità organizzativa può determinare che l'accesso ad un archivio di documenti sensibili è semplicemente soggetto a richiesta di credenziali e ruolo particolare.
 Un'altra unità invece, oltre a richiedere credenziali e ruolo, richiede anche un certificato. Se un documento viene trasferito dal secondo al primo archivio perde la protezione fornita da quest'ultimo e sarà soggetto solo alla richiesta di credenziali e ruolo.
 Con PBAC invece si ha un solo punto dove vengono gestite le policy, e queste policy verranno eseguite ad ogni tentativo di accedere alla risorsa.
-PBAC quindi è un sistema molto più complicato di ABAC e perciò richiede il dislocamento di infrastrutture molto più onerose dal punto di vista economico che includono database, directory service e altri applicativi di mediazione e gestione.
+PBAC quindi è un sistema molto più complicato di ABAC e perciò richiede il dislocamento di infrastrutture molto più onerose dal punto di vista economico che includono \textit{database}, \textit{directory service} e altri applicativi di mediazione e gestione.
 PBAC non richiede solo un applicazione per gestire la valutazione delle policy, ma richiede anche un sistema per la scrittura di quest'ultime in modo che non risultino ambigue.
-Un linguaggio basato su XML si chiama \textit{eXtensible Access Control Markup Language (XACML)}, ed è sviluppato in modo tale da creare policy facilmente leggibili da una macchina.\\
+Un linguaggio basato su XML si chiama
+%INSERIRE NOTA A PIE DI PAGINA PER SPIEGARE COS'E' XML
+ \textit{eXtensible Access Control Markup Language (XACML)}, ed è sviluppato in modo tale da creare policy facilmente leggibili da una macchina.\\
 Sfortunatamente però queste policy non sono facili da scrivere e l'uso di XACML non necessariamente rende facile il processo di creazione, specifica e valutazione corretta di una policy.\\
-Ci vuole anche un modo per assicurare che tutti gli utenti di un sistema utilizzino lo stesso insieme di attributi, che è un compito più facile a dire che fare.
+Ci vuole anche un modo per assicurare che tutti gli utenti di un sistema utilizzino lo stesso insieme di attributi, che è un compito più facile a dire che farsi.
 Gli attributi dovrebbero essere forniti da un'entità chiamata \textit{Authoritative Attribute Source (AAS)} che, oltre a fare da sorgente per gli attributi deve anche occuparsi della loro consistenza.
 In più bisogna instaurare un meccanismo per la verificare che questi attributi provengano realmente dall'AAS.\\
-Come detto prima può sembrare facile fare una cosa del genere, ma bisogna considerare il caso in cui più aziende lavorano insieme e devono implementare un sistema di controllo degli accessi in comune. Un problema si può verificare quando un'azienda valuta la gestione dell'AAS tramite una particolare repository, ma un'altra azienda non è d'accordo a questo tipo di soluzione.
+Come detto prima può sembrare facile fare una cosa del genere, ma bisogna considerare il caso in cui più aziende lavorano insieme e devono implementare un sistema di controllo degli accessi in comune. Un problema si può verificare quando un'azienda valuta la gestione dell'AAS tramite una particolare \textit{repository}, ma un'altra azienda non è d'accordo a questo tipo di soluzione.
 
 
 \subsection*{Risk-Adaptive Access Control (\radac)} % (fold)
