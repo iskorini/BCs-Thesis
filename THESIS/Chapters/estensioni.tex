@@ -1,9 +1,9 @@
 \myChapter{Implementare Usage Control in FACPL}
 \label{cap:usagecontrolfacpl}
 FACPL, fino alla versione descritta nel capitolo~\ref{cap:facpl}, non aveva la possibilità
-di essere sfruttato per \textit{Usage Control}.\\
+di essere sfruttato per \textit{Usage Control}.\\ \par
 Grazie a delle nuove strutture implementate insieme al mio collega Filippo Mameli, adesso è possibile
-usare FACPL per \textit{Usage Control}, introducendo miglioramenti descritti in~\ref{sec:usage_control}.\\
+usare FACPL per \textit{Usage Control}, introducendo miglioramenti descritti in~\ref{sec:usage_control}.\\ \par
 La nuova funzionalità consiste nel prendere decisioni tenendo conto delle richieste già effettuate.
 Introdurre questa nuova estensione ha richiesto del lavoro sulla libreria, in quanto è stato necessario aggiungere
 nuove componenti e di conseguenza modificare il processo di valutazione di una policy.
@@ -19,7 +19,7 @@ richieste basate sul comportamento passato.
 \MyFigure{evalStatus}{Nuovo processo di valutazione in FACPL}{1}
 Come si nota in figura \ref{img:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
 Questo componente è lo \status \ (Stato), ovvero un semplice contenitore di un nuovo tipo di attributi.
-I nuovi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente in modo da gestire correttamente la presenza di esso.\\
+I nuovi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente in modo da gestire correttamente la presenza di esso.\\ \par
 Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo stato è presente. Inizialmente viene definito il sistema, che ora ha quattro componenti principali:
 \begin{itemize}
 	\item[-]{Policy Repository (PR)}
@@ -27,12 +27,12 @@ Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo s
 	\item[-]{Policy Enforcement Point (PEP)}
 	\item[-]{Status}
 \end{itemize}
-Fino al quarto step il comportamento è analogo a quello precedente, mentre cambia negli step successivi.\\
-Al quinto step il \textit{PDP} non necessiterà solo dei normali attributi d'ambiente, ma necessiterà anche degli \statusattribute \ coinvolti nella richiesta effettuata. Il \textit{Context Handler} quindi non andrà solo a fare la ricerca all'interno dell'environment, ma andrà a cercare anche gli \statusattribute \ all'interno dello \status.\\
-A questo punto, quando il PDP avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre.\\
-Nel caso in cui viene restituto \texttt{Permit} o \texttt{Deny} è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \textit{PEP} (Passo 13-16). Una volta effettuato l'enforcement viene restituta la decisione finale.\\
-Prendendo il primo esempio citato in sezione \ref{sec:usage_control} la valutazione procederebbe in questo modo. Bob richiederà la lettura di un determinato file. Quindi la richiesta conterrà tre attributi, uno che indica il nome dell'utente che effettua la richiesta, il secondo che contiene il nome del file a cui si effettuerà l'accesso, e il terzo che conterrà il nome dell'azione da effettuare. La policy invece sarà strutturata come \textit{"Se il nome è Bob, il file è corretto e nessuno sta scrivendo o ci sono meno di due utenti che leggono, allora permetti, altrimenti nega" }.\\
-Il PDP però ha bisogno di più attributi per valutare la richiesta, in quanto necessita anche di attributi esterni alla policy che riguardano il numero di utenti che stanno accedendo al file richiesto, questi attributi sono gli \statusattribute. Per la loro gestione sarà necessario utilizzare la funzionalità che riguarda l'Usage Control, il PDP richiederà al \textit{Context Handler} questi attributi, il quale andrà cercarli nello \status. Quest'ultimo li fornirà e verranno direttamente mandati al PDP per la valutazione della richiesta.\\
+Fino al quarto step il comportamento è analogo a quello precedente, mentre cambia negli step successivi.\\ \par
+Al quinto step il \textit{PDP} non necessiterà solo dei normali attributi d'ambiente, ma necessiterà anche degli \statusattribute \ coinvolti nella richiesta effettuata. Il \textit{Context Handler} quindi non andrà solo a fare la ricerca all'interno dell'environment, ma andrà a cercare anche gli \statusattribute \ all'interno dello \status.\\ \par
+A questo punto, quando il PDP avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre.\\ \par
+Nel caso in cui viene restituto \texttt{Permit} o \texttt{Deny} è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \textit{PEP} (Passo 13-16). Una volta effettuato l'enforcement viene restituta la decisione finale.\\ \par
+Prendendo il primo esempio citato in sezione \ref{sec:usage_control} la valutazione procederebbe in questo modo. Bob richiederà la lettura di un determinato file. Quindi la richiesta conterrà tre attributi, uno che indica il nome dell'utente che effettua la richiesta, il secondo che contiene il nome del file a cui si effettuerà l'accesso, e il terzo che conterrà il nome dell'azione da effettuare. La policy invece sarà strutturata come \textit{"Se il nome è Bob, il file è corretto e nessuno sta scrivendo o ci sono meno di due utenti che leggono, allora permetti, altrimenti nega" }.\\ \par
+Il PDP però ha bisogno di più attributi per valutare la richiesta, in quanto necessita anche di attributi esterni alla policy che riguardano il numero di utenti che stanno accedendo al file richiesto, questi attributi sono gli \statusattribute. Per la loro gestione sarà necessario utilizzare la funzionalità che riguarda l'Usage Control, il PDP richiederà al \textit{Context Handler} questi attributi, il quale andrà cercarli nello \status. Quest'ultimo li fornirà e verranno direttamente mandati al PDP per la valutazione della richiesta.\\ \par
 Se la richiesta avrà esito positivo, allora vuol dire che Bob avrà accesso al file, e quindi lo stato andrà aggiornato. La risposta del PDP a questo punto andrà al PEP per l'enforcement il quale avrà il compito di aggiornare lo stato. Sostanzialmente lo stato viene aggiornato semplicemente incrementando l'attributo riguardante il numero di lettori di un'unità.
 
 
@@ -43,14 +43,14 @@ Se la richiesta avrà esito positivo, allora vuol dire che Bob avrà accesso al 
 \label{sec:estensione_linguistica}
 Per implementare queste nuove funzionalità è stata modificata anche la grammatica di FACPL.
 Nella grammatica estesa sono state aggiunte nuove regole di produzione e simboli terminali che 
-codificano le nuove funzionalità.\\
+codificano le nuove funzionalità.\\ \par
 \input{syntax_original/facpl_new_syntax}
-Come è facilmente osservabile dalla consultazione della tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono.\\
+Come è facilmente osservabile dalla consultazione della tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono.\\ \par
 La prima modifica che risulta evidente è nel PAS, ovvero nella definizione del sistema. L'aggiunta è stata lo \status, ovvero un contenitore di attributi.
-Uno \status \ è della forma $$(status: Attribute^+)^?$$ questo significa che se lo \status \ è presente sarà formato da uno o più \textit{Attribute}.\\
+Uno \status \ è della forma $$(status: Attribute^+)^?$$ questo significa che se lo \status \ è presente sarà formato da uno o più \textit{Attribute}.\\ \par
 Passiamo ora a descrivere \textit{Attribute} che è della forma $$(Type\ Identifier (= Value)^?)$$
-questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.\\
-\textit{Type} è il tipo che avrà l'attributo di stato, e potrà essere \texttt{int, boolean, date o float}.\\
+questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.\\ \par
+\textit{Type} è il tipo che avrà l'attributo di stato, e potrà essere \texttt{int, boolean, date o float}.\\ \par
 La regola \textit{PepAction} è stata modificata in modo tale che includesse nuove funzioni per operare matematicamente sugli attributi di stato.
 Queste nuove funzioni sono:
 \begin{itemize}
@@ -80,11 +80,11 @@ Infine nella \textit{Obligation} si può notare come viene aggiornato lo stato d
 
 \section{Semantica} % (fold)
 \label{sec:semantica}
-Sostanzialmente la semantica di FACPL rimane molto simile a quella descritta in sezione \ref{sec:semantica_originale}, quindi verranno di seguito descritte in modo informale solo le novità introdotte.\\
+Sostanzialmente la semantica di FACPL rimane molto simile a quella descritta in sezione \ref{sec:semantica_originale}, quindi verranno di seguito descritte in modo informale solo le novità introdotte.\\ \par
 La prima di queste riguarda la valutazione delle richieste dal PDP. Il PDP ora non si deve più basare solo su richieste totalmente scollegate l'una dall'altra, e quindi è stato introdotto il concetto di \status.
-Lo stato serve per l'appunto per memorizzare il comportamento passato del sistema, e lo fa introducendo una nuova serie di attributi chiamati \statusattribute.\\
-Nel linguaggio questo nuovo tipo di attributi viene considerato al pari di normali attributi, quindi si ha la possibilità di effettuare tutte le operazioni di confronto tra di essi, ma in più si deve avere la possibilità di modificarli e memorizzarli in modo da poterli sfruttare per \textit{Usage Control}.\\
-Gli \statusattribute \ vengono inizialmente definiti nel PAS, ed avranno un tipo, un identificatore ed eventualmente un valore. Per esempio uno \statusattribute definito in questo modo \textit{(boolean isWriting = false)} codifica un attributo di stato di tipo booleano chiamato "isWriting" ed inizializzato a \texttt{false}.\\
+Lo stato serve per l'appunto per memorizzare il comportamento passato del sistema, e lo fa introducendo una nuova serie di attributi chiamati \statusattribute.\\ \par
+Nel linguaggio questo nuovo tipo di attributi viene considerato al pari di normali attributi, quindi si ha la possibilità di effettuare tutte le operazioni di confronto tra di essi, ma in più si deve avere la possibilità di modificarli e memorizzarli in modo da poterli sfruttare per \textit{Usage Control}.\\ \par
+Gli \statusattribute \ vengono inizialmente definiti nel PAS, ed avranno un tipo, un identificatore ed eventualmente un valore. Per esempio uno \statusattribute definito in questo modo \textit{(boolean isWriting = false)} codifica un attributo di stato di tipo booleano chiamato "isWriting" ed inizializzato a \texttt{false}.\\ \par
 Come detto prima bisogna avere la possibilità di modificare questi nuovi attributi, e per questo sono state aggiunte delle \textit{Pep Action}, ovvero delle azioni eseguite dal PEP in seguito alla valutazione di \textit{Obligations}.
 \subsection*{\textit{add(Attribute, int)} e \textit{add(Attribute, float)}} % (fold)
 \label{ssub:opadd}
@@ -103,7 +103,7 @@ porterà ad un errore per incoerenza sul tipo.
 % subsection add (end)
 \subsection*{\textit{sub(Attribute, int)} e \textit{sub(Attribute, float)}} % (fold)
 \label{ssub:opsub}
-Questo insieme \textit{Pep Actions} è semplicemente il duale della precedente, ciò vuol dire che invece che effettuare la somma di un valore numerico ad uno \statusattribute \ farà una sottrazione.\\
+Questo insieme \textit{Pep Actions} è semplicemente il duale della precedente, ciò vuol dire che invece che effettuare la somma di un valore numerico ad uno \statusattribute \ farà una sottrazione.\\ \par
 Quindi, riprendendendo l'esempio citato per la add:
 \begin{verbatim}
  obl:
@@ -201,18 +201,19 @@ L'esecuzione di questa \textit{Obligation} modificherà il valore di \textit{foo
 
 Queste nuove funzionalità introdotte servono allo scopo descritto in sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.
 Mostreremo ora l'implementazione in FACPL dei due esempi trattati in sezione~\ref{sec:usage_control}. 
-\subsection{Primo esempio} % (fold)
+\subsection{Accesso ai file} % (fold)
 \label{ssub:primo_esempio}
 \lstinputlisting[language = FACPL, caption = {Primo esempio}\label{lst:PrimoEsempio_FACPL}]{./Source/EsempioReadWrite_facpl.fpl}
 Per semplicità, in questo codice, vengono mostrate le policy di accesso per un solo file.
-L'esempio citato in precedenza metteva una regola sull'accesso ai file, ovvero permetteva un massimo di due persone in contemporanea che potevano effettuare l'accesso in lettura oppure un massimo di una persona che poteva ottenere l'accesso in scrittura.\\
-Tutte le policy del codice~\ref{lst:PrimoEsempio_FACPL} sono chiuse in un \textit{PolicySet}. Il target del PolicySet \texttt{ReadWrite\_Policy} verifica che le richieste provengano da utenti che hanno nome \textit{Alice} o \textit{Bob}, in caso contrario il responso sarà \texttt{Not Applicable}.\\
-Successivamente sono state create quattro policy per gestire le quattro operazioni possibili, ovvero \texttt{read}, \texttt{write}, \texttt{stopRead} ed infine \texttt{stopWrite}.\\
-Prendiamo in considerazione la prima policy, quella per la \texttt{write}. Come prima è presente un target, che richiede questa volta due diverse condizioni, la prima riguarda l'id del file richiesto, la seconda invece richiede che l'azione sia \texttt{write}. Le parti interessanti di questa policy sono due, la prima riguarda la \textit{Rule}, la seconda la \textit{Obligation}.\\
-La \textit{Rule} restituisce \texttt{permit} se le due condizioni dell'equal sono vere, come si può facilmente notare l'operazione di confronto non viene fatta tra una stringa ed un normale attributo, ma tra una stringa ed uno \statusattribute.\\
-L'ultima cosa da notare è l'unica \textit{Obligation} presente per questa policy. Questo tipo particolare di \textit{Obligation}, ha sempre al suo interno un'azione che verrà eseguita dal PEP, ma questa volta l'azione andrà a modificare lo stato del sistema, mettendo il valore \texttt{true} all'attributo \textit{isWriting}.\\
+L'esempio citato in precedenza metteva una regola sull'accesso ai file, ovvero permetteva un massimo di due persone in contemporanea che potevano effettuare l'accesso in lettura oppure un massimo di una persona che poteva ottenere l'accesso in scrittura.\\ \par
+Tutte le policy del codice~\ref{lst:PrimoEsempio_FACPL} sono chiuse in un \textit{PolicySet}. Il target del PolicySet \texttt{ReadWrite\_Policy} verifica che le richieste provengano da utenti che hanno nome \textit{Alice} o \textit{Bob}, in caso contrario il responso sarà \texttt{Not Applicable}.\\ \par
+Successivamente sono state create quattro policy per gestire le quattro operazioni possibili, ovvero \texttt{read}, \texttt{write}, \texttt{stopRead} ed infine \texttt{stopWrite}.\\ \par
+Prendiamo in considerazione la prima policy, quella per la \texttt{write}. Come prima è presente un target, che richiede questa volta due diverse condizioni, la prima riguarda l'id del file richiesto, la seconda invece richiede che l'azione sia \texttt{write}. Le parti interessanti di questa policy sono due, la prima riguarda la \textit{Rule}, la seconda la \textit{Obligation}.\\ \par
+La \textit{Rule} restituisce \texttt{permit} se le due condizioni dell'equal sono vere, come si può facilmente notare l'operazione di confronto non viene fatta tra una stringa ed un normale attributo, ma tra una stringa ed uno \statusattribute.\\ \par
+L'ultima cosa da notare è l'unica \textit{Obligation} presente per questa policy. Questo tipo particolare di \textit{Obligation}, ha sempre al suo interno un'azione che verrà eseguita dal PEP, ma questa volta l'azione andrà a modificare lo stato del sistema, mettendo il valore \texttt{true} all'attributo \textit{isWriting}.\\ \par
 Prendiamo ora una serie di richieste.
 \lstinputlisting[language = FACPL, caption = {Richieste del primo esempio}\label{lst:PrimoEsempioRichieste_FACPL}]{./Source/EsempioReadWrite_facpl_richieste.fpl}
+
 L'output di queste richieste sarà il sguente
 \begin{verbnobox}[\small]
  Request1:
@@ -246,22 +247,22 @@ L'output di queste richieste sarà il sguente
 	  PEP Decision= PERMIT
  \end{verbnobox}
 Analizziamo ora il motivo di queste decisioni. Nella prima richiesta ovviamente nessuno sta leggendo o scrivendo, quindi viene tranquillamente restituito \permit, visto che è presente una \textit{obligation} lo stato verrà aggiornato, sommando un'unità al contatore di letture.
-Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo, però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa.\\
+Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo, però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa.\\ \par
 La quarta e la quinta richiesta vengono fatte per avvisare il sistema che la lettura è terminata, ovviamente la risposta è \permit, e la \textit{obligation} corrispondente decrementerà il contatore.
 La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, poiché nessuno sta scrivendo o leggendo.
 
 
 % subsection primo_esempio (end)
 
-\subsection{Secondo Esempio} % (fold)
+\subsection{Noleggio e acquisto di contenuti} % (fold)
 \label{sub:secondo_esempio}
 
 In questo secondo esempio analizzeremo il caso di un'azienda di distribuzione di contenuti multimediali che vuole regolare l'accesso di quest'ultimi attraverso policy.
 Faremo un breve esempio con un solo file e due utenti, uno dei due utenti comprerà il file, l'altro lo noleggierà a tempo determinato.
 Nel codice~\ref{lst:SecondoEsempio_FACPL} vengono mostrate solo una parte delle policy presenti nel codice completo.
 \lstinputlisting[firstline = 1, lastline = 39, language = FACPL, caption = {Secondo Esempio}\label{lst:SecondoEsempio_FACPL}]{./Source/second_example_facpl}
-Queste due policy, e anche le altre che non sono state mostrate, sono racchiuse tutte all'interno del \textit{Policy Set} Negozio il quale come prima cosa verifica se chi ha fatto la richiesta ha un determinato nome, in questo caso \textit{Bob} o \textit{Alice}.\\
-Successivamente, se uno dei due effettua la richiesta di \texttt{BUY}, ovvero l'acquisto senza alcun tipo di limitazione, si entra nella prima policy e, tramite le \textit{Obligation} si cambia l'attributo di stato. Invece se un utente decidesse di effettuare il noleggio con un numero limitato di volte si entra nella seconda \textit{Policy Set} la quale, attraverso \textit{Obligations} aumenterà il numero di visioni di due unità. Analogo è il caso del noleggio a tempo.\\
+Queste due policy, e anche le altre che non sono state mostrate, sono racchiuse tutte all'interno del \textit{Policy Set} Negozio il quale come prima cosa verifica se chi ha fatto la richiesta ha un determinato nome, in questo caso \textit{Bob} o \textit{Alice}.\\ \par
+Successivamente, se uno dei due effettua la richiesta di \texttt{BUY}, ovvero l'acquisto senza alcun tipo di limitazione, si entra nella prima policy e, tramite le \textit{Obligation} si cambia l'attributo di stato. Invece se un utente decidesse di effettuare il noleggio con un numero limitato di volte si entra nella seconda \textit{Policy Set} la quale, attraverso \textit{Obligations} aumenterà il numero di visioni di due unità. Analogo è il caso del noleggio a tempo.\\ \par
 Per disciplinare la visione è presente un altro \textit{Policy Set}, mostrato anch'esso parzialmente in codice~\ref{lst:secondo_esempio_view}.
 \lstinputlisting[firstline = 59, lastline = 71, language = FACPL, caption = {Secondo Esempio}\label{lst:secondo_esempio_view}]{./Source/second_example_facpl}
 Mostriamo ora in Codice~\ref{lst:richieste_2} alcune richieste che possono essere fatte al sistema ed analizziamo le risposte che produrranno.

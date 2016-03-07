@@ -1,0 +1,60 @@
+PolicySet fileRule { permit-overrides
+	target: 
+		equal("458", resource/resource-id)
+	policies: 
+		Rule writeRule ( permit target: 
+				equal ("WRITE" , subject/action ) 
+				&& equal ("ADMINISTRATOR", subject/role) 
+		 )
+		Rule writePeronio ( permit target:
+				equal("PERONIO", subject/id)
+		)
+		Rule denyRule ( deny target:
+				equal("GUEST", subject/role) )
+	obl:
+		[ deny M action2 (subject / id )]
+		[ permit M action1 (subject / id)]
+}
+
+
+
+Request:{ Request1 
+	(subject/action , "WRITE")
+	(subject/role , "ADMINISTRATOR")
+	(resource/resource-id , "458")
+	(subject/id,  "GianFabrizio")
+}
+Request:{ Request2 
+	(subject/action , "WRITE")
+	(subject/role , "GUEST")
+	(resource/resource-id , "458")
+	(subject/id, "GianPietro")
+}
+Request:{ Request3 
+	(subject/action , "WRITE")
+	(subject/role , "GUEST")
+	(resource/resource-id , "458")
+	(subject/id, "PERONIO")
+}
+
+
+Request: Request1
+
+  Authorization Decision: PERMIT 
+  Obligations: PERMIT M action1([GianFabrizio])
+Request: Request2
+
+  Authorization Decision: DENY 
+  Obligations: DENY M action2([GianPietro])
+Request: Request3
+
+  Authorization Decision: PERMIT 
+  Obligations: PERMIT M action1([PERONIO])
+
+
+
+
+
+
+
+

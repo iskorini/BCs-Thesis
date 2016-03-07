@@ -10,11 +10,11 @@ che permettono di creare una prima linea difensiva contro accessi indesiderati.
 \section{Storia dell'Access Control}
 \label{sec:history}
 Negli anni sono stati proposti diversi approcci per cercare di definire un modello efficiente e scalabile. Secondo il NIST, in \cite{NISTACM}, una classificazione dei modelli di Access Control è la seguente. 
-Il primo di questi si chiama \textit{Access Control Lists (ACLs)} ed è stato proposto intorno al 1970 spinto dall'avvento dei primi sistemi multi utente.\\
-Successivamente è nato un nuovo modello chiamato \textit{Role-based Access Control (RBAC)} che modifica alcuni aspetti di ACL  in modo da rimuovere molte delle limitazioni di quest'ultimo.\\
-Uno dei problemi di RBAC è l'impossibilità di differenziare membri di uno stesso gruppo in modo da negare o permettere accessi sulla base di singoli attributi, ed è per venire in contro a questa necessità che è stato implementato un nuovo modello chiamato \textit{Attribute Based Access Control (ABAC)}, dove le decisioni vengono prese in base ad un set di attributi legati al richiedente, all'ambiente ed alla risorsa per cui si chiede l'accesso.\\
+Il primo di questi si chiama \textit{Access Control Lists (ACLs)} ed è stato proposto intorno al 1970 spinto dall'avvento dei primi sistemi multi utente.\\ \par
+Successivamente è nato un nuovo modello chiamato \textit{Role-based Access Control (RBAC)} che modifica alcuni aspetti di ACL  in modo da rimuovere molte delle limitazioni di quest'ultimo.\\ \par
+Uno dei problemi di RBAC è l'impossibilità di differenziare membri di uno stesso gruppo in modo da negare o permettere accessi sulla base di singoli attributi, ed è per venire in contro a questa necessità che è stato implementato un nuovo modello chiamato \textit{Attribute Based Access Control (ABAC)}, dove le decisioni vengono prese in base ad un set di attributi legati al richiedente, all'ambiente ed alla risorsa per cui si chiede l'accesso.\\ \par
 Anche questo modello però ha delle limitazioni che vengono fuori quando il numero di risorse da gestire è elevato, motivo per cui nasce \textit{Policy-based Access Control (PBAC)}.
-PBAC migliora e standardizza il modello ABAC combinando attributi dalle risorse, dall'ambiente e dal richiedente con informazioni di un particolare insieme di circostanze sotto le quali la richiesta è stata effettuata.\\
+PBAC migliora e standardizza il modello ABAC combinando attributi dalle risorse, dall'ambiente e dal richiedente con informazioni di un particolare insieme di circostanze sotto le quali la richiesta è stata effettuata.\\ \par
 Le organizzazioni non sono statiche, si evolvono e devono rispondere ad una varietà di stimoli, che possono essere legali, economici, finanziari, di mercato o una varietà di fattori di rischio.
 Anche tecniche avanzate, come per esempio ABAC e PBAC, non riescono in maniera sufficiente a rispondere ai bisogni di dinamismo e cambiamenti dei livelli di rischio, motivo per cui è nato \textit{Risk-adaptive Access Control (\radac)} che fornisce un modello adattabile al settore enterprise.
 
@@ -22,28 +22,28 @@ Anche tecniche avanzate, come per esempio ABAC e PBAC, non riescono in maniera s
 \label{sub:ACL}
 
 ACL è il più datato e basico modello di controllo agli accessi. Prende piede intorno agli anni 70
-grazie all'avvento dei sistemi multi utente i quali necessitano di limitare l'accesso a file e dati condivisi, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX.\\
-Con la comparsa della multiutenza per sistemi ad uso personale lo standard ACL è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows.\\
+grazie all'avvento dei sistemi multi utente i quali necessitano di limitare l'accesso a file e dati condivisi, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX.\\ \par
+Con la comparsa della multiutenza per sistemi ad uso personale lo standard ACL è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows.\\ \par
 
 Nonostante negli anni sono stati sviluppati modelli più complessi ACL viene comunque usato nei sistemi operativi recenti, come si può vedere in figura \ref{fig:acl_osx} OS X sfrutta questo standard per la gestione dei permessi sul filesystem.
-Il concetto dietro ACL è uno dei più semplici, in quanto ogni risorsa del sistema che deve essere controllata ha una sua lista che ad ogni soggetto associa le azioni che può effettuare sulla risorsa ed il sistema operativo, quando viene fatta richiesta decide in base alla lista se dare il permesso o meno.\\
+Il concetto dietro ACL è uno dei più semplici, in quanto ogni risorsa del sistema che deve essere controllata ha una sua lista che ad ogni soggetto associa le azioni che può effettuare sulla risorsa ed il sistema operativo, quando viene fatta richiesta decide in base alla lista se dare il permesso o meno.\\ \par
 Per esempio, sempre in figura \ref{fig:acl_osx}, si può vedere come \textit{test\_folder} sia la risorsa da controllare, \textit{federicoschipani}, \textit{staff} e \textit{everyone} siano i soggetti e le azioni associate sono, in questo caso, \textit{Read \& Write} al primo soggetto e \textit{Read only} agli altri due.
 \MyFigure{acl_osx}{ACL in OS X}{1}
-La semplicità di questo modello non richiede grandi infrastrutture sottostanti, infatti implementarlo dal punto di vista applicativo risulta abbastanza semplice attraverso l'uso di linguaggi ad alto livello come Python o Java, poiché le strutture che servono per implementare questo standard sono già definite.\\
-Questo elevato grado di relativa facilità di implementazione però ha anche un aspetto negativo che si manifesta quando si ha a che fare con grandi quantità di risorse. Ogni volta che viene richiesto l'accesso ad una risorsa da parte di un entità, utente o applicazione che sia, è necessario verificare nella lista associata, il che lo rende abbastanza oneroso dal punto di vista computazionale.\\
+La semplicità di questo modello non richiede grandi infrastrutture sottostanti, infatti implementarlo dal punto di vista applicativo risulta abbastanza semplice attraverso l'uso di linguaggi ad alto livello come Python o Java, poiché le strutture che servono per implementare questo standard sono già definite.\\ \par
+Questo elevato grado di relativa facilità di implementazione però ha anche un aspetto negativo che si manifesta quando si ha a che fare con grandi quantità di risorse. Ogni volta che viene richiesto l'accesso ad una risorsa da parte di un entità, utente o applicazione che sia, è necessario verificare nella lista associata, il che lo rende abbastanza oneroso dal punto di vista computazionale.\\ \par
 Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di una determinata risorsa, in quanto è necessario andare ad operare sulla lista di quest'ultima, il che rende questo compito incline ad errori ed oneroso dal punto di vista del tempo.
 
 
 \subsection*{Role-based Access Control (RBAC)} % (fold)
 \label{sub:role_based_access_control}
 
-RBAC è un po' l'evoluzione di ACL, in quanto tende a correggerne alcuni, se così si possono chiamare, difetti.\\
+RBAC è un po' l'evoluzione di ACL, in quanto tende a correggerne alcuni, se così si possono chiamare, difetti.\\ \par
 A differenza di ACL il ruolo del richiedente, o la sua funzione, determinerà quando l'accesso sarà garantito o negato.
-Questo nuovo modello si dedica ad alcuni passi falsi commessi da ACL introducendo nuove ed interessanti funzionalità. Per esempio in ACL ogni utente era trattato come una singola entità distinta da tutte le altre, e questo prevede che ogni utente avesse il suo distinto insieme di permessi per ogni risorsa, il che rende ACL focalizzato sulle risorse.\\
+Questo nuovo modello si dedica ad alcuni passi falsi commessi da ACL introducendo nuove ed interessanti funzionalità. Per esempio in ACL ogni utente era trattato come una singola entità distinta da tutte le altre, e questo prevede che ogni utente avesse il suo distinto insieme di permessi per ogni risorsa, il che rende ACL focalizzato sulle risorse.\\ \par
 Un altro difetto che si riscontra in ACL è la sua limitata scalabilità, in quanto 
-impostare un sistema basato su questo standard è un processo che coinvolge tutte le risorse ed i relativi proprietari.\\
+impostare un sistema basato su questo standard è un processo che coinvolge tutte le risorse ed i relativi proprietari.\\ \par
 RBAC pone rimedio a questi difetti introducendo il concetto di accesso basato sul ruolo, ovvero può raggruppare diversi utenti in una categoria chiamata ruolo. 
-Questo raggruppamento offre il vantaggio di facilitare la gestione dei permessi, poiché per ogni risorsa non si devono più gestire tutti i singoli utenti, ma basta gestire i permessi associati a queste nuove categorie.\\
+Questo raggruppamento offre il vantaggio di facilitare la gestione dei permessi, poiché per ogni risorsa non si devono più gestire tutti i singoli utenti, ma basta gestire i permessi associati a queste nuove categorie.\\ \par
 Un utente può anche far parte di più gruppi, per esempio un contabile di un azienda può far parte del gruppo \textit{impiegati} e \textit{contabili} in modo da permettergli l'accesso sia ai documenti riservati ai soli impiegati che quelli riservati ai soli contabili.
 Come si può vedere in figura \ref{fig:group1} e in figura \ref{fig:group2} il concetto di gruppo è implementato nei sistemi operativi moderni, in particolare in OS X, Windows e sistemi UNIX-Like.
 \MyFigure{group1}{Gruppo in OS X}{0.8}
@@ -63,11 +63,11 @@ Questi attributi possono provenire da disparate fonti ed essere di svariati tipi
 Un vantaggio di ABAC è che non c'è la necessità che il richiedente conosca in anticipo
 la risorsa o il sistema a cui dovrà accedere. Finché gli attributi che il richiedente fornisce 
 coincidono con i requisiti l'accesso sarà garantito. ABAC perciò è utilizzato in situazioni in 
-cui i proprietari delle risorse vogliono far accedere utenti che non conoscono direttamente a patto che però rispettino i criteri preposti, il che rende il tutto molto più dinamico.\\
+cui i proprietari delle risorse vogliono far accedere utenti che non conoscono direttamente a patto che però rispettino i criteri preposti, il che rende il tutto molto più dinamico.\\ \par
 Diversamente da RBAC e ACL questo tipo di controllo agli 
 accessi non è implementato nei sistemi operativi, ma è largamente usato a livello applicativo.
 Spesso si usano applicazioni intermedie per mediare gli accessi da parte degli utenti a specifiche risorse.
-Implementazioni semplici di questo modello non richiedono grandi \textit{database} o altre infrastrutture,tuttavia in ambienti dove non basta una semplice applicazione c'è necessità di grandi banche di dati.\\
+Implementazioni semplici di questo modello non richiedono grandi \textit{database} o altre infrastrutture,tuttavia in ambienti dove non basta una semplice applicazione c'è necessità di grandi banche di dati.\\ \par
 Una limitazione di ABAC è che in grandi ambienti, con tante risorse, individui e applicazioni ci saranno grandi moli di attributi da gestire.
 
 
@@ -75,9 +75,9 @@ Una limitazione di ABAC è che in grandi ambienti, con tante risorse, individui 
 \label{sub:policy_based_access_control_}
 
 PBAC è stato sviluppato per far fronte alle carenze di ABAC, infatti è una sua naturale evoluzione e tende ad uniformare ed armonizzare il sistema di controllo accessi.
-Questo modello cerca di aiutare le imprese a indirizzarsi verso la necessità di implementare un sistema di controllo agli accessi basato su policy.\\
+Questo modello cerca di aiutare le imprese a indirizzarsi verso la necessità di implementare un sistema di controllo agli accessi basato su policy.\\ \par
 PBAC combina attributi dalle risorse, dall'ambiente e dal richiedente con informazioni su determinate circostanze sotto le quali la richiesta è stata effettuata ed inoltre si serve di 
-ruoli per determinare quando l'accesso è garantito.\\
+ruoli per determinare quando l'accesso è garantito.\\ \par
 Nei sistemi ABAC gli attributi richiesti per avere accesso ad una particolare risorsa sono determinati a livello locale e possono variare da organizzazione ad organizzazione.
 Per esempio, un'unità organizzativa può determinare che l'accesso ad un archivio di documenti sensibili è semplicemente soggetto a richiesta di credenziali e ruolo particolare.
 Un'altra unità invece, oltre a richiedere credenziali e ruolo, richiede anche un certificato. Se un documento viene trasferito dal secondo al primo archivio perde la protezione fornita da quest'ultimo e sarà soggetto solo alla richiesta di credenziali e ruolo.
@@ -86,76 +86,81 @@ PBAC quindi è un sistema molto più complicato di ABAC e perciò richiede il di
 PBAC non richiede solo un applicazione per gestire la valutazione delle policy, ma richiede anche un sistema per la scrittura di quest'ultime in modo che non risultino ambigue.
 Un linguaggio basato su XML si chiama
 %INSERIRE NOTA A PIE DI PAGINA PER SPIEGARE COS'E' XML
- \textit{eXtensible Access Control Markup Language (XACML)}, ed è sviluppato in modo tale da creare policy facilmente leggibili da una macchina.\\
-Sfortunatamente però queste policy non sono facili da scrivere e l'uso di XACML non necessariamente rende facile il processo di creazione, specifica e valutazione corretta di una policy.\\
+ \textit{eXtensible Access Control Markup Language (XACML)}, ed è sviluppato in modo tale da creare policy facilmente leggibili da una macchina.\\ \par
+Sfortunatamente però queste policy non sono facili da scrivere e l'uso di XACML non necessariamente rende facile il processo di creazione, specifica e valutazione corretta di una policy.\\ \par
 Ci vuole anche un modo per assicurare che tutti gli utenti di un sistema utilizzino lo stesso insieme di attributi, che è un compito più facile a dire che farsi.
 Gli attributi dovrebbero essere forniti da un'entità chiamata \textit{Authoritative Attribute Source (AAS)} che, oltre a fare da sorgente per gli attributi deve anche occuparsi della loro consistenza.
-In più bisogna instaurare un meccanismo per la verificare che questi attributi provengano realmente dall'AAS.\\
+In più bisogna instaurare un meccanismo per la verificare che questi attributi provengano realmente dall'AAS.\\ \par
 Come detto prima può sembrare facile fare una cosa del genere, ma bisogna considerare il caso in cui più aziende lavorano insieme e devono implementare un sistema di controllo degli accessi in comune. Un problema si può verificare quando un'azienda valuta la gestione dell'AAS tramite una particolare \textit{repository}, ma un'altra azienda non è d'accordo a questo tipo di soluzione.
 
 
 \subsection*{Risk-Adaptive Access Control (\radac)} % (fold)
 \label{sub:risk_adaptive_access_control_}
 
-Le organizzazioni non sono statiche. Si evolvono costantemente e rispondono ad una varietà di stimoli sempre maggiore. La loro natura dinamica porta ad avere la necessità di policy che si adattino al sistema che le circonda. Con l'avanzare del tempo cambia anche le minacce, ed un organizzazione deve costantamente tenere sott'occhio il rischio, quindi si inizia a parlare anche di livello di rischio.\\
-Anche i più avanzati modelli come ABAC e PBAC non riescono a soddisfare questa necessità di dinamismo e cambiamento del livello del rischio. Per queste situazioni entra in gioco \radac che è stato concepito proprio per adattarsi a questi contesti.\\
+Le organizzazioni non sono statiche. Si evolvono costantemente e rispondono ad una varietà di stimoli sempre maggiore. La loro natura dinamica porta ad avere la necessità di policy che si adattino al sistema che le circonda. Con l'avanzare del tempo cambia anche le minacce, ed un organizzazione deve costantamente tenere sott'occhio il rischio, quindi si inizia a parlare anche di livello di rischio.\\ \par
+Anche i più avanzati modelli come ABAC e PBAC non riescono a soddisfare questa necessità di dinamismo e cambiamento del livello del rischio. Per queste situazioni entra in gioco \radac che è stato concepito proprio per adattarsi a questi contesti.\\ \par
 \radac rappresenta unf ondamentale cambiamento nella gestione del controllo agli accessi, in quanto estende i precedenti modelli con l'introduzione nel processo di valutazione di condizioni ambientali e livello di rischio.
-\radac combina informazioni riguardo l'attendibilità del richiedente, informazioni riguardo le infrastrutture e rischi dell'ambiente circostante per la creazione di una metrica di pericolo e per una corretta valutazione.\\
-Una volta raccolte tutte queste informazioni vengono usate per la valutazione delle policy. Una policy in questo modello può includere direttive su come l'accesso deve essere gestito sotto determinate situazioni e sotto determinati livelli di rischio.\\
-Per esempio, un utente accede ad una determinata risorsa in un determinato momento, e gli vengono richieste delle normali credenziali di accesso. In un secondo momento, quando magari il livello di rischio sale, può essere richiesto anche un certificato.\\
+\radac combina informazioni riguardo l'attendibilità del richiedente, informazioni riguardo le infrastrutture e rischi dell'ambiente circostante per la creazione di una metrica di pericolo e per una corretta valutazione.\\ \par
+Una volta raccolte tutte queste informazioni vengono usate per la valutazione delle policy. Una policy in questo modello può includere direttive su come l'accesso deve essere gestito sotto determinate situazioni e sotto determinati livelli di rischio.\\ \par
+Per esempio, un utente accede ad una determinata risorsa in un determinato momento, e gli vengono richieste delle normali credenziali di accesso. In un secondo momento, quando magari il livello di rischio sale, può essere richiesto anche un certificato.\\ \par
 Le policy definite in \radac permettono anche di sovrascrivere il livello di rischio e le varie valutazioni vengono salvate in uno storico.
-Questo vuol dire che \radac usa un approccio euristico per determianre quando l'accesso deve essere garantito o meno.\\
-Ovviamente le infrastrutture per gestire tutto questo sono molto estese e complesse visto il numero di dati che sono richiesti per generare una corretta valutazione, basata anche sul livello di pericolo attuale. Diversi sistemi sono necessari per far funzionare \radac, tra cui grandi database.\\
+Questo vuol dire che \radac usa un approccio euristico per determianre quando l'accesso deve essere garantito o meno.\\ \par
+Ovviamente le infrastrutture per gestire tutto questo sono molto estese e complesse visto il numero di dati che sono richiesti per generare una corretta valutazione, basata anche sul livello di pericolo attuale. Diversi sistemi sono necessari per far funzionare \radac, tra cui grandi database.\\ \par
 Implementare un sistema del genere può essere molto frustrante poiché ci sono numero ostacoli da 
 superare per ottenere un risulato quanto meno usabile.
 Far interagire tutti i sistemi coinvolti in \radac può diventare una vera e propria sfida in quanto
 i dati non sono standardizzati.
 Il secondo problema è accomunato con PBAC: entrambi i sistemi fanno affidamento su policy per determinare quando garantire o meno un accesso. Questo richiede un modo 
 di standardizzare queste regole, in modo da non renderle ambigue ed agevolare lo scambio tra sistemi differenti. XACML è una possibile soluzione a questo problema, ma è ancora troppo 
-acerbo per essere usato in soluzioni \radac.\\
-Terzo problema è l'affidabilità dei dati che vengono forniti al sistema. Una soluzione possono essere i moduli TPM (Trusted Platform Module), ovvero dei componenti hardware che assicurano la consistenza dei dati, o dei tool di analisi comportamentale. Sfortunatamnete però non sono ancora così affidabili da essere usati in un sistema del genere.\\
+acerbo per essere usato in soluzioni \radac.\\ \par
+Terzo problema è l'affidabilità dei dati che vengono forniti al sistema. Una soluzione possono essere i moduli TPM (Trusted Platform Module), ovvero dei componenti hardware che assicurano la consistenza dei dati, o dei tool di analisi comportamentale. Sfortunatamnete però non sono ancora così affidabili da essere usati in un sistema del genere.\\ \par
 Il quarto problema è legato al dinamismo di \radac, in quanto è necessario uno 
 standard per descrivere varie condizioni ambientali necessarie al processo
-di decisione.\\
+di decisione.\\ \par
 Il quinto problema invece è legato all'affidamento che questo sistema fa sull'
 euristica per le decisioni. Questo problema, come prima è condizionato dall'
 immaturità degli algoritmi usati in questo ambito.
 
 \section{Usage Control} % (fold)
 \label{sec:usage_control}
-Come detto ad inizio capitolo, ai giorni d'oggi proteggere l'accesso alle nostre risorse digitali è uno dei problemi fondamentali nell'ambito della sicurezza. \\
-Oggi sono presenti differenti tipi di sistemi diversi che richiedono un modello più flessibile e corposo per gestire la sicurezza. Questa sezione parlerà di un nuovo modello, chiamato \textit{Usage Control} \cite{SurveyUsageControl}.\\
-\textit{Usage Control} si propone come un nuovo e promettente approccio per l'Access Control, prendendo spunto e migliorando sistemi come \textit{Trust Management} (TM) e \textit{Digital Rights Management}(DRM). In particolare verrà trattato un particolare modello, inizialmente proposto da Sandhu e Park\cite{SurveyUsageControl}, chiamato UCON.\\
-UCON migliora l'access control in due aspetti fondamentali, la mutabilità degli attributi e la continuità delle decisioni sull'accesso. La mutabilità degli attributi significa che questi valori possono cambiare nel corso del tempo, e visto che UCON è basato su quest'ultimi le decisioni di accesso devono essere rivalutate ogni volta che vengono aggiornati.\\
-La continuità delle decisioni invece significa che non vengono più prese decisioni solo a priori, ma anche durante l'accesso. Quindi, se durante l'utilizzo, qualche attributo cambia e la policy non è più soddisfatta viene revocato l'accesso.\\
+Come detto ad inizio capitolo, ai giorni d'oggi proteggere l'accesso alle nostre risorse digitali è uno dei problemi fondamentali nell'ambito della sicurezza. \\ \par
+Oggi sono presenti differenti tipi di sistemi diversi che richiedono un modello più flessibile e corposo per gestire la sicurezza. Questa sezione parlerà di un nuovo modello, chiamato \textit{Usage Control} \cite{SurveyUsageControl}.\\ \par
+\textit{Usage Control} si propone come un nuovo e promettente approccio per l'Access Control, prendendo spunto e migliorando sistemi come \textit{Trust Management} (TM) e \textit{Digital Rights Management}(DRM). In particolare verrà trattato un particolare modello, inizialmente proposto da Sandhu e Park\cite{SurveyUsageControl}, chiamato UCON.\\ \par
+UCON migliora l'access control in due aspetti fondamentali, la mutabilità degli attributi e la continuità delle decisioni sull'accesso. La mutabilità degli attributi significa che questi valori possono cambiare nel corso del tempo, e visto che UCON è basato su quest'ultimi le decisioni di accesso devono essere rivalutate ogni volta che vengono aggiornati.\\ \par
+La continuità delle decisioni invece significa che non vengono più prese decisioni solo a priori, ma anche durante l'accesso. Quindi, se durante l'utilizzo, qualche attributo cambia e la policy non è più soddisfatta viene revocato l'accesso.\\ \par
 Il vantaggio di Usage Control è la sua capacità di esprimere vari scenari, riuscendo così a includere e migliorare sistemi descritti in \ref{sec:history}.
-Il passaggio da Access Control a Usage Control è importante soprattutto quando si va a considerare ambienti \textit{network related}, come possono essere il web, il cloud o il grid computing.\\
+Il passaggio da Access Control a Usage Control è importante soprattutto quando si va a considerare ambienti \textit{network related}, come possono essere il web, il cloud o il grid computing.\\ \par
 Il processo decisionale in Usage Control è diviso in due fasi \cite{UsageControlCloud}. la prima fase è una fase di \textit{pre decision} che fondamentalmente è la classica decisione presa in Access Control, questa decisione viene presa al momento in cui è effettuata la prima richiesta per produrre la decisione di accesso.
 La seconda fase è chiamata \textit{ongoing decision}, ed è un processo che implementa il concetto di continuità.
 I componenti necessari a questo tipo di processo decisionale sono dei predicati, chiamati \textit{authorizations}, che vengono valutati sul soggetto e sugli attributi dell'oggetto, degli altri predicati, questa volta chiamati \textit{conditions}, valutati sulle variabili d'ambiente, ed infine delle azioni chiamate \textit{obligations} che devono essere eseguite durante l'accesso.
-Un altro componente di cui necessita UCON è ovviamente un predicato, come nell'access control che viene valutato per l'accesso iniziale, chiamato questa volta \textit{Rights}.\\
+Un altro componente di cui necessita UCON è ovviamente un predicato, come nell'access control che viene valutato per l'accesso iniziale, chiamato questa volta \textit{Rights}.\\ \par
 \MyFigure{Usage}{Insieme dei componenti di UCON \cite{ucon}}{1}
 Verranno ora proposti alcuni esempi di utilizzo di Usage Control.
 
-\subsection*{Primo Esempio di Usage Control} % (fold)
-Dentro ad un sistema ci sono vari file, ai quali per questione di consistenza, possono accedere massimo due persone in lettura oppure una sola in scrittura.\\
+\subsection*{Esempio 1: Accesso ai file} % (fold)
+Dentro ad un sistema ci sono vari file, ai quali per questione di consistenza, possono accedere massimo due persone in lettura oppure una sola in scrittura.\\ \par
 In un primo momento nessuno sta visualizzando o scrivendo un determinato file, ed un utente genenrico 
-chiederà l'accesso in lettura per questo file, ovviamente il responso sarà positivo in quanto non viola nessuna regola preposta prima.\\
+chiederà l'accesso in lettura per questo file, ovviamente il responso sarà positivo in quanto non viola nessuna regola preposta prima.\\ \par
 Dopo un po' di tempo, mentre il primo sta ancora leggendo, un altro utente chiede l'accesso in scrittura, che gli viene negato.
-In un istante di tempo successivo il primo utente sta continuando a leggere, ed anche il secondo utente vuole leggere. In questo caso viene dato responso positivo.\\
+In un istante di tempo successivo il primo utente sta continuando a leggere, ed anche il secondo utente vuole leggere. In questo caso viene dato responso positivo.\\ \par
 Infine, entrambi gli utenti smettono di leggere, ma uno di loro vuole apportare una modifica, allora richiede l'accesso in scrittura, che questa volta gli viene consentito poiché nessuno sta leggendo.
+In Figura~\ref{fig:diagrammaflussoprimoesempio} viene mostrato un diagramma di flusso che sintetizza e permette di capire meglio quanto detto prima.
+\begin{figure}[H]
+ \centering 
+ \includegraphics[scale = 0.75]{./Visio_Project/DiagrammaFlussoPrimoEsempio.pdf}
+ \caption{Diagramma di flusso del primo esempio}
+ \label{fig:diagrammaflussoprimoesempio}
+\end{figure}
 
-\subsection*{Secondo Esempio di Usage Control}
+\subsection*{Esempio 2: Acquisto o noleggio di contenuti}
 Un altro utilizzo possibile di Usage Control riguarda l'analisi del comportamento passato. Un'azienda fornisce  ai propri clienti 
-la possibilità di effettuare noleggi o acquisti di contenuti multimediali (musica, video, film, serie tv e via discorrendo).\\
+la possibilità di effettuare noleggi o acquisti di contenuti multimediali (musica, video, film, serie tv e via discorrendo).\\ \par
 In caso il contenuto fosse stato acquistato l'acquirente potrà ottenere l'accesso infinite volte per infinito tempo. Mentre in caso di noleggio
 saranno presenti delle condizioni, come per esempio il massimo numero di fruizioni del contenuto o una data di scadenza che, una volta oltrepassata, impedirà l'ulteriore visione del contenuto noleggiato in precedenza.
-
-
-
-% subsection utilizzi_di_usage_control (end)
-
-% section usage_control (end)
-
-
-% subsection risk_adaptive_access_control_ (end)
+Come nell'esempio precedente viene proposto un diagramma di flusso, proposto in Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire meglio il funzionamento questo sistema di \textit{Usage Control}
+\begin{figure}[H]
+ \centering 
+ \includegraphics[scale = 0.75]{./Visio_Project/DiagrammaFlussoSecondoEsempio.pdf}
+ \caption{Diagramma di flusso del primo esempio}
+ \label{fig:diagrammaflussosecondoesempio}
+\end{figure}
