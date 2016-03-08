@@ -1,0 +1,28 @@
+
+- Correggere errori
+
+X Scrivere intro e conclusione
+
+X accorciare il titolo: anzicche'
+ESTENSIONE DEL LINGUAGGIO FACPL PER ESPRIMERE POLITICHE DI ACCESSO ALLE RISORSE DI UN SISTEMA DI CALCOLO BASATE SUL COMPORTAMENTO PASSATO
+per esempio, questo
+[CONCORDARE TITOLO INGLESE]
+ESPRIMERE IN FACPL POLITICHE DI CONTROLLO DEGLI ACCESSI BASATE SUL COMPORTAMENTO PASSATO
+
+? forse potrebbe togliere la parte su " Risk-Adaptive Access Control"
+
+X potrebbe espandere i due esempi di usage control, magari con qualche figura, e cercare di dargli un nome piu' significativo cosicche' i titoli delle sez. 4.4.1 e 4.4.2 (che compaiano nell'indice) siano piu' chiari sul contenuto
+
+X alla fine del capitolo 3 ci starebbe bene un esempio di politica (scritta sulla falsariga della sintassi usata in Codice 4.1 e commentata) e valutazione FACPL, ed un discorso sul perche' i due esempi di usage control non sono esprimibili in FACPL
+
+- sez.5: introdurre le modifiche in ordine top-down: prima le modifiche alla gerarchia delle classi (aggiunta ed estensione), poi parte del codice piu' significativo (ora c'e' fin troppo)
+
+X Fig. 9, 10, 11 e 12 andrebbero ruotate di 90 gradi e messe in pagine separate (e se necessario rielaborate leggermente)
+
+X la sez. 5.6 andrebbe spezzata in due: una in cui descrive l'estensione del plug-in, l'altra in cui descrive gli esempi (parte del codice potrebbe relegarlo in appendice)
+
+X quando va a capo, non dovrebbe usare il \\, ma lasciare una riga di testo vuota, cosi' l'inizio del paragrafo viene leggermente indentato
+
+X fig.7 ha una linea verticale all'estrema destra
+
+? i riferimenti bibliografici andrebbero completati con le info mancanti.

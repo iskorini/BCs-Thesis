@@ -8,46 +8,62 @@ In questo capitolo verranno mostrate le novità introdotte nel capitolo \ref{cap
 \section{Status e Status Attribute} % (fold)
 \label{sec:status_e_status_attribute}
 Il primo passo per estendere la libreria è stato la creazione di uno \status, che è modellato da una semplice classe 
-di cui ne verrà mostrato un pezzo nel codice~\ref{lst:PezzoStatus1}.
+di cui ne verrà mostrato un pezzo nel codice~\ref{lst:PezzoStatus1}, successivamente sono stati creati gli \statusattribute.
+La relazione che intercorre tra queste nuove classi è mostrata in Figura~\ref{fig:statusUML.png}.
+\MyFigure{statusUML.png}{Grafico UML delle classi Status e StatusAttribute}{0.9}
+Di seguito invece verranno mostrate queste nuove classi a livello implementativo.
 \myIjava{status.java}{Stralcio della classe Status}{1}{15}{PezzoStatus1}
 Questa classe ha un campo essenziale per la logica del sistema, ed è una LinkedList di \statusattribute.
 In questa classe, oltre ad i costruttori ed alcuni getter sono stati implementati due metodi mostrati in Codice~\ref{lst:PezzoStatus2}, uno per andare a cercare lo \statusattribute, e l'altro per restituirne il valore.
 \myIjava{status.java}{Metodi per gli \statusattribute}{22}{32}{PezzoStatus2}
-Gli \statusattribute sono modellati da una singola classe, anch'essa molto breve e facile da capire.
+Gli \statusattribute \ sono modellati da una singola classe, anch'essa molto breve e facile da capire.
 Come facilmente intuibile dai costruttori in Codice~\ref{lst:costruttoriSA} questa classe ha tre campi, un \texttt{id}, un valore, ed un tipo. 
 \myIjava{SA.java}{Costruttori di Status Attribute}{5}{22}{costruttoriSA}
-Il senso del secondo costruttore è facilmente intuibile, mentre il primo è stato creato appositamente per dare un valore di default all'attributo nel caso non venisse inizializzato.\\ \par
-Di seguito è mostrato un grafico UML che mostra interamente queste due classi e la relazione che intercorre tra di loro.
-\MyFigure{statusUML.png}{Grafico UML delle classi Status e StatusAttribute}{0.9}
+Il senso del secondo costruttore è facilmente intuibile, mentre il primo è stato creato appositamente per dare un valore di default all'attributo nel caso non venisse inizializzato.
+
 % section status_e_status_attribute (end)
 
 
 \section{Implementazione dei comparatori sugli Status Attribute} % (fold)
 \label{sec:implementazione_dei_comparatori_sugli_status_attribute}
-Nella libreria di FACPL era già presente una solida struttura, basata su un factory, per la comparazione di attributi, quindi è bastato modificare le varie funzioni in modo tale che potessero operare anche su \statusattribute.
-Prendendo in esame la funzione \textit{Equals} vediamo come funziona ora il processo di comparazione.
+Nella libreria di FACPL era già presente una solida struttura (Figura~\ref{fig:comparisonUML.png}), basata su un factory, per la comparazione di attributi, quindi è bastato modificare le varie funzioni in modo tale che potessero operare anche su \statusattribute.
+Prendendo in esame la funzione \textit{Equals} vediamo come funziona ora, a livello implementativo, il processo di comparazione.\\ 
 \myIjava{equal.java}{Classe che implementa Equal}{1}{29}{equalclass}
 Vedendo il codice~\ref{lst:equalclass} si nota che la classe implementa un interfaccia, quest'interfaccia definisce al suo interno un unico metodo astratto, \textit{public Boolean evaluateFunction(List<Object> args)} che sarà il metodo chiamato in fase di valutazione.
 La modifica del processo di comparazione è stata fatta in questo metodo, bisognava fare in modo che uno, o entrambi gli argomenti, potessero essere \statusattribute, e per questo è stata introdotta un'altra funzione, chiamata \textit{convertType} che, dato uno \statusattribute, va a ricavarne il valore.\\ \par
 Quando verrà richiamato il primo metodo verrà effettuato un controllo sul tipo dell'argomento, e in base a questo risultato verrà chiamato il secondo metodo che effettuerà l'operazione descritta in precedenza.
-\MyFigure{comparisonUML.png}{Grafico UML per la gerarchia di classi usate nella comparazione }{1}
 
+
+
+\begin{sidewaysfigure}
+    \centering
+	\includegraphics[width=1\linewidth]{comparisonUML.png}
+    \caption{Grafico UML per la gerarchia di classi usate nella comparazione}
+    \label{fig:comparisonUML.png}
+\end{sidewaysfigure}
 
 % section implementazione_dei_comparatori_sugli_status_attribute (end)
 
 \section{Funzioni per la modifica degli Status Attribute} % (fold)
 \label{sec:funzioni_aritmetiche_per_la_modifica_degli_statusattribute}
 Per concetto di \statusattribute \ è  richiesto dinamismo, in quanto devono irrimediabilmente cambiare rispetto alla valutazione di una richiesta, quindi sono state implementate funzioni che effettuano queste operazioni di modifica.\\ \par
-Per mantenere la coerenza con il resto della libreria queste funzioni sono state implementate in modo simile a come sono state implementate quelle di comparazione.
+Per mantenere la coerenza con il resto della libreria queste funzioni sono state implementate in modo simile a come sono state implementate quelle di comparazione, motivo per cui l'UML in Figura~\ref{fig:functionarith.png} somiglia molto a quello usato per la comparazione.
 Ora verrà mostrato il caso di operazioni numeriche. Sono state implementate anche operazioni su stringhe, ma il funzionamento è analogo alla sua controparte numerica.\\ \par
-\MyFigure{functionarith.png}{Grafico UML per la gerarchia di funzioni aritmetiche}{1}
-Tutto parte da un interfaccia, che dovrà essere implementata da tutte le funzioni che andranno a modificare lo stato, quest'interfaccia è composta da un solo metodo che verrà chiamato per l'esecuzione dell'operazione.
+
+\begin{sidewaysfigure}
+    \centering
+	\includegraphics[width=1\linewidth]{functionarith.png}
+    \caption{Grafico UML per la gerarchia di funzioni aritmetiche}
+    \label{fig:functionarith.png}
+\end{sidewaysfigure}
+
+Come si nota dalla Figura~\ref{fig:functionarith.png} tutto parte da un interfaccia, che dovrà essere implementata da tutte le funzioni che andranno a modificare lo stato, quest'ultima è composta da un solo metodo che verrà chiamato per l'esecuzione dell'operazione.
 \myjava{IExpressionFunctionStatus.java}{Interfaccia per le operazioni}
 In questo caso, da quest'interfaccia deriva una classe astratta per le operazioni aritmetiche che implementerà il metodo astratto dell'interfaccia ed aggiungerà un altro metodo astratto, che rappresenterà la funzione vera e propria.
 \myIjava{MathOperationStatus.java}{Metodo implementato dall'interfaccia}{7}{21}{evaluateFunction}
 Dal questo codice si notano subito molte somglianze con quello proposto in sezione \ref{sec:implementazione_dei_comparatori_sugli_status_attribute}, questo perché la logica di funzionamento è sostanzialmente la stessa.
-Inizialmente viene effettuato un controllo sul tipo degli argomenti, successivamente viene richiesto un valutatore corretto per il tipo di dato passatogli e poi è effettuata l'operazione chiamando il metodo \textit{op}, che sfruttando il principio del pattern Template, è implementata nelle varie sottoclassi.\\ \par
-Le classi che estendono \textit{MathOperationStatus} sono molto simili tra di loro, quindi prenderemo in esame solo la classe che effettua l'operazione di somma.
+Inizialmente viene effettuato un controllo sul tipo degli argomenti, successivamente viene richiesto un valutatore corretto per il tipo di dato passatogli e poi è effettuata l'operazione chiamando il metodo \textit{op}, che sfruttando il principio del pattern Template, è implementato nelle varie sottoclassi differenziando così il comportamento senza dover riscrivere interamente il metodo, risparmiando così molte righe di codice.\\ \par
+Le classi che estendono \textit{MathOperationStatus} sono molto simili tra di loro, quindi prenderemo in esame solo la classe che effettua l'operazione di somma, mostrata in basso a sinistra nella Figura~\ref{fig:functionarith.png}.
 \myjava{addStatus.java}{Classe per la somma}
 Questa classe implementa semplicemente il metodo astratto, chiamando sul valutatore passatogli in precedenza la funzione di somma.\\ \par
 Il valutatore non è altro che una classe che implementa tutte le operazioni di una determinata categoria, per esempio in questo caso viene restituito un valutatore che effettua le operazioni aritmetiche.
@@ -59,7 +75,13 @@ A puro scopo esemplificativo mostriamo ora come è implementata l'operazione di 
 
 Lo \status \ creato in \ref{sec:status_e_status_attribute} andrà in qualche modo preso in considerazione durante il processo di valutazione in modo che vada ad influenzare le decisioni.
 Di conseguenza lo stato dev'essere inglobato dal contesto in cui viene valutata la richiesta.
-\MyFigure{context.png}{Grafico UML del contesto}{1}
+\begin{sidewaysfigure}
+    \centering
+	\includegraphics[width=1\linewidth]{context.png}
+    \caption{Grafico UML del contesto}
+    \label{fig:context.png}
+\end{sidewaysfigure}
+
 Per prima cosa è stato necessario estendere la gerarchia di classi derivanti dall'interfaccia \textit{IContextStub}. Come si può vedere in figura \ref{fig:context.png} è stata fatta un'operazione di refactoring astraendo alcune parti in comune, ed è stata creata la classe \textit{ContextStub\_Default\_Status} di cui ora ne verrà analizzata l'implementazione.\\ \par
 Come si nota dall'immagine \ref{fig:context.png} la classe è implementata come un \textit{Singleton} e contiene diversi metodi legati a \status, uno di questi è il \textit{Setter}, che permette di aggiungere lo stato, l'altro invece è un \textit{Getter} che permette di ricavare un attributo dallo stato.
 Il metodo più importante invece è quello mostrato in Codice~\ref{lst:getterstub}
@@ -71,12 +93,20 @@ Successivamente è stata estesa anche alla classe \textit{ContextRequest} con un
 \label{sec:obligations_e_pep}
 
 Lo stato alla necessità andrà aggiornato, e qua entrano in gioco due componenti fondamentali del sistema, il PEP e le \textit{Obligations}. 
-\MyFigure{obl.png}{Relazioni tra Obligation e PEP}{1.2}
+
+\begin{sidewaysfigure}
+    \centering
+	\includegraphics[width=1\linewidth]{obl.png}
+    \caption{Relazioni tra Obligation e PEP}
+    \label{fig:obl.png}
+\end{sidewaysfigure}
+
+
 Anche in questo caso sono state estese le \textit{Obligation} introducendo un nuovo tipo chiamato \textit{Obligation Status}, questo tipo particolare di \textit{Obligation} servono per andare ad eseguire azioni sullo stato.
 Nel sistema sono presenti due tipo fondamentali di \textit{Obligation}, il primo sono quelle a livello sintattico, le seconde, chiamate \textit{FulfilledObligations} sono quelle pronte ad essere valutate. Vediamo adesso come sono state estese quelle a livello sintattico.\\ \par
 Per eseguire questa estensione è stato reso necessario un refactoring, per prima cosa è stato astratto tutto il comportamento comune in una superclasse astratta, successivamente è stata creata la nuova classe che modella questo nuovo tipo.
 Il refactoring ha coinvolto anche il metodo che si occupa del \textit{Fulfilling} delle \textit{Obligation} in quanto ora deve creare anche questo nuovo tipo, la scelta più ovvia è stata creare un metodo astratto implementato nelle due sottoclassi che viene chiamato dalla superclasse per creare il tipo corretto.
-\myIjava{absObl.java}{Metodo che si occupa del fulfilling}{12}{47}{fulfilabs}
+\myIjava{absObl.java}{Parte rifattorizzata del metodo che si occupa del fulfilling}{16}{18}{fulfilabs}
 \myIjava{oblStat.java}{CreateObligation nelle status}{17}{24}{createoblstat}
 \myIjava{oblNorm.java}{CreateObligation nelle normali}{11}{14}{createoblnorm}
 La \textit{Obligation} di stato necessiterà anche di argomenti su cui eseguire l'azione, che le verranno passati in fase di costruzione.\\ \par
@@ -84,19 +114,23 @@ Alla fine della valutazione il PDP crea un oggetto di tipo \textit{Authorisation
 Anche in questo caso è stato necessario un refactoring analogo a quello fatto per le prime.
 \myIjava{FulOblStat.java}{Peculiarità della classe FulfilledObligationStatus}{1}{15}{pecfulstat}
 Come si può notare, in fase di costruzione, gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal PEP il metodo \textit{evaluateObl}.\\ \par
-Il PEP nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime, è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} (Righe 22-25 di codice~\ref{lst:PEP}).
-\myIjava{PEP.java}{DischargeObligation}{80}{107}{PEP}
+Il PEP nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime, è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} .
+\myIjava{PEP.java}{Discharge delle Fulfilled Obligation di stato}{102}{106}{PEP}
 % section obligations_e_pep (end)
 
 
-\section{Esempio} % (fold)
-\label{sec:esempio}
+\section{Plugin di Eclipse} % (fold)
+\label{sec:plugin_eclipse}
 [TODO: CORREGGERE PARTE SU XTEND E MAGARI ALLUNGARE]
 Il progetto è basato su Java, ed il codice formalizzato in FACPL viene successivamente convertito in codice Java attraverso un processo di autogenerazione.
 Per fare questo si usa un linguaggio chiamato XTend.
 \MyFigure{xtendLogo.png}{Logo di Xtend}{0.35}
 XTend ha le sue radici in Java, ma si concentra maggiormente su aspetti come una sintassi più concisa, ed altre funzionalità come l'inferenza sui tipi, l'overload degli operatori o l'estensione dei metodi (?). 
 È principalmente un linguaggio \textit{Object-oriented}, ma integra caratteristiche tipiche di un linguaggio funzionale, come ad esempio le Lambda Expression. Il sistema dei tipi di XTend è lo stesso di Java, ed è quindi statico.\\ \par
+
+\section{Esempio}
+\label{sec:esempio}
+
 In questa sezione verrà mostrato come sarà in Java il corrispettivo del Codice \ref{lst:PrimoEsempio_FACPL} e del Codice \ref{lst:PrimoEsempioRichieste_FACPL}.\\ \par
 Tutto parte dalla classe dove è presente il metodo Main (Codice~\ref{lst:mainprimoesempio.java}. In questo stesso modulo viene preparato il sistema all'esecuzione attraverso l'inizializzazione di tutti i componenti necessari al sistema.\\ \par
 I due componenti più importanti sono il PDP e il PEP che vengono inizializazati nel costruttore, in quest'ultimo vengono anche aggiunte le \textit{Policy} e creato un contesto. Successivamente all'inizializzazione verranno inserite tutte le richieste in una lista e partirà un ciclo che effettuerà l'operazione di autorizzazione del PDP e di enforcement del PEP.
