@@ -1,3 +1,8 @@
 \myChapter{Conclusioni}
-\section{Futuro}
+Durante questa tesi è stata affrontato il lavoro di implementazione di \textit{Usage Control} in FACPL.
+Come primo compito ci siamo occupati di analizzare i principali modelli dedicati all'\textit{Access Control} e successivamente è seguita una fase di approfondimento sul modello \textit{Usage Control} proposto da Sandhu e Park in \cite{SurveyUsageControl}. \\ \par
+Il lavoro è seguito con una disamina sul linguaggio FACPL in modo da comprendere al meglio la sintassi, la sematica e soprattutto il processo di valutazione così da avere un background e sapere come, e dove, intervenire per l'implementazione del concetto di \status \ e di tutte le cose che conseguentemente ne derivano da esso.\\ \par
+Prima di intervenire sulla libreria Java è stato necessario definire una sintassi estesa. Nella sintassi estesa sono state aggiunte nuove regole di produzione e ne sono state modificate alcune. Quelle modificate includono la definizione del sistema, mentre quelle aggiunte riguardano nuove funzioni, ed un nuovo tipo di attributo, chiamato \statusattribute.\\ \par
+Nel capitolo \ref{cap:estensione_libreria} viene descritta l'implementazione in Java. Tutto parte dalla definizione di uno \status \ e di conseguenza degli \statusattribute. Successivamente sono state implementate le funzioni per la modifica di questi attributi in modo da garantirne la mutabilità durante l'esecuzione delle richieste. Dopo sono state estese le \textit{Obligations} in modo che potessero eseguire questo tipo di funzioni. L'ultimo passo invece è stato modificare il PEP in modo tale che potesse effettuare il \textit{discharge} di questo nuovo tipo di \textit{Obligations}.
+\section{Futuro di FAPCL}
 \label{sec:futuro}

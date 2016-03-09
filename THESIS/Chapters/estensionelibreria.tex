@@ -5,6 +5,22 @@ Il linguaggio FACPL è basato interamente su una libreria scritta in Java.
 Per implementare la valutazione di richieste basate sul comportamnento passato è stato necessario estendere questa libreria con nuove classi e modificarne alcune.\\ \par
 In questo capitolo verranno mostrate le novità introdotte nel capitolo \ref{cap:usagecontrolfacpl} sotto il punto di vista implementativo, per ovvi motivi verranno mostrate solo alcune parti delle modifiche effettuate, ma il codice completo si può comunque trovare su GitHub.
 
+
+\section{Estensione delle classi}
+\label{sec:estensione_gerarchia}
+Il primo passo per l'estensione della libreria è stato l'implementazione di uno \status \  e degli \statusattribute \ mostrati in Figura~\ref{fig:statusUML.png}.
+La dipendenza tra queste classi è dovuta ad una lista di attributi mantenuta dallo stato. \\ \par
+Ovviamente questi attributi vanno in qualche modo comparati, in questo caso sono stati modificati i comparatori già presenti mostrati in Figura~\ref{fig:comparisonUML.png}. La modifica ha coinvolto le classi derivanti dall'interfaccia \textit{IComparisonFunction}, ed è stata la semplice aggiunta di un metodo.
+Successivamente è stato necessario trovare un modo di modificare questi attributi in modo tale da soddisfare il requisito di dinamismo richiesto da \textit{Usage Control}. 
+Per questo motivo sono state introdotte delle funzioni già citate in Sezione \ref{sec:estensione_linguistica} e Sezione \ref{sec:semantica}. Per l'implementazione è stata necessaria una nuova gerarchia di classi mostrata in Figura~\ref{fig:functionarith.png}. La struttura somiglia molto a quella dei comparatori, ovvero un factory che restituisce un valutatore, nel quale sono definite le vere e proprie funzioni, e le varie operazioni, derivanti tutte da un interfaccia comune, che eseguono l'operazione chiamando il metodo sul valutatore passatogli in base al tipo dell'attributo.\\ \par
+Successivamente è stato esteso il contesto in modo allo \status \ di essere preso in considerazione dal PDP durante il processo di valutazione, andando così ad influenzarne le decisioni, ed in Figura~\ref{fig:context.png} si può vedere come è stato esteso. La prima classe coinvolta dall'estensione è stata il \textit{ContexStub}, introducendo una nuova sottoclasse che ingloba uno \status \ e di conseguenza permette di ricavarne gli \statusattribute. La seconda modifica ha coinvolto la classe che fa da tramite tra la richiesta ed il contesto, ed anche in questo caso è stata semplicemente introdotta una nuova classe sulla quale sono definiti metodi specifici per gli \statusattribute. \\ \par
+L'ultima parte del lavoro è consistita nel implementare un nuovo tipo di \textit{Obligation}, chiamate \textit{ObligationStatus}, e modificare il PEP in modo che ne potesse effettuare il \textit{discharge}. Le modifiche apportate sono mostrate in Figura~\ref{fig:obl.png}. Per implementare le \textit{ObligationStatus} è stato necessario estendere due gerarchie differenti, la prima è quella delle \textit{Obligation} a livello sintattico, dove è stato creato un nuovo tipo che contesse al suo interno una funzione capace di modificare uno \statusattribute. La seconda gerarchia riguarda invece le \textit{Obligation} pronte per essere valutate, anche in questo caso la modifica è stata analoga a quella fatta per quelle a livello sintattico permettendo così a quest'ultime di contenere un'azione capace di modificare lo stato. Modificare il PEP non è stato difficile, è stato necessario semplicemente modificare il metodo che effettua il processo di  \textit{Enforcement} in modo tale che prendesse in considerazione anche le nuove \textit{Obligation} ed eseguisse l'operazione al loro interno.
+
+
+
+
+
+
 \section{Status e Status Attribute} % (fold)
 \label{sec:status_e_status_attribute}
 Il primo passo per estendere la libreria è stato la creazione di uno \status, che è modellato da una semplice classe 
