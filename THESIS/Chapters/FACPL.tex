@@ -1,8 +1,10 @@
 \myChapter{Formal Access Control Policy Language}
 \label{cap:facpl}
-Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è stato rilasciato nel 2003 da parte di OASIS ed il suo nome è \textit{eXtensible Access Control Markup Language} (XACML). Questo linguaggio ha una sintassi basata su XML e fornisce caratteristiche avanzate per l'access control. Il problema fondamentale di XACML è che non ha una sintassi facile da leggere e da scrivere. \\ \par
+Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è stato rilasciato nel 2003 da parte di OASIS ed il suo nome è \textit{eXtensible Access Control Markup Language} (XACML). Questo linguaggio ha una sintassi basata su XML e fornisce caratteristiche avanzate per l'\textit{Access Control}. Il problema fondamentale di XACML è che non ha una sintassi facile da leggere e da scrivere. \\ \par
 L'obiettivo di \textit{Formal Access Control Policy Language} (FACPL) è definire una sintassi alternativa per XACML in modo da renderlo più agevole da usare.
 FACPL quindi è parzialmente inspirato a XACML, ma oltre ad introdurre una nuova sintassi ridefinisce alcuni aspetti aggiungendo nuove caratteristiche. Il suo scopo però non è sostituire XACML, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.
+
+\MyFigure{toolChain.png}{ToolChain di FACPL}{1}
 
 \section{Il processo di valutazione di FACPL}
 \label{sec:valutazione_facpl}
@@ -20,11 +22,11 @@ Le policy sono memorizzate nel PR, il quale le rende disponibili al PDP che deci
 Nello step 2, quando il PEP riceve una richiesta, le credenziali di quest'ultima vengono codificate in una sequenza di attributi (ogni attributo è una coppia stringa valore) che, nello step 3, andranno a loro volta a formare una \textit{FACPL Request}.
 Al quarto step il \textit{context handler} aggiungerà attributi di ambiente (per esempio l'ora di ricezione della richiesta) e manderà la richiesta al PDP.
 A questo punto il PDP, tra il quinto e l'ottavo step, valuterà la richiesta e fornirà un risultato, il quale può eventualmente contenere delle \textit{obligations}.
-La decisione del PDP può essere di quattro tipi, \textit{permit}, \textit{deny}, \textit{not-applicable} o \textit{indeterminate}.
+La decisione del PDP può essere di quattro tipi, \permit, \deny, \texttt{not-applicable} o \texttt{indeterminate}.
 Il significato delle prime due decisioni è facilmente intuibile, mentre per le ultime due vuol dire che c'è stato un errore durante la valutazione.
 Gli errori possono essere di diverso tipo, e vengono gestiti attraverso algoritmi che combinano le decisioni delle varie policy per ottenere un risultato finale.
 Le \textit{obligations} sono azioni, eseguite dal PEP, correlate al sistema di controllo degli accessi. Queste azioni possono essere di svariati tipi, come per esempio generare un file di log, o mandare una mail.
-Allo step 13, sulla base del risultato delle \textit{obligations}, il PEP esegue un processo chiamato\textit{Enforcement} il quale restituirà un'altra decisione.
+Allo step 13, sulla base del risultato delle \textit{obligations}, il PEP esegue un processo chiamato \textit{Enforcement} il quale restituirà un'altra decisione.
 Quest'ultima decisione corrisponde alla decisione finale del sistema e può differire da quella del PDP.
 
 
@@ -34,47 +36,46 @@ Quest'ultima decisione corrisponde alla decisione finale del sistema e può diff
 \input{syntax_original/facpl_syntax}
 
 La sintassi di FACPL è definita nella tabella \ref{tab:facpl_syntax}.
-La sintassi è fornita come una grammatica di tipo EBNF, dove il simbolo ? corrisponde ad un elemento opzionale, il simbolo $*$ corrisponde ad una sequenza con un numero arbitrario di elementi (anche 0), ed il simbolo $+$ corrisponde ad una sequenza non vuota con un numero arbitrario di elementi.\\ \par
-Al livello più alto c'è il \textit{Policy Authorisation System (PAS)}, il quale definisce le specifiche del PEP e del PDP.
-Il PEP è definito semplicemente come un \textit{enforcing algorithm} che sarà applicato per decidere quali decisioni verrà eseguito il processo di \textit{enforcement}. \\ \par
-Il PDP invece è definito come una sequenza (non vuota) di \textit{Policy}, ed un algoritmo di combining che combinerà i risultati di queste policy per ottenere un unico risultato finale.\\ \par
-Una \textit{policy} può essere una semplice \textit{rule} o una \textit{policy set}, quest'ultima avrà al suo interno altre \textit{policy set} o \textit{rule}, ed in questo modo viene formata una gerarchia di policy.\\ \par
-Un \textit{policy set} individua un target, che è una espressione che indica il set di richieste di accesso alla quale si applica la policy, una lista di \textit{obligations}, che definiscono azioni obbligatorie o opzionali che devono essere eseguite nel processo di \textit{enforcement}, una sequenza di altre \textit{policy}, ed un algoritmo per combinarle.\\ \par
-Una \textit{rule} includerà un \textit{effect}, che sarà permit o deny quando la regola è valutata correttamente, un target ed una lista di \textit{obligations}.\\ \par
+La sintassi è fornita come una grammatica di tipo EBNF, dove il simbolo ? corrisponde ad un elemento opzionale, il simbolo $*$ corrisponde ad una sequenza con un numero arbitrario di elementi (anche $0$), ed il simbolo $+$ corrisponde ad una sequenza non vuota con un numero arbitrario di elementi.\\ \par
+Al livello più alto c'è il \textit{Policy Authorisation System (PAS)}, il quale definisce le specifiche del PEP e del PDP. Il PEP è definito semplicemente come un \textit{enforcing algorithm} che sarà applicato per decidere su quali decisioni verrà eseguito il processo di \textit{enforcement}. \\ \par
+Il PDP invece è definito come una sequenza (non vuota) di \textit{Policy}, ed un algoritmo di combining che combinerà i risultati di queste \textit{policy} per ottenere un unico risultato finale.\\ \par
+Una \textit{policy} può essere una semplice \textit{rule} o una \textit{policy set}, quest'ultima avrà al suo interno altre \textit{policy set} o \textit{rule}, ed in questo modo viene formata una gerarchia di \textit{policy}.\\ \par
+Un \textit{policy set} individua un target, che è una espressione che indica il set di richieste di accesso alla quale si applica la \textit{policy}, una lista di \textit{obligations}, che definiscono azioni obbligatorie o opzionali che devono essere eseguite nel processo di \textit{enforcement}, una sequenza di altre \textit{policy}, ed un algoritmo per combinarle.\\ \par
+Una \textit{rule} includerà un \textit{effect}, che sarà \permit \ o \deny \ quando la regola è valutata correttamente, un target ed una lista di \textit{obligations}.\\ \par
 Le \textit{Expressions} sono formate da \textit{attribute names} e valori (per esempio boolean, double, strings, date).\\ \par
-Un \textit{Attribute Name} indica il valore di un attributo il quale può essere contenuto nella richiesta o nel contesto. FACPL usa per gli \textit{Attribute Name} una forma del tipo \textit{Identifier / Identifier }, dove il primo Identifier indica la categoria, ed il secondo il nome dell'attributo.
+Un \textit{Attribute Name} indica il valore di un attributo che può essere contenuto nella richiesta o nel contesto. FACPL usa per gli \textit{Attribute Name} una forma del tipo \textit{Identifier / Identifier }, dove il primo Identifier indica la categoria, ed il secondo il nome dell'attributo.
 Per esempio \textit{Action / ID} rappresenta il valore di un attributo ID di categoria Action.\\ \par
 I \textit{Combining Algorithm} implementano diverse strategie che servono per risolvere conflitti tra le varie decisioni, restituendo alla fine un'unica decisione finale.\\ \par
 Una \textit{obligation} ha al suo interno un effect, un tipo, ed una azione eseguita dal PEP con la relativa \textit{Expression}.\\ \par
 Una \textit{request} consiste di una sequenza di attributi organizzati in categorie.\\ \par
 La risposta ad una valutazione di una richiesta FACPL è scritta usando la sintassi riportata in tabella \ref{tab:facpl_context_syntax}.
 La valutazione in due step, descritta precedentemente in sezione~\ref{sec:valutazione_facpl}, produce due tipi di risultati. Il primo è la risposta del PDP, il secondo è una decisione, ovvero una risposta del PEP.
-La decisione del PDP, nel caso in cui ritorni \texttt{permit} o \texttt{deny}, viene associata ad una lista, anche vuota, di fulfilled obligations.\\ \par
+La decisione del PDP, nel caso in cui ritorni \permit \ o \deny, viene associata ad una lista, anche vuota, di \textit{fulfilled obligation}.\\ \par
 Una \textit{fulfilled obligation} è una semplice coppia formata da un tipo (M o O) ed una azione i quali argomenti sono ottenuti dalla valutazione del PDP.
 
 \section{La semantica di FACPL}
 \label{sec:semantica_originale}
 
-Molteplici sono le componenti di FACPL, e la semantica ora verrà informalmente analizzata.\cite{fullfacpl}
-Prima verrà presentato il processo che porterà ad una risposta del PDP, successivamente il processo di enforcement del PEP.\\ \par
-Quando il PDP riceve una richiesta, per prima cosa valuta la richiesta sulle basi delle policy disponibili, successivamente determinerà un risultato combinando le decisioni ritornate da queste policy attraverso degli algoritmi di combining.\\ \par
-La valutazione della policy rispetto alla richiesta comincia verificando l'applicabilità alla richiesta, che è fatta valutando un espressione definita \textit{target}.\\ \par
+Molteplici sono le componenti di FACPL, e la semantica ora verrà informalmente analizzata \cite{fullfacpl}.
+Prima verrà presentato il processo che porterà ad una risposta del PDP, successivamente il processo di \textit{enforcement} del PEP.\\ \par
+Quando il PDP riceve una richiesta, per prima cosa la valuta sulle basi delle \textit{policy} disponibili, successivamente determinerà un risultato combinando le decisioni ritornate da queste \textit{policy} attraverso degli algoritmi di combining.\\ \par
+La valutazione della \textit{policy} rispetto alla richiesta comincia verificando l'applicabilità alla richiesta, che è fatta valutando un espressione definita \textit{target}.\\ \par
 Si possono valutare due casi distinti:
 \begin{itemize}
-\item[-] Supponiamo che l'applicabilità dia esito positivo, nel caso ci sia una \textit{rule} sarà ritornato il valore risultato dalla valutazione di quest'ultima, mentre se c'è un \textit{policy set} il risultato è ottenuto valutando le policy contenute all'interno, e combinando i loro valori con un algoritmo specificato in fase di creazione del PDP. Successivamente a queste valutazioni verrà effettuato il fulfilment delle obligation contenute all'interno delle policy.
-\item[-] Supponiamo ora che l'applicabilità non dia esito positivo, ovvero la valutaizone del \textit{target} restituisca \texttt{false}. In questo caso il risultato della policy sarà \texttt{not-app}. Mentre se \textit{target} restituisce un valore non booleano o ritorna un errore il risultato della policy sarà \texttt{indet}.
+\item[-] Supponiamo che l'applicabilità dia esito positivo, nel caso ci sia una \textit{rule} sarà ritornato il valore risultante dalla valutazione di quest'ultima, mentre se c'è un \textit{policy set} il risultato è ottenuto valutando le \textit{policy} contenute all'interno, e combinando i loro valori con un algoritmo specificato in fase di creazione del PDP. Successivamente a queste valutazioni verrà effettuato il \textit{fulfilment} delle \textit{obligation} contenute all'interno delle \textit{policy}.
+\item[-] Supponiamo ora che l'applicabilità non dia esito positivo, ovvero la valutaizone del \textit{target} restituisca \texttt{false}. In questo caso il risultato della \textit{policy} sarà \texttt{not-app}. Mentre se il \textit{target} restituisce un valore non booleano o ritorna un errore il risultato della \textit{policy} sarà \texttt{indet}.
 \end{itemize}
 Valutare le espressioni corrisponde ad applicare degli operatori e risolvere i nomi degli attributi che contengono, e di conseguenza ricavarne un valore.\\ \par
 Se non è possibile trovare un attributo, magari perché non esiste, viene ritornato un valore speciale, chiamato \texttt{BOTTOM}. Questo valore può essere usato per implementare diverse strategie per gestire l'assenza di attributi. FACPL gestisce questo valore come una specie di \texttt{false}, quindi permette la mancanza di attributi senza la generazione di errori.\\ \par
 La valutazione di un espressione tiene conto anche dei tipi degli argomenti. Se l'argomento è del tipo aspettato l'operatore viene applicato correttamente, sennò, se un argomento è \texttt{BOTTOM} e nessun'altro è \texttt{error} viene ritornato \texttt{BOTTOM}, mentre se almeno uno di essi è \texttt{error}, viene ritornato \texttt{error}.\\ \par
-Con l'operatore \texttt{and} o \texttt{or} il trattamento sarà leggermente dievrso, in quanto \texttt{BOTTOM} viene ritornato solo se un argomento è tale e nessun'altro è \texttt{false} o \texttt{error}, mentre in caso contrario viene ritornato \texttt{error}.\\ \par
-La valutazione di una policy termina con il fulfillment di tutte le \texttt{obligations} le quali hanno il valore di applicabilità coincidente con quello ritornato dalla valutazione della policy. Quest'operazione consisten nel valutare tutte le espressioni presenti al interno delle \texttt{obligations} coinvolte nel processo. Se ci sarà un errore nel processo di fulfilment allora il risultato della policy sarà \texttt{indet}, altrimenti il risultato del fulfilment sarà uguale a quello della valutazione del PDP.\\ \par
-Gli algoritmi di combining, come detto prima hanno lo scopo di combinare le decisioni risultanti dalla valutazione delle richieste in accordo con le policy. Un'altra funzione che hanno è ritornare le \textit{obligations} corrette nel caso in cui la valutazione finale risulti \texttt{permit} o \texttt{deny}. Questa famiglia di algoritmi ha una strategia $\delta$ che viene usata per restituire le \textit{obligation}, e può essere di due tipi.
-Il primo tipo è la strategia \texttt{all} (tutto), ovvero richiede la valtuazione di tutte le policy e ritorna le \texttt{fulfilled obligation} pertinenti a tutte le decisioni.\\ \par
-Il secondo tipo è la strategia \texttt{greedy} (golosa) prescrive che appena è ottenuta una decisione che non può cambiare a causa della valutazione di susseguenti policy nella sequenza di input, l'esecuzione si arresta.\\ \par
+Con l'operatore \texttt{and} o \texttt{or} il trattamento sarà leggermente diverso, in quanto \texttt{BOTTOM} viene ritornato solo se un argomento è tale e nessun'altro è \texttt{false} o \texttt{error}, mentre in caso contrario viene ritornato \texttt{error}.\\ \par
+La valutazione di una \textit{policy} termina con il \textit{fulfillment} di tutte le \texttt{obligations} le quali hanno il valore di applicabilità coincidente con quello ritornato dalla valutazione della \textit{policy}. Quest'operazione consiste nel valutare tutte le espressioni presenti al interno delle \texttt{obligations} coinvolte nel processo. Se ci sarà un errore nel processo di \textit{fulfillment} allora il risultato della \textit{policy} sarà \texttt{indet}, altrimenti il risultato del \textit{fulfillment} sarà uguale a quello della valutazione del PDP.\\ \par
+Gli algoritmi di combining, come detto prima hanno lo scopo di combinare le decisioni risultanti dalla valutazione delle richieste in accordo con le policy. Un'altra funzione che hanno è ritornare le \textit{obligations} corrette nel caso in cui la valutazione finale risulti \permit \ o \texttt{deny}. Questa famiglia di algoritmi ha una strategia $\delta$ che viene usata per restituire le \textit{obligation}, e può essere di due tipi.
+Il primo tipo è la strategia \texttt{all} (tutto), ovvero richiede la valutazione di tutte le \textit{policy} e ritorna le \texttt{fulfilled obligation} pertinenti a tutte le decisioni. \par
+Il secondo tipo è la strategia \texttt{greedy} (golosa), la quale prescrive che l'esecuzione si debba arrestare appena è ottenuta una decisione che non può cambiare a causa della valutazione di susseguenti \textit{policy} nella sequenza di input.\\ \par
 Come ultimo step il risultato del PDP viene mandato al PEP per l'enforcement.
-Il PEP per effettuare questo processo deve eseguire l'azione all'interno di ogni \texttt{fulfilled obligation} e decidere come comportarsi per le decisioni di tipo \texttt{not-app} e \texttt{indet.}\\ \par
-Per fare questo processo usa delle strategie. In particolare, l'algoritmo \texttt{deny-biased} (rispettivamente, \texttt{permit-based}) effettua l'enforcement dei \texttt{permit} (rispettivamente \texttt{deny}) solo quando tutte le corrispondenti obligations sono correttamente scaricate, mentre effettua l'enforcement dei \texttt{deny} (rispettivamente \texttt{permit}) in tutti gli altri casi. Invece, l'algoritmo di base lascia tutte le decisioni non cambiate ma, in caso di decisioni \texttt{permit} e \texttt{deny}, effettua l'enforcement di \texttt{indet} se un errore occorre quando si stanno rilasciando le \texttt{obligations}. Questo evidenzia che le \texttt{obligations} non solo influenzano il processo di autorizzazione, ma anche l'enforcement. Gli errori causati dalle \texttt{obligations} con tipo O vengono ignorati.
+Il PEP per effettuare questo processo deve eseguire l'azione all'interno di ogni \textit{fulfilled obligation} e decidere come comportarsi per le decisioni di tipo \texttt{not-app} e \texttt{indet.}\\ \par
+Per fare questo processo usa delle strategie. In particolare, l'algoritmo \texttt{deny-biased} (rispettivamente, \texttt{permit-based}) effettua l'enforcement dei \permit \ (rispettivamente \deny) solo quando tutte le corrispondenti obligations sono correttamente eseguite, mentre effettua l'enforcement dei \deny \  (rispettivamente \permit) in tutti gli altri casi. Invece, l'algoritmo di base lascia tutte le decisioni non cambiate ma, in caso di decisioni \permit \ e \deny, effettua l'enforcement di \texttt{indet} se ci sarà un errore durante l'esecuzione delle \texttt{obligations}. Questo evidenzia che le \texttt{obligations} non solo influenzano il processo di autorizzazione, ma anche l'enforcement. Gli errori causati dalle \texttt{obligations} con tipo O vengono ignorati.
 
 \section{Esempio di politica con FACPL} % (fold)
 \label{sec:esempio_di_politica_con_facpl}
@@ -97,7 +98,7 @@ Request: Request3
 \end{verbatim}
 Ovviamente alla prima richiesta il risultato è \permit, in quanto l'utente è un amministratore. Alla seconda richiesta il risultato è \deny \ poiché l'utente è un ospite, mentre alla terza, nonostante l'utente faccia parte dello stesso gruppo del secondo riesce ad ottenere risultato \permit \ per via della regola che considera il suo nome.\\ \par
 FACPL, come mostrato dall'esempio, permette di fare richieste ed ottenere delle risposte, ma queste richieste sono totalmente indipendenti l'una dall'altra, quindi l'ordine di esecuzione non avrebbe influenzato in alcun modo il risultato finale.
-In sezione \ref{sec:usage_control} sono stati introdotti due esempi i quali non possono, per ora, essere implementati in FACPL poiché manca quest'aspetto che crea dipendenza tra le richieste..
-Per creare questa dipendenza tra richieste è necessario che il sistema si ricordi in qualche modo quello che è successo prima, perciò si inizia a parlare di stato. Lo scopo del Capitolo~\ref{cap:usagecontrolfacpl} e ~\ref{cap:estensione_libreria} è proprio permettere a FACPL questo tipo di valutazione.
+In sezione \ref{sec:usage_control} sono stati introdotti due esempi i quali non possono, per ora, essere implementati in FACPL poiché manca quest'aspetto che crea dipendenza tra le richieste.
+Per creare questa dipendenza tra richieste è necessario che il sistema si ricordi in qualche modo quello che è successo prima, perciò si inizia a parlare di un nuovo concetto che può essere assimilabile ad uno stato. Lo scopo del Capitolo~\ref{cap:usagecontrolfacpl} e ~\ref{cap:estensione_libreria} è proprio permettere a FACPL questo tipo di valutazione.
 
 % section esempio_di_politica_con_facpl (end)

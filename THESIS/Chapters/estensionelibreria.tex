@@ -13,8 +13,8 @@ La dipendenza tra queste classi è dovuta ad una lista di attributi mantenuta da
 Ovviamente questi attributi vanno in qualche modo comparati, in questo caso sono stati modificati i comparatori già presenti mostrati in Figura~\ref{fig:comparisonUML.png}. La modifica ha coinvolto le classi derivanti dall'interfaccia \textit{IComparisonFunction}, ed è stata la semplice aggiunta di un metodo.
 Successivamente è stato necessario trovare un modo di modificare questi attributi in modo tale da soddisfare il requisito di dinamismo richiesto da \textit{Usage Control}. 
 Per questo motivo sono state introdotte delle funzioni già citate in Sezione \ref{sec:estensione_linguistica} e Sezione \ref{sec:semantica}. Per l'implementazione è stata necessaria una nuova gerarchia di classi mostrata in Figura~\ref{fig:functionarith.png}. La struttura somiglia molto a quella dei comparatori, ovvero un factory che restituisce un valutatore, nel quale sono definite le vere e proprie funzioni, e le varie operazioni, derivanti tutte da un interfaccia comune, che eseguono l'operazione chiamando il metodo sul valutatore passatogli in base al tipo dell'attributo.\\ \par
-Successivamente è stato esteso il contesto in modo allo \status \ di essere preso in considerazione dal PDP durante il processo di valutazione, andando così ad influenzarne le decisioni, ed in Figura~\ref{fig:context.png} si può vedere come è stato esteso. La prima classe coinvolta dall'estensione è stata il \textit{ContexStub}, introducendo una nuova sottoclasse che ingloba uno \status \ e di conseguenza permette di ricavarne gli \statusattribute. La seconda modifica ha coinvolto la classe che fa da tramite tra la richiesta ed il contesto, ed anche in questo caso è stata semplicemente introdotta una nuova classe sulla quale sono definiti metodi specifici per gli \statusattribute. \\ \par
-L'ultima parte del lavoro è consistita nel implementare un nuovo tipo di \textit{Obligation}, chiamate \textit{ObligationStatus}, e modificare il PEP in modo che ne potesse effettuare il \textit{discharge}. Le modifiche apportate sono mostrate in Figura~\ref{fig:obl.png}. Per implementare le \textit{ObligationStatus} è stato necessario estendere due gerarchie differenti, la prima è quella delle \textit{Obligation} a livello sintattico, dove è stato creato un nuovo tipo che contesse al suo interno una funzione capace di modificare uno \statusattribute. La seconda gerarchia riguarda invece le \textit{Obligation} pronte per essere valutate, anche in questo caso la modifica è stata analoga a quella fatta per quelle a livello sintattico permettendo così a quest'ultime di contenere un'azione capace di modificare lo stato. Modificare il PEP non è stato difficile, è stato necessario semplicemente modificare il metodo che effettua il processo di  \textit{Enforcement} in modo tale che prendesse in considerazione anche le nuove \textit{Obligation} ed eseguisse l'operazione al loro interno.
+Successivamente è stato esteso il contesto in maniera tale che lo \status \ possa essere preso in considerazione dal PDP durante il processo di valutazione, andando così ad influenzarne le decisioni, ed in Figura~\ref{fig:context.png} si può vedere come è stato esteso. La prima classe coinvolta dall'estensione è stata il \textit{ContexStub}, introducendo una nuova sottoclasse che ingloba uno \status \ e di conseguenza permette di ricavarne gli \statusattribute. La seconda modifica ha coinvolto la classe che fa da tramite tra la richiesta ed il contesto, ed anche in questo caso è stata semplicemente introdotta una nuova classe sulla quale sono definiti metodi specifici per gli \statusattribute. \\ \par
+L'ultima parte del lavoro è consistita nel implementare un nuovo tipo di \textit{Obligation}, chiamate \textit{ObligationStatus}, e modificare il PEP in modo che ne potesse effettuare il \textit{discharge}. Le modifiche apportate sono mostrate in Figura~\ref{fig:obl.png}. Per implementare le \textit{ObligationStatus} è stato necessario estendere due gerarchie differenti, la prima è quella delle \textit{Obligation} a livello sintattico, dove è stato creato un nuovo tipo che contenesse al suo interno una funzione capace di modificare uno \statusattribute. La seconda gerarchia riguarda invece le \textit{Obligation} pronte per essere valutate, anche in questo caso la modifica è stata analoga a quella fatta per quelle a livello sintattico permettendo così a quest'ultime di contenere un'azione capace di modificare lo stato. Modificare il PEP non è stato difficile, è stato necessario semplicemente aggiungere al metodo che effettua il processo di  \textit{Enforcement} poche righe di codice in modo tale che prendesse in considerazione anche le nuove \textit{Obligation} ed eseguisse l'operazione al loro interno.
 
 
 
@@ -24,10 +24,10 @@ L'ultima parte del lavoro è consistita nel implementare un nuovo tipo di \texti
 \section{Status e Status Attribute} % (fold)
 \label{sec:status_e_status_attribute}
 Il primo passo per estendere la libreria è stato la creazione di uno \status, che è modellato da una semplice classe 
-di cui ne verrà mostrato un pezzo nel codice~\ref{lst:PezzoStatus1}, successivamente sono stati creati gli \statusattribute.
+di cui ne verrà mostrato un pezzo nel codice~\ref{lst:PezzoStatus1}, successivamente sono stati creati gli \statusattribute, il codice completo è mostrato in Sezione \ref{sub:status_e_status_attribute}.
 La relazione che intercorre tra queste nuove classi è mostrata in Figura~\ref{fig:statusUML.png}.
 \MyFigure{statusUML.png}{Grafico UML delle classi Status e StatusAttribute}{0.9}
-Di seguito invece verranno mostrate queste nuove classi a livello implementativo.
+A livello implementativo invece verranno mostrati solo dei piccoli pezzi di codice.
 \myIjava{status.java}{Stralcio della classe Status}{1}{15}{PezzoStatus1}
 Questa classe ha un campo essenziale per la logica del sistema, ed è una LinkedList di \statusattribute.
 In questa classe, oltre ad i costruttori ed alcuni getter sono stati implementati due metodi mostrati in Codice~\ref{lst:PezzoStatus2}, uno per andare a cercare lo \statusattribute, e l'altro per restituirne il valore.
@@ -44,9 +44,9 @@ Il senso del secondo costruttore è facilmente intuibile, mentre il primo è sta
 \label{sec:implementazione_dei_comparatori_sugli_status_attribute}
 Nella libreria di FACPL era già presente una solida struttura (Figura~\ref{fig:comparisonUML.png}), basata su un factory, per la comparazione di attributi, quindi è bastato modificare le varie funzioni in modo tale che potessero operare anche su \statusattribute.
 Prendendo in esame la funzione \textit{Equals} vediamo come funziona ora, a livello implementativo, il processo di comparazione.\\ 
-\myIjava{equal.java}{Classe che implementa Equal}{1}{29}{equalclass}
-Vedendo il codice~\ref{lst:equalclass} si nota che la classe implementa un interfaccia, quest'interfaccia definisce al suo interno un unico metodo astratto, \textit{public Boolean evaluateFunction(List<Object> args)} che sarà il metodo chiamato in fase di valutazione.
-La modifica del processo di comparazione è stata fatta in questo metodo, bisognava fare in modo che uno, o entrambi gli argomenti, potessero essere \statusattribute, e per questo è stata introdotta un'altra funzione, chiamata \textit{convertType} che, dato uno \statusattribute, va a ricavarne il valore.\\ \par
+\myIjava{equal.java}{Classe che implementa Equal}{13}{29}{equalclass}
+Vedendo il codice \ref{lst:equal.java} si nota che la classe implementa un interfaccia, quest'ultima definisce al suo interno un unico metodo astratto, \textit{public Boolean evaluateFunction(List<Object> args)} che sarà il metodo chiamato in fase di valutazione.
+La modifica del processo di comparazione è stata fatta in questo metodo, bisognava fare in modo che uno, o entrambi gli argomenti, potessero essere \statusattribute, e per questo è stata introdotta un'altra funzione, chiamata \textit{convertType}, mostrata in Codice \ref{lst:equalclass}, che dato uno \statusattribute, va a ricavarne il valore.\\ \par
 Quando verrà richiamato il primo metodo verrà effettuato un controllo sul tipo dell'argomento, e in base a questo risultato verrà chiamato il secondo metodo che effettuerà l'operazione descritta in precedenza.
 
 
@@ -77,13 +77,13 @@ Come si nota dalla Figura~\ref{fig:functionarith.png} tutto parte da un interfac
 \myjava{IExpressionFunctionStatus.java}{Interfaccia per le operazioni}
 In questo caso, da quest'interfaccia deriva una classe astratta per le operazioni aritmetiche che implementerà il metodo astratto dell'interfaccia ed aggiungerà un altro metodo astratto, che rappresenterà la funzione vera e propria.
 \myIjava{MathOperationStatus.java}{Metodo implementato dall'interfaccia}{7}{21}{evaluateFunction}
-Dal questo codice si notano subito molte somglianze con quello proposto in sezione \ref{sec:implementazione_dei_comparatori_sugli_status_attribute}, questo perché la logica di funzionamento è sostanzialmente la stessa.
+Dal questo codice si notano subito molte somiglianze con quello proposto in sezione \ref{sec:implementazione_dei_comparatori_sugli_status_attribute}, questo perché la logica di funzionamento è sostanzialmente la stessa.
 Inizialmente viene effettuato un controllo sul tipo degli argomenti, successivamente viene richiesto un valutatore corretto per il tipo di dato passatogli e poi è effettuata l'operazione chiamando il metodo \textit{op}, che sfruttando il principio del pattern Template, è implementato nelle varie sottoclassi differenziando così il comportamento senza dover riscrivere interamente il metodo, risparmiando così molte righe di codice.\\ \par
 Le classi che estendono \textit{MathOperationStatus} sono molto simili tra di loro, quindi prenderemo in esame solo la classe che effettua l'operazione di somma, mostrata in basso a sinistra nella Figura~\ref{fig:functionarith.png}.
 \myjava{addStatus.java}{Classe per la somma}
 Questa classe implementa semplicemente il metodo astratto, chiamando sul valutatore passatogli in precedenza la funzione di somma.\\ \par
 Il valutatore non è altro che una classe che implementa tutte le operazioni di una determinata categoria, per esempio in questo caso viene restituito un valutatore che effettua le operazioni aritmetiche.
-A puro scopo esemplificativo mostriamo ora come è implementata l'operazione di somma nel valutatore aritmetico.
+A puro scopo esemplificativo mostriamo ora come è implementata l'operazione di somma nel valutatore aritmetico, il codice completo si può sempre visionare in Sezione \ref{sub:funzioni_aritmetiche_per_la_modifica_degli_statusattribute}.
 \myIjava{valutatore.java}{Metodo implementato dall'interfaccia}{27}{39}{valsomma}
 
 \section{Estensione del contesto} % (fold)
@@ -102,7 +102,7 @@ Per prima cosa è stato necessario estendere la gerarchia di classi derivanti da
 Come si nota dall'immagine \ref{fig:context.png} la classe è implementata come un \textit{Singleton} e contiene diversi metodi legati a \status, uno di questi è il \textit{Setter}, che permette di aggiungere lo stato, l'altro invece è un \textit{Getter} che permette di ricavare un attributo dallo stato.
 Il metodo più importante invece è quello mostrato in Codice~\ref{lst:getterstub}
 \myIjava{stubstatus.java}{Classe ContextStub\_Default\_Status}{17}{28}{getterstub}
-Questo metodo permette di effettuare la ricerca mostrata in figura \ref{fig:evalStatus}, ovvero datogli un attributo andrà prima a verificare la sua presenza all'interno dello \status, dopodiché se non lo trova verificherà la presenza all'interno dell'ambiente.\\ \par
+Questo metodo permette di effettuare la ricerca mostrata in Figura \ref{fig:evalStatus.png}, ovvero datogli un attributo andrà prima a verificare la sua presenza all'interno dello \status, dopodiché se non lo trova verificherà la presenza all'interno dell'ambiente.\\ \par
 Successivamente è stata estesa anche alla classe \textit{ContextRequest} con una nuova classe \textit{ContextRequest\_Status}, la cui unica differenza è un semplice \textit{Getter} per gli attributi di stato.
 
 \section{Obligations e PEP} % (fold)
@@ -119,7 +119,7 @@ Lo stato alla necessità andrà aggiornato, e qua entrano in gioco due component
 
 
 Anche in questo caso sono state estese le \textit{Obligation} introducendo un nuovo tipo chiamato \textit{Obligation Status}, questo tipo particolare di \textit{Obligation} servono per andare ad eseguire azioni sullo stato.
-Nel sistema sono presenti due tipo fondamentali di \textit{Obligation}, il primo sono quelle a livello sintattico, le seconde, chiamate \textit{FulfilledObligations} sono quelle pronte ad essere valutate. Vediamo adesso come sono state estese quelle a livello sintattico.\\ \par
+Nella libreria sono presenti due tipi fondamentali di \textit{Obligation}, il primo sono quelle a livello sintattico, le seconde, chiamate \textit{FulfilledObligations} sono quelle pronte ad essere valutate. Vediamo adesso come sono state estese quelle a livello sintattico.\\ \par
 Per eseguire questa estensione è stato reso necessario un refactoring, per prima cosa è stato astratto tutto il comportamento comune in una superclasse astratta, successivamente è stata creata la nuova classe che modella questo nuovo tipo.
 Il refactoring ha coinvolto anche il metodo che si occupa del \textit{Fulfilling} delle \textit{Obligation} in quanto ora deve creare anche questo nuovo tipo, la scelta più ovvia è stata creare un metodo astratto implementato nelle due sottoclassi che viene chiamato dalla superclasse per creare il tipo corretto.
 \myIjava{absObl.java}{Parte rifattorizzata del metodo che si occupa del fulfilling}{16}{18}{fulfilabs}
@@ -132,6 +132,7 @@ Anche in questo caso è stato necessario un refactoring analogo a quello fatto p
 Come si può notare, in fase di costruzione, gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal PEP il metodo \textit{evaluateObl}.\\ \par
 Il PEP nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime, è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} .
 \myIjava{PEP.java}{Discharge delle Fulfilled Obligation di stato}{102}{106}{PEP}
+Il codice completo riguardante questa sezione è presente in Appendice~\ref{sub:obligations_e_pep}
 % section obligations_e_pep (end)
 
 
@@ -157,8 +158,7 @@ Il metodo che si occupa della creazione dello stato è \textit{createStatus()}, 
 La richiesta invece viene restituita sottoforma di un oggetto di tipo \textit{ContextRequest\_Status}, il quale verrà restituto dal primo dei due metodi. La richiesta è formata da diverse \textit{Hashmap} che sono come le categorie degli attributi che verranno inseriti al loro interno.
 Queste hashmap poi vengono aggiunte ad un oggetto \textit{Request} insieme ad una stringa che racchiude l'informazione riguardante la categoria dell'oggetto appena inserito.
 Alice, in Codice \ref{lst:PrimoEsempioRichieste_FACPL}, richiede ad un certo punto un'azione identificata come \textit{(action / id , "stopRead")}, ed insieme a questo attributo manderà anche altri due attributi, uno che rappresenta il suo nome, e l'altro che contiene il nome del file su cui deve essere effettuata l'azione. L'attributo riguardante l'azione viene codificato alle righe 11 e 15.\\ \par
-Come ultima cosa vediamo come viene codificato un set di \textit{Policy}. Come detto in precedenza una \textit{Policy} è formata da un \textit{Target}, eventualmente altre \textit{Policy} o \textit{Rule} e delle \textit{Obligation}. Prendiamo ora in esempio una \textit{Policy} che contiene tutti e tre questi elementi.
-\myIjava{richiestajavaprimoesempio.java}{Policy StopRead}{92}{122}{polstopread}
+Come ultima cosa vediamo come viene codificato un set di \textit{Policy}. Come detto in precedenza una \textit{Policy} è formata da un \textit{Target}, eventualmente altre \textit{Policy} o \textit{Rule} e delle \textit{Obligation}. Prendiamo ora in esempio una \textit{Policy} che contiene tutti e tre questi elementi. Il codice di questa \textit{Policy} è possibile trovarlo in \ref{lst:polstopread}.
 In particolare è stata presa in considerazione la \textit{Policy} che permette di fermare la lettura, ovvero quella che verrà valutata quando verrà effettuata la richiesta in Codice \ref{lst:esempiocontesto.java}.\\ \par
 Tutte le \textit{Policy} derivano da una classe astratta che verrà estesa secondo le necessità. Come detto prima questa \textit{Policy} contiene tutti e tre gli elementi che la caratterizzano, in particolare la \textit{Obligation} che in questo caso è una \textit{ObligationStatus}. Questa \textit{Obligation} viene aggiunta come tutte le altre, ovvero chiamando l'apposito metodo della superclasse, ed è costruita passandogli come parametro un'azione da effettuare e gli argomenti, in questo caso l'azione è la sottrazione e gli argomenti è l'attributo che rappresenta il numero di lettori e l'intero 1. \\ \par
 \myIjava{richiestajavaprimoesempio.java}{Expression Function che valuta un attributo di stato}{42}{45}{expressionfunctstat}
