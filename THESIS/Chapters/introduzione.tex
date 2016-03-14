@@ -1,6 +1,58 @@
 \myChapter{Introduzione}
-FACPL è un linguaggio basato su XACML, supportato da una libreria scritta in Java. Rispetto a XACML la sintassi di FACPL è molto più semplice e concisa quindi permette di formalizzare in modo facile, non ambiguo e rapido politiche di \textit{access control}. FACPL però non godeva di caratteristiche per consentire di fare richieste ed ottenere risposte valutando anche il comportamento passato, quindi l'obiettivo di questa tesi è stato estenderlo in modo da implementare nuove e fondamentali funzionalità che permettono di sfruttare questo nuovo modello chiamato \textit{Usage Control}. \\ \par
-La questione sul controllo agli accessi è un problema molto rilevante a cui si è provato a trovare una soluzione in questi ultimi anni. Negli ultimi decenni, a partire dal 1970, sono stati proposti molti modelli come ACL, RBAC, ABAC e PBAC, ognuno ha i suoi punti di forza ed i suoi punti deboli.
-\textit{Access Control List} è un modello basato su liste di accesso associate ad ogni risorsa che definiscono le regole di accesso, è un modello molto semplice da implementare, ma quando i dati erano eccessivi diventava poco efficiente. Successivamente è stato introdotto un modello basato su ruoli, il quale associava ad insiemi di risorse dei ruoli, ovvero dei gruppi di utenti raggruppati secondo una caratteristica comune. Un punto debole di questo modello è la mancata specificità riguardante la definizione delle regole che rende difficile assegnare permessi particolari a singole risorse. A seguire è stato introdotto un modello basato su attributi dove le decisioni vengono prese valutando caretteristiche del richiedente, della risorsa e dell'ambiente in cui è stata fatta la richiesta. Un difetto di quest'ultimo modello è che non offre una buona scalabilità. Per porre rimedio a questo difetto è stato introdotto un modello basato su politiche, che oggi risulta essere uno dei più utilizzati, e che si basa su politiche, ovvero un insieme di regole su attributi.
-Recentemente, Sandhu e Park, hanno introdotto un'estensione di \textit{Access Control} chiamata \textit{Usage Control} le cui caratteristiche sono la possibilità di prendere decisioni durante l'accesso e di basarsi sul comportamento passato in fase di valutazione di una richiesta. Il che lo rende molto adatto ad ambienti come il Web, Cloud o comunque legati in qualche modo alla rete. \\ \par
-Il resto della tesi è organizzato in questo modo. Nel capitolo~\ref{cap:accessControl} vengono analizzati in maggior dettaglio tutti i modelli di \textit{Access Control} descritti precedentemente ed inoltre viene dedicata una sezione a \textit{Usage Control} dove vengono anche introdotti due esempi che verranno portati avanti durante gli altri capitoli. Nel capitolo~\ref{cap:facpl} è descritto FACPL allo stato precedente alla stesura di questo documento, ovvero quando ancora non era possibile esprimere politiche di accesso basate sul comportamento passato. Alla fine del capitolo verrà anche proposto un esempio e sarà spiegato perché non è possibile prendere decisioni di \textit{Usage Control}. Nel capitolo~\ref{cap:usagecontrolfacpl} viene trattata l'estensione di FACPL ad un livello sintattico e semantico, spiegando quali nuove componenti sono state introdotte e analizzandone il loro significato ed utilizzo in un contesto reale. Usando le nuove a fine capitolo sono stati riproposti in FACPL gli esempi citati in sezione~\ref{sec:usage_control}. Nell'ultimo capitolo, il ~\ref{cap:estensione_libreria}, invece sono trattati gli argomenti visti in quello precedente ma dal punto di vista dell'estensione della libreria Java.
+FACPL è un linguaggio basato su XACML, supportato da una libreria
+scritta in Java. Rispetto a XACML la sintassi di FACPL è molto più semplice
+e concisa, quindi permette di formalizzare in modo facile e rapido
+politiche di \textit{access control}. Tuttavia, FACPL non gode di caratteristiche
+per eseguire richieste ed ottenere risposte valutando
+anche il comportamento passato, quindi l’obiettivo di questa tesi è stato
+quello di estenderlo in modo da implementare nuove e fondamentali funzionalità
+che permettono di sfruttare questo nuovo modellom chiamato \textit{Usage Control}. \\ \par
+
+
+La questione sul controllo agli accessi è un problema rilevante al
+quale si è provato a trovare una soluzione negli ultimi anni. In particolare,
+a partire dal 1970, sono stati proposti molti modelli (come ACL,
+RBAC, ABAC e PBAC), ognuno dei quali ha i suoi pro e contro.
+L'\textit{ACL}, o \textit{Access Control List}, è un modello basato su liste di accesso associate
+ad ogni risorsa che definiscono le regole di accesso; è un modello molto
+semplice da implementare, ma quando i dati sono eccessivi diventa
+poco efficiente. Successivamente è stato introdotto un modello basato su
+ruoli, il quale associa a degli insiemi di risorse delle mansioni, ovvero dei gruppi
+di utenti suddivisi secondo una caratteristica comune. Un punto debole
+di questo modello è la mancata specificità riguardante la definizione
+delle regole che rende difficile assegnare permessi particolari a singole
+risorse. A seguire è stato utilizzato un modello basato su attributi dove
+le decisioni vengono prese valutando caratteristiche del richiedente,
+della risorsa e dell’ambiente in cui è stata fatta la richiesta. Quest’ultimo
+modello tuttavia non offre una buona scalabilità. Per porre
+rimedio a questo difetto è stato introdotto un ulteriore modello,
+che oggi risulta essere uno dei più utilizzati, basato su politiche,
+ovvero un insieme di regole su attributi. Recentemente, Sandhu e Park
+hanno introdotto un’estensione di \textit{Access Control} chiamata \textit{Usage Control}
+che permette di prendere decisioni durante
+l’accesso e di basarsi sul comportamento passato in fase di valutazione
+di una richiesta. Questa caratteristica lo rende molto adatto ad ambienti come il Web,
+il Cloud o in generale legati in qualche modo alla rete.\\ \par
+
+
+La tesi, dopo questa breve introduzione, è organizzata in questo modo: 
+\begin{itemize}
+\item Nel capitolo~\ref{cap:accessControl} vengono
+analizzati in maggior dettaglio tutti i modelli di \textit{Access Control} accennati
+in precedenza ed inoltre viene dedicata una sezione a \textit{Usage Control}
+dove vengono anche introdotti due esempi che verranno portati avanti
+durante gli altri capitoli.
+\item Nel capitolo~\ref{cap:facpl} è descritto FACPL allo stato
+precedente alla stesura di questo documento, ovvero quando ancora non
+era possibile esprimere politiche di accesso basate sul comportamento
+passato. Alla fine del capitolo verrà proposto un esempio e sarà
+spiegato perché non è possibile prendere decisioni di \textit{Usage Control}.
+\item Nel capitolo~\ref{cap:usagecontrolfacpl} viene trattata l’estensione di FACPL ad un livello sintattico
+e semantico, spiegando quali nuove componenti sono state introdotte ed
+analizzandone il loro significato ed utilizzo in un contesto reale.
+Usando le nuove estensioni, a fine capitolo sono stati riproposti in FACPL gli esempi citati in
+ezione~\ref{sec:usage_control}.
+\item Nel quinto e ultimo capitolo, infine, sono trattati gli argomenti
+visti in quello precedente ma dal punto di vista dell’estensione della
+libreria Java.
+\end{itemize}
