@@ -18,7 +18,7 @@ PolicySet ReadWrite_Policy { deny-unless-permit
   PolicySet Read_Policy { deny-unless-permit
     target:equal("file", file/id) && ("read", action/id)
     policies:
-      Rule write ( permit target: 
+      Rule read ( permit target: 
         equal ( status / isWriting , false ) &&
         less-than (status / counterReadFile1, 2)  
         )
@@ -29,7 +29,7 @@ PolicySet ReadWrite_Policy { deny-unless-permit
   PolicySet StopWrite_Policy { deny-unless-permit
     target:equal("file", file/id) && ("stopWrite", action/id)
     policies:
-      Rule write ( permit target: 
+      Rule stopWrite ( permit target: 
         equal ( status / isWriting , true )  
         )
     obl:
@@ -39,7 +39,7 @@ PolicySet ReadWrite_Policy { deny-unless-permit
   PolicySet StopRead_Policy { deny-unless-permit
     target:equal("file", file/id) && ("stopRead", action/id)
     policies:
-      Rule write ( permit target: 
+      Rule stopRead ( permit target: 
         greater-than ( status / counterReadFile1 , 0 )  
         )
     obl:
