@@ -1,58 +1,61 @@
 \myChapter{Introduzione}
-FACPL è un linguaggio basato su XACML, supportato da una libreria
-scritta in Java. Rispetto a XACML la sintassi di FACPL è molto più semplice
-e concisa, quindi permette di formalizzare in modo facile e rapido
-politiche di \textit{access control}. Tuttavia, FACPL non gode di caratteristiche
-per eseguire richieste ed ottenere risposte valutando
-anche il comportamento passato, quindi l’obiettivo di questa tesi è stato
-quello di estenderlo in modo da implementare nuove e fondamentali funzionalità
-che permettono di sfruttare questo nuovo modellom chiamato \textit{Usage Control}. \\ \par
 
 
-La questione sul controllo agli accessi è un problema rilevante al
-quale si è provato a trovare una soluzione negli ultimi anni. In particolare,
-a partire dal 1970, sono stati proposti molti modelli (come ACL,
-RBAC, ABAC e PBAC), ognuno dei quali ha i suoi pro e contro.
-L'\textit{ACL}, o \textit{Access Control List}, è un modello basato su liste di accesso associate
+I sistemi informatici si sono diffusi molto rapidamente, e grazie all'avvento di nuove tecnologie, come la rete, la condivisione di dati e risorse è diventata alla portata di tutti. Proteggere queste risorse da accessi 
+indesiderati è diventato molto importante, motivo per cui negli ultimi decenni la questione 
+del \textit{Access Control} è diventata sempre più rilevante.
+In particolare,
+a partire dal 1970, sono stati proposti vari modelli (come \ac{ACL},
+\ac{RBAC}, \ac{ABAC} e \ac{PBAC}), ognuno dei quali ha i suoi pro e contro.
+
+
+Il primo modello proposto è \ac{ACL} ed ha come obiettivo il controllo delle risorse di un sistema operativo. Questo modello si basa su liste di accesso associate
 ad ogni risorsa che definiscono le regole di accesso; è un modello molto
 semplice da implementare, ma quando i dati sono eccessivi diventa
-poco efficiente. Successivamente è stato introdotto un modello basato su
-ruoli, il quale associa a degli insiemi di risorse delle mansioni, ovvero dei gruppi
-di utenti suddivisi secondo una caratteristica comune. Un punto debole
-di questo modello è la mancata specificità riguardante la definizione
+poco efficiente. 
+Successivamente è stato introdotto un modello basato su
+ruoli chiamato \ac{RBAC}, il quale associa a degli insiemi di risorse dei diritti di accesso, ovvero dei gruppi
+di utenti suddivisi secondo caratteristiche comuni. Un punto debole
+di questo modello è l'assenza di costrutti che permettono la definizione
 delle regole che rende difficile assegnare permessi particolari a singole
-risorse. A seguire è stato utilizzato un modello basato su attributi dove
+risorse. A seguire è stato utilizzato un modello basato su attributi chiamato \ac{ABAC}, dove
 le decisioni vengono prese valutando caratteristiche del richiedente,
 della risorsa e dell’ambiente in cui è stata fatta la richiesta. Quest’ultimo
 modello tuttavia non offre una buona scalabilità. Per porre
-rimedio a questo difetto è stato introdotto un ulteriore modello,
-che oggi risulta essere uno dei più utilizzati, basato su politiche,
-ovvero un insieme di regole su attributi. Recentemente, Sandhu e Park
-hanno introdotto un’estensione di \textit{Access Control} chiamata \textit{Usage Control}
+rimedio a questo difetto è stato introdotto un ulteriore modello, che si chiama \ac{PBAC}
+il quale risulta essere uno dei più utilizzati ed è basato su politiche, 
+ovvero un insieme di regole su attributi. 
+
+Recentemente, Sandhu e Park \cite{ucon}
+hanno introdotto \textit{Usage Control}
 che permette di prendere decisioni durante
 l’accesso e di basarsi sul comportamento passato in fase di valutazione
 di una richiesta. Questa caratteristica lo rende molto adatto ad ambienti come il Web,
-il Cloud o in generale legati in qualche modo alla rete.\\ \par
+il Cloud o in generale legati in qualche modo alla rete. \par
 
+\ac{FACPL} è un linguaggio basato su \ac{XACML}, supportato da una libreria
+scritta in Java. Rispetto a \ac{XACML} la sintassi di \ac{FACPL} è molto più semplice
+e concisa, quindi permette di formalizzare in modo facile e rapido
+politiche di \textit{access control}. Tuttavia, \ac{FACPL} non gode di caratteristiche
+per eseguire richieste ed ottenere risposte valutando
+anche il comportamento passato, quindi l’obiettivo di questa tesi è stato
+quello di estenderlo in modo da implementare nuove e fondamentali funzionalità
+che permettono di sfruttare caratteristiche tipiche di \textit{Usage Control}.  \par
 
 La tesi, dopo questa breve introduzione, è organizzata in questo modo: 
 \begin{itemize}
-\item Nel capitolo~\ref{cap:accessControl} vengono
-analizzati in maggior dettaglio tutti i modelli di \textit{Access Control} accennati
-in precedenza ed inoltre viene dedicata una sezione a \textit{Usage Control}
+\item Nel Capitolo~\ref{cap:accessControl} vengono
+presentati in maggior dettaglio tutti i modelli di \textit{Access Control} ed inoltre viene dedicata una sezione a \textit{Usage Control}
 dove vengono anche introdotti due esempi che verranno portati avanti
 durante gli altri capitoli.
-\item Nel capitolo~\ref{cap:facpl} è descritto FACPL allo stato
-precedente alla stesura di questo documento, ovvero quando ancora non
-era possibile esprimere politiche di accesso basate sul comportamento
-passato. Alla fine del capitolo verrà proposto un esempio e sarà
-spiegato perché non è possibile prendere decisioni di \textit{Usage Control}.
-\item Nel capitolo~\ref{cap:usagecontrolfacpl} viene trattata l’estensione di FACPL ad un livello sintattico
+\item Nel Capitolo~\ref{cap:facpl} è descritto \ac{FACPL} e vengono riportati alcuni esempi che mostrano le problematiche per cui non è possibile farne un uso a livello di Usage Control.
+\item Nel Capitolo~\ref{cap:usagecontrolfacpl} viene trattata l’estensione di FACPL ad un livello sintattico
 e semantico, spiegando quali nuove componenti sono state introdotte ed
-analizzandone il loro significato ed utilizzo in un contesto reale.
-Usando le nuove estensioni, a fine capitolo sono stati riproposti in FACPL gli esempi citati in
-ezione~\ref{sec:usage_control}.
-\item Nel quinto e ultimo capitolo, infine, sono trattati gli argomenti
+analizzandone il loro significato ed utilizzo attraverso dei casi di studio.
+\item Nel Capitolo~\ref{cap:usagecontrolfacpl} sono trattati gli argomenti
 visti in quello precedente ma dal punto di vista dell’estensione della
 libreria Java.
+\item Nel Capitolo~\ref{cap:conclusioni} viene riassunto tutto il lavoro svolto e gli sviluppi futuri.
+
+\item In Appendice~\ref{cap:appendiceA} viene proposto il codice completo.
 \end{itemize}

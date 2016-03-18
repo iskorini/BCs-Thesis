@@ -30,14 +30,14 @@
 \contentsline {lstlisting}{\numberline {5.17}{Expression Function che valuta un attributo di stato}}{69}{lstlisting.5.17}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {lstlisting}{\numberline {A.1}{Secondo Esempio Completo}}{73}{lstlisting.Alph1.1}
-\contentsline {lstlisting}{\numberline {A.2}{Stralcio della classe Status}}{76}{lstlisting.Alph1.2}
-\contentsline {lstlisting}{\numberline {A.3}{Costruttori di Status Attribute}}{77}{lstlisting.Alph1.3}
-\contentsline {lstlisting}{\numberline {A.4}{Classe che implementa Equal}}{78}{lstlisting.Alph1.4}
-\contentsline {lstlisting}{\numberline {A.5}{Metodo implementato dall'interfaccia}}{79}{lstlisting.Alph1.5}
-\contentsline {lstlisting}{\numberline {A.6}{Parte rifattorizzata del metodo che si occupa del fulfilling}}{82}{lstlisting.Alph1.6}
-\contentsline {lstlisting}{\numberline {A.7}{CreateObligation nelle status}}{84}{lstlisting.Alph1.7}
-\contentsline {lstlisting}{\numberline {A.8}{CreateObligation nelle normali}}{84}{lstlisting.Alph1.8}
-\contentsline {lstlisting}{\numberline {A.9}{Discharge delle Fulfilled Obligation di stato}}{85}{lstlisting.Alph1.9}
-\contentsline {lstlisting}{\numberline {A.10}{Policy StopRead}}{89}{lstlisting.Alph1.10}
-\contentsline {lstlisting}{\numberline {A.11}{Policy StopRead}}{94}{lstlisting.Alph1.11}
+\contentsline {lstlisting}{\numberline {A.1}{Secondo Esempio Completo}}{77}{lstlisting.Alph1.1}
+\contentsline {lstlisting}{\numberline {A.2}{Stralcio della classe Status}}{80}{lstlisting.Alph1.2}
+\contentsline {lstlisting}{\numberline {A.3}{Costruttori di Status Attribute}}{81}{lstlisting.Alph1.3}
+\contentsline {lstlisting}{\numberline {A.4}{Classe che implementa Equal}}{82}{lstlisting.Alph1.4}
+\contentsline {lstlisting}{\numberline {A.5}{Metodo implementato dall'interfaccia}}{83}{lstlisting.Alph1.5}
+\contentsline {lstlisting}{\numberline {A.6}{Parte rifattorizzata del metodo che si occupa del fulfilling}}{86}{lstlisting.Alph1.6}
+\contentsline {lstlisting}{\numberline {A.7}{CreateObligation nelle status}}{88}{lstlisting.Alph1.7}
+\contentsline {lstlisting}{\numberline {A.8}{CreateObligation nelle normali}}{88}{lstlisting.Alph1.8}
+\contentsline {lstlisting}{\numberline {A.9}{Discharge delle Fulfilled Obligation di stato}}{89}{lstlisting.Alph1.9}
+\contentsline {lstlisting}{\numberline {A.10}{Policy StopRead}}{93}{lstlisting.Alph1.10}
+\contentsline {lstlisting}{\numberline {A.11}{Policy StopRead}}{98}{lstlisting.Alph1.11}

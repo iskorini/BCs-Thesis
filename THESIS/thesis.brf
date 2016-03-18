@@ -1,10 +1,7 @@
-\backcite {nistsite}{{3}{(document)}{Doc-Start}}
-\backcite {ucon}{{3}{(document)}{Doc-Start}}
+\backcite {ucon}{{9}{1}{chapter.1}}
 \backcite {NISTACM}{{11}{2.1}{section.2.1}}
-\backcite {nistsite}{{16}{4}{figure.caption.7}}
-\backcite {SurveyUsageControl}{{18}{2.2}{section.2.2}}
-\backcite {SurveyUsageControl}{{18}{2.2}{section.2.2}}
-\backcite {UsageControlCloud}{{19}{2.2}{section.2.2}}
-\backcite {ucon}{{20}{5}{figure.caption.8}}
+\backcite {SurveyUsageControl}{{17}{2.2}{section.2.2}}
+\backcite {SurveyUsageControl}{{17}{2.2}{section.2.2}}
+\backcite {UsageControlCloud}{{17}{2.2}{section.2.2}}
 \backcite {fullfacpl}{{27}{3.3}{section.3.3}}
 \backcite {SurveyUsageControl}{{71}{6}{chapter.6}}
