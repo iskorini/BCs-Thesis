@@ -16,8 +16,14 @@ Il processo di valutazione è stato esteso per via delle modifiche introdotte.
 Rispetto al processo di valutazione standard, descritto in sezione~\ref{sec:valutazione_facpl}, sono state aggiunte
 componenti al grafico, rendendolo così adatto allo \textit{Usage Control}, in particolare alla valutazione di 
 richieste basate sul comportamento passato.
-\MyFigure{evalStatus.png}{Nuovo processo di valutazione in FACPL}{1}
-Come si nota in figura \ref{fig:evalStatus.png} è stato aggiunto un componente alla struttura della valutazione.
+\begin{figure}[H]
+ \centering 
+	\includegraphics[scale = 0.5]{./Chapters/Image/evalvect.pdf}
+ \caption{Valutazione dopo lo stato}
+ \label{fig:evalStatus}
+\end{figure}
+
+Come si nota in figura \ref{fig:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
 Questo componente è lo \status \ (Stato), ovvero un semplice contenitore di un nuovo tipo di attributi.
 I nuovi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente in modo da gestire correttamente la presenza di esso.\\ \par
 Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo stato è presente. Inizialmente viene definito il sistema, che ora ha quattro componenti principali:
