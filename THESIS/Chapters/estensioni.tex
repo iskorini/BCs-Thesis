@@ -3,7 +3,7 @@
 
 \ac{FACPL}, per come è descritto nel Capitolo~\ref{cap:facpl}, non supporta Usage Control, di conseguenza non è possibile prendere decisioni basate sul comportamento passato. Grazie a delle nuove strutture, implementate insieme al mio collega Filippo Mameli, è possibile prendere questo tipo di decisioni.
 
-Questa estensione ha richiesto delle modifiche alla sintassi del linguaggio in modo da poter sfruttare facilmente le nuove funzionalità. Introdurre queste modifiche ha richiesto del lavoro sulla libreria, in quanto è stato necessario aggiungere nuove componenti e di conseguenza modificare il processo di valutazione di una policy.
+Questa estensione ha richiesto delle modifiche alla sintassi del linguaggio in modo da poter sfruttare facilmente le nuove funzionalità. Introdurre queste modifiche ha richiesto del lavoro sulla libreria, in quanto è stato necessario aggiungere nuove componenti e di conseguenza modificare il processo di valutazione delle policy.
 
 In Sezione~\ref{sec:estensione_del_processo_di_valutazione} viene analizzato il nuovo processo di valutazione alla luce delle modifiche introdotte in \ac{FACPL}.
 Nella Sezione~\ref{sec:estensione_linguistica} invece viene discussa l'estensione dal punto di vista della sintassi, introducendo la nuova grammatica.
@@ -21,14 +21,15 @@ componenti al grafico, rendendolo così adatto allo \textit{Usage Control}, e qu
  \label{fig:evalStatus}
 \end{figure}
 
-Come si nota in figura \ref{fig:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
+Come si nota in Figura \ref{fig:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
 Questo componente rappresenta lo \status \ (Stato), al quale il \ac{PDP} e \ac{PEP} ci accedono tramite attributi.
-Questi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente in modo da gestire correttamente la presenza di esso.\\ \par
+Questi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente.\\ \par
 Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo stato è presente. Inizialmente viene definito il sistema, che ora rispetto a quelli già citati in Sezione~\ref{sec:valutazione_facpl}, ha un componente in più, ovvero lo Stato.
 Fino al quarto step il comportamento è analogo a quello precedente, mentre cambia negli step successivi.\\ \par
 Al quinto step il \textit{PDP} non necessiterà solo dei normali attributi d'ambiente, ma necessiterà anche degli \statusattribute \ coinvolti nella richiesta effettuata. Il \textit{Context Handler} quindi non andrà solo a fare la ricerca all'interno dell'environment, ma andrà a cercare anche gli \statusattribute \ all'interno dello \status.\\ \par
 A questo punto, quando il PDP avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre.\\ \par
-Nel caso in cui viene restituto \permit \ o \deny \ è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \textit{PEP} (Passo 11-14). Le nuove azioni sono eseguite attraverso un nuovo tipo di obligations, chiamate \textit{ObligationStatus}. Vengono valutate dal \ac{PEP} nello stesso modo di una normale Obligation, ma al loro interno non sarà contenuta un generica funzione, ma una operazione che andrà a modificare il valore degli attributi di stato.
+Nel caso in cui viene restituto \permit \ o \deny \ è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \textit{PEP} (Passo 11-14). Le nuove azioni sono eseguite attraverso un nuovo tipo di obligations, chiamate \textit{ObligationStatus}. 
+Quest'ultime vengono valutate dal \ac{PEP} alla pari di una normale Obligation, ma la sostanziale differenza tra esse ed una normale Obligation è legata alla funzione che contengono. Mentre le normali Obligation conterranno generiche funzioni, come creare un log o mandare una mail, le Obligation Status potranno eseguire azioni per modificare lo stato del sistema.
 Una volta effettuato l'enforcement viene restituta la decisione finale.
 
 
@@ -41,8 +42,8 @@ Per implementare queste nuove funzionalità è stata modificata anche la grammat
 Nella grammatica estesa sono state aggiunte nuove regole di produzione e simboli terminali che 
 codificano le nuove funzionalità.\\ \par
 \input{syntax_original/facpl_new_syntax}
-Come è facilmente osservabile dalla consultazione della tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono.\\ \par
-La prima modifica è nel PAS, cioè  lo \status, che è della forma $$status: Attribute$$ questo è formato da uno o più \textit{Attribute}.\\ \par
+Come è facilmente osservabile dalla consultazione della Tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in Sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono.\\ \par
+La prima modifica è nel PAS, cioè  lo \status, che è della forma $$status: Attribute$$ ed è formato da uno o più \textit{Attribute}.\\ \par
 Passiamo ora a descrivere \textit{Attribute} che è della forma $$(Type\ Identifier (= Value)^?)$$
 questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.
 
@@ -55,7 +56,7 @@ La sintassi delle risposte è rimasta invariata.
 
 \section{Semantica} % (fold)
 \label{sec:semantica}
-La semantica di FACPL rimane molto simile a quella descritta in sezione \ref{sec:semantica_originale}, quindi verranno di seguito descritte in modo informale solo le novità introdotte.\\ \par
+La semantica di FACPL rimane molto simile a quella descritta in Sezione \ref{sec:semantica_originale}, quindi verranno di seguito descritte in modo informale solo le novità introdotte.\\ \par
 La prima di queste riguarda la valutazione delle richieste dal PDP. Il PDP ora non si deve più basare solo su richieste totalmente scollegate l'una dall'altra, e quindi è stato introdotto il concetto di \status.
 Lo stato permette di rappresentare il comportamento passato del sistema, e lo fa introducendo una nuova serie di attributi chiamati \statusattribute.\\ \par
 Nel linguaggio questo nuovo tipo di attributi viene considerato al pari di normali attributi, quindi si ha la possibilità di effettuare tutte le operazioni di confronto tra di essi, ma in più si deve avere la possibilità di modificarli e memorizzarli in modo da poterli sfruttare per \textit{Usage Control}.\\ \par
@@ -70,9 +71,9 @@ Per esempio l'esecuzione di questa \textit{Obligation} su un'attributo, chiamato
 valore 2. 
 
 L'operazione di somma è stata implementata anche per altri due tipi, \texttt{Date} e \texttt{String}.
-Oltre all'addizione sono presenti funzioni per la sottrazione, divisione e moltiplicazione che operano in modo analogo a questa appena descritta, ma sono definite soltanto su valori numerici.
+Oltre all'addizione sono presenti funzioni per la sottrazione, divisione e moltiplicazione che operano in modo analogo a questa appena descritta, ma sono definite soltanto su tipi numerici.
 
-Un'altra operazione, definita solo sul tipo \texttt{boolean} modifica il valore di uno \statusattribute \ di tipo booleano.
+Un'altra operazione implementata modifica il valore originale di uno \statusattribute \ con il valore passatogli come secondo parametro.
 \begin{verbatim}
  obl:
      [permit M flag(isFoo, true)]
@@ -89,13 +90,13 @@ Infine nella \textit{Obligation} si può notare come viene aggiornato lo stato d
 \section{Formalizzazione dei case study} % (fold)
 \label{sec:esempi}
 
-Queste nuove funzionalità introdotte servono allo scopo descritto in sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.
-Mostreremo ora l'implementazione in FACPL dei due esempi trattati in sezione~\ref{sec:usage_control}. 
+Queste nuove funzionalità introdotte servono allo scopo descritto in Sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.
+Mostreremo ora l'implementazione in FACPL dei due esempi trattati in Sezione~\ref{sec:usage_control}. 
 \subsection{Accesso ai file} % (fold)
 \label{ssub:primo_esempio}
 \lstinputlisting[language = FACPL, caption = {Primo esempio}\label{lst:PrimoEsempio_FACPL}]{./Source/EsempioReadWrite_facpl.fpl}
 Per semplicità, in questo codice, vengono mostrate le policy di accesso per un solo file.
-Il primo esempio in sezione~\ref{sec:usage_control} poneva una regola sull'accesso ai file, ovvero permetteva un massimo di due persone in contemporanea che potevano effettuare l'accesso in lettura oppure un massimo di una persona che poteva ottenere l'accesso in scrittura.\\ \par
+Il primo esempio in Sezione~\ref{sec:usage_control} poneva una regola sull'accesso ai file, ovvero permetteva un massimo di due persone in contemporanea che potevano effettuare l'accesso in lettura oppure un massimo di una persona che poteva ottenere l'accesso in scrittura.\\ \par
 Tutte le policy del codice~\ref{lst:PrimoEsempio_FACPL} sono chiuse in un \textit{PolicySet}. Il target del PolicySet \texttt{ReadWrite\_Policy} verifica che le richieste provengano da utenti che hanno nome \textit{Alice} o \textit{Bob}, in caso contrario il responso sarà \texttt{Not Applicable}.\\ \par
 Successivamente sono state create quattro policy per gestire le quattro operazioni possibili, ovvero \texttt{read}, \texttt{write}, \texttt{stopRead} ed infine \texttt{stopWrite}.\\ \par
 Prendiamo in considerazione la prima policy, quella per la \texttt{write}. Come prima è presente un target, che richiede questa volta due diverse condizioni, la prima riguarda l'id del file richiesto, la seconda invece richiede che l'azione sia \texttt{write}. Le parti interessanti di questa policy sono due, la prima riguarda la \textit{Rule}, la seconda la \textit{Obligation}.\\ \par
