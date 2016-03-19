@@ -1,8 +1,9 @@
 
 
-\begin{table}[!t]
-\small
-\caption{Sintassi di FACPL} 
+\begin{table}[]
+\footnotesize
+\caption{Sintassi di FACPL}
+\hrule
 $
 \begin{array}{@{\,}r@{\ \ }r@{\ }r@{\ \ }l@{\ }}
 &&&\\[-.2cm]
@@ -21,16 +22,11 @@ $
 && \mid &
 \firstApp \Sep \onlyOneApp \Sep \weakCon \Sep \strongCon 
 \\[.2cm]
-\textbf{fulfilment strategies} & \delta
-& ::= & 
-\greedy \Sep \all 
-\\[.2cm]
 {\textbf{Policies}} &
 \mathit{Policy} & ::= &
 \ruleOpt{\mathit{Effect}\ \ \x{target:} \, Expr\ \ \x{obl:} \, \mathit{Obligation}^{*} \, } \\
 && \mid &
-\{ \algNT\ \ \x{target:} \, Expr\ \ \\ 
-&&  &
+\{ \algNT\ \ \x{target:} \, Expr\ \ 
 \x{policies:} \, \mathit{Policy}^{+} \ \ \x{obl:} \, \mathit{Obligation}^{*} \, \}
 \\[.2cm]
 {\textbf{Effects}} &
@@ -63,12 +59,15 @@ $
 \\[.1cm]
 \end{array}
 $
+\hrule
 \label{tab:facpl_syntax}
 \end{table}
 
-\begin{table}[!t]
-\small
+\begin{table}[]
+\footnotesize
+
 \caption{Sintassi ausiliaria per le risposte}
+\hrule
 $
 \begin{array}{@{\ }r@{\ \ \ \ }r@{\ }r@{\ \ }l@{\ }}
 
@@ -83,6 +82,7 @@ $
 \mathit{FObligation} & ::= &  [ \, \mathit{ObType} \ \ \obl{\mathit{Value}} \, ]\\[.1cm]
 
 \end{array}
-$
+$\\
+\hrule
 \label{tab:facpl_context_syntax}
 \end{table}

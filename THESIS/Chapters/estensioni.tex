@@ -1,22 +1,20 @@
 \myChapter{Implementare Usage Control in FACPL}
 \label{cap:usagecontrolfacpl}
-FACPL, fino alla versione descritta nel capitolo~\ref{cap:facpl}, non aveva la possibilità
-di essere sfruttato per \textit{Usage Control}. \par
-Grazie a delle nuove strutture implementate insieme al mio collega Filippo Mameli, adesso è possibile
-usare FACPL per \textit{Usage Control}, introducendo miglioramenti descritti in~\ref{sec:usage_control}.\\ \par
-La nuova funzionalità consiste nel prendere decisioni tenendo conto delle richieste già effettuate.
-Introdurre questa nuova estensione ha richiesto del lavoro sulla libreria, in quanto è stato necessario aggiungere
-nuove componenti e di conseguenza modificare il processo di valutazione di una policy.
-Infine è stato necessario anche introdurre delle modifiche alla sintassi del linguaggio in modo da poterle sfruttare 
-facilmente.
+
+\ac{FACPL}, per come è descritto nel Capitolo~\ref{cap:facpl}, non supporta Usage Control, di conseguenza non è possibile prendere decisioni basate sul comportamento passato. Grazie a delle nuove strutture, implementate insieme al mio collega Filippo Mameli, è possibile prendere questo tipo di decisioni.
+
+Questa estensione ha richiesto delle modifiche alla sintassi del linguaggio in modo da poter sfruttare facilmente le nuove funzionalità. Introdurre queste modifiche ha richiesto del lavoro sulla libreria, in quanto è stato necessario aggiungere nuove componenti e di conseguenza modificare il processo di valutazione di una policy.
+
+In Sezione~\ref{sec:estensione_del_processo_di_valutazione} viene analizzato il nuovo processo di valutazione alla luce delle modifiche introdotte in \ac{FACPL}.
+Nella Sezione~\ref{sec:estensione_linguistica} invece viene discussa l'estensione dal punto di vista della sintassi, introducendo la nuova grammatica.
+Successivamente, in Sezione~\ref{sec:semantica} viene spiegata la semantica dei nuovi costrutti implementati. Infine in Sezione~\ref{sec:esempi} sono proposti in \ac{FACPL} due case study già presentati in Sezione \ref{sub:case1} e \ref{sub:case2}
 
 \section{Estensione del processo di Valutazione} % (fold)
 \label{sec:estensione_del_processo_di_valutazione}
-Il processo di valutazione è stato esteso per via delle modifiche introdotte. 
-Rispetto al processo di valutazione standard, descritto in sezione~\ref{sec:valutazione_facpl}, sono state aggiunte
-componenti al grafico, rendendolo così adatto allo \textit{Usage Control}, in particolare alla valutazione di 
-richieste basate sul comportamento passato.
-\begin{figure}[H]
+Il processo di valutazione, presentato in Sezione~\ref{sec:valutazione_facpl}, è stato esteso per via delle modifiche introdotte. 
+Rispetto al processo di valutazione standard, sono state aggiunte
+componenti al grafico, rendendolo così adatto allo \textit{Usage Control}, e quindi assicurare un controllo continuativo basato sul comportamento passato.
+\begin{figure}[h]
  \centering 
 	\includegraphics[scale = 0.5]{./Chapters/Image/evalvect.pdf}
  \caption{Valutazione dopo lo stato}
@@ -24,22 +22,14 @@ richieste basate sul comportamento passato.
 \end{figure}
 
 Come si nota in figura \ref{fig:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
-Questo componente è lo \status \ (Stato), ovvero un semplice contenitore di un nuovo tipo di attributi.
-I nuovi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente in modo da gestire correttamente la presenza di esso.\\ \par
-Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo stato è presente. Inizialmente viene definito il sistema, che ora ha quattro componenti principali:
-\begin{itemize}
-	\item[-]{Policy Repository (PR)}
-	\item[-]{Policy Decision Point (PDP)}
-	\item[-]{Policy Enforcement Point (PEP)}
-	\item[-]{Status}
-\end{itemize}
+Questo componente rappresenta lo \status \ (Stato), al quale il \ac{PDP} e \ac{PEP} ci accedono tramite attributi.
+Questi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente in modo da gestire correttamente la presenza di esso.\\ \par
+Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo stato è presente. Inizialmente viene definito il sistema, che ora rispetto a quelli già citati in Sezione~\ref{sec:valutazione_facpl}, ha un componente in più, ovvero lo Stato.
 Fino al quarto step il comportamento è analogo a quello precedente, mentre cambia negli step successivi.\\ \par
 Al quinto step il \textit{PDP} non necessiterà solo dei normali attributi d'ambiente, ma necessiterà anche degli \statusattribute \ coinvolti nella richiesta effettuata. Il \textit{Context Handler} quindi non andrà solo a fare la ricerca all'interno dell'environment, ma andrà a cercare anche gli \statusattribute \ all'interno dello \status.\\ \par
 A questo punto, quando il PDP avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre.\\ \par
-Nel caso in cui viene restituto \permit \ o \deny \ è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \textit{PEP} (Passo 13-16). Una volta effettuato l'enforcement viene restituta la decisione finale.\\ \par
-Prendendo il primo esempio citato in sezione \ref{sec:usage_control} la valutazione procederebbe in questo modo. Bob richiederà la lettura di un determinato file. Quindi la richiesta conterrà tre attributi, uno che indica il nome dell'utente che effettua la richiesta, il secondo che contiene il nome del file a cui si effettuerà l'accesso, e il terzo che conterrà il nome dell'azione da effettuare. La policy invece sarà strutturata come \textit{"Se il nome è Bob, il file è corretto e nessuno sta scrivendo o ci sono meno di due utenti che leggono, allora permetti, altrimenti nega" }.\\ \par
-Il PDP però ha bisogno di più attributi per valutare la richiesta, in quanto necessita anche di attributi esterni alla policy che riguardano il numero di utenti che stanno accedendo al file richiesto, questi attributi sono gli \statusattribute. Per la loro gestione sarà necessario utilizzare la funzionalità che riguarda l'Usage Control, il PDP richiederà al \textit{Context Handler} questi attributi, il quale andrà cercarli nello \status. Quest'ultimo li fornirà e verranno direttamente mandati al PDP per la valutazione della richiesta.\\ \par
-Se la richiesta avrà esito positivo, allora vuol dire che Bob avrà accesso al file, e quindi lo stato andrà aggiornato. La risposta del PDP a questo punto andrà al PEP per l'enforcement il quale avrà il compito di aggiornare lo stato. Sostanzialmente lo stato viene aggiornato semplicemente incrementando l'attributo riguardante il numero di lettori di un'unità.
+Nel caso in cui viene restituto \permit \ o \deny \ è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \textit{PEP} (Passo 11-14). Le nuove azioni sono eseguite attraverso un nuovo tipo di obligations, chiamate \textit{ObligationStatus}. Vengono valutate dal \ac{PEP} nello stesso modo di una normale Obligation, ma al loro interno non sarà contenuta un generica funzione, ma una operazione che andrà a modificare il valore degli attributi di stato.
+Una volta effettuato l'enforcement viene restituta la decisione finale.
 
 
 
@@ -52,157 +42,51 @@ Nella grammatica estesa sono state aggiunte nuove regole di produzione e simboli
 codificano le nuove funzionalità.\\ \par
 \input{syntax_original/facpl_new_syntax}
 Come è facilmente osservabile dalla consultazione della tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono.\\ \par
-La prima modifica che risulta evidente è nel PAS, ovvero nella definizione del sistema. L'aggiunta è stata lo \status, ovvero un contenitore di attributi.
-Uno \status \ è della forma $$(status: Attribute^+)^?$$ questo significa che se lo \status \ è presente sarà formato da uno o più \textit{Attribute}.\\ \par
+La prima modifica è nel PAS, cioè  lo \status, che è della forma $$status: Attribute$$ questo è formato da uno o più \textit{Attribute}.\\ \par
 Passiamo ora a descrivere \textit{Attribute} che è della forma $$(Type\ Identifier (= Value)^?)$$
-questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.\\ \par
-\textit{Type} è il tipo che avrà l'attributo di stato, e potrà essere \texttt{int, boolean, date o float}.\\ \par
-La regola \textit{PepAction} è stata modificata in modo tale che includesse nuove funzioni per operare matematicamente sugli attributi di stato.
-Queste nuove funzioni sono:
-\begin{itemize}
-	\item \textit{add(Attribute, \texttt{int})}
-	\item \textit{add(Attribute, \texttt{float})}
-	\item \textit{div(Attribute, \texttt{int})}
-	\item \textit{div(Attribute, \texttt{float})}
-	\item \textit{sub(Attribute, \texttt{int})}
-	\item \textit{sub(Attribute, \texttt{float})}
-	\item \textit{mul(Attribute, \texttt{int})}
-	\item \textit{mul(Attribute, \texttt{float})}
-	\item \textit{flag(Attribute, \texttt{boolean})}
-	\item \textit{sumDate(Attribute, \texttt{date})} 
-	\item \textit{sumString(Attribute, \texttt{string})}
-	\item \textit{setValue(Attribute, \texttt{string})}
-	\item \textit{setDate(Attribute, \texttt{date})}
-\end{itemize}
-Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata semplicemente aggiunto, a fianco di \textit{Identifier/Identifier}, una nuova produzione \textit{Status/Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
+questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.
+
+\textit{Type} è il tipo che avrà l'attributo di stato, e potrà essere \texttt{int, boolean, date o double}.\\ \par
+La regola \textit{PepAction} è stata modificata in modo tale che includesse nuove funzioni per operare sugli attributi di stato.
+Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata semplicemente aggiunto, a fianco di \textit{Identifier/Identifier}, una nuova produzione Status/\textit{Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
 La sintassi delle risposte è rimasta invariata.
-Vediamo ora un esempio di questa nuova sintassi, prenderemo spunto da un caso già trattato in precedenza nella sezione~\ref{sec:estensione_del_processo_di_valutazione}.
+
+% section estensione_linguistica (end)
+
+\section{Semantica} % (fold)
+\label{sec:semantica}
+La semantica di FACPL rimane molto simile a quella descritta in sezione \ref{sec:semantica_originale}, quindi verranno di seguito descritte in modo informale solo le novità introdotte.\\ \par
+La prima di queste riguarda la valutazione delle richieste dal PDP. Il PDP ora non si deve più basare solo su richieste totalmente scollegate l'una dall'altra, e quindi è stato introdotto il concetto di \status.
+Lo stato permette di rappresentare il comportamento passato del sistema, e lo fa introducendo una nuova serie di attributi chiamati \statusattribute.\\ \par
+Nel linguaggio questo nuovo tipo di attributi viene considerato al pari di normali attributi, quindi si ha la possibilità di effettuare tutte le operazioni di confronto tra di essi, ma in più si deve avere la possibilità di modificarli e memorizzarli in modo da poterli sfruttare per \textit{Usage Control}.\\ \par
+
+Per questo sono state aggiunte delle \textit{Pep Action}, ovvero delle azioni eseguite dal PEP in seguito alla valutazione di \textit{Obligations status}. La prima di queste è l'addizione, 
+ e permette, in seguito alla valutazione di una \textit{Obligations}, l'aggiunta di un valore numerico, definito dallo sviluppatore, ad uno \statusattribute \ di tipo \texttt{float} o \texttt{int}. 
+\begin{verbatim}
+ obl:
+     [permit M add(counter, 2)]
+\end{verbatim}
+Per esempio l'esecuzione di questa \textit{Obligation} su un'attributo, chiamato \textit{counter}, inizializzato a $0$, porterà l'attributo al 
+valore 2. 
+
+L'operazione di somma è stata implementata anche per altri due tipi, \texttt{Date} e \texttt{String}.
+Oltre all'addizione sono presenti funzioni per la sottrazione, divisione e moltiplicazione che operano in modo analogo a questa appena descritta, ma sono definite soltanto su valori numerici.
+
+Un'altra operazione, definita solo sul tipo \texttt{boolean} modifica il valore di uno \statusattribute \ di tipo booleano.
+\begin{verbatim}
+ obl:
+     [permit M flag(isFoo, true)]
+\end{verbatim}
+L'esecuzione con successo di questa \textit{Obligation} porterà l'attributo \textit{flag} ad avere un valore \texttt{true}. Questo tipo di operazione è stata definita anche per il tipo \texttt{Date} e \texttt{String}.
+
+Vediamo ora un esempio di questa nuova estensione, prenderemo spunto dal primo caso trattato in precedenza nella Sezione~\ref{sec:estensione_del_processo_di_valutazione}.
 %SOSTITUIRE CON LISTINGS PER FACPL
 \lstinputlisting[language = FACPL, caption = {Esempio per la sintassi}\label{lst:esempio_sintassi}]{./Source/first_example_facpl}
 In questo esempio (Codice \ref{lst:esempio_sintassi}) si può vedere come nel PAS è stato definito uno stato, con al suo interno uno solo attributo inizializzato con valore $0$.
 Successivamente si può notare nella \textit{Rule} che viene fatto un controllo sul valore di quest'attributo.
 Infine nella \textit{Obligation} si può notare come viene aggiornato lo stato dell'attributo in base al risultato della valutazione della \textit{Rule}.
-% section estensione_linguistica (end)
 
-\section{Semantica} % (fold)
-\label{sec:semantica}
-Sostanzialmente la semantica di FACPL rimane molto simile a quella descritta in sezione \ref{sec:semantica_originale}, quindi verranno di seguito descritte in modo informale solo le novità introdotte.\\ \par
-La prima di queste riguarda la valutazione delle richieste dal PDP. Il PDP ora non si deve più basare solo su richieste totalmente scollegate l'una dall'altra, e quindi è stato introdotto il concetto di \status.
-Lo stato serve per l'appunto per memorizzare il comportamento passato del sistema, e lo fa introducendo una nuova serie di attributi chiamati \statusattribute.\\ \par
-Nel linguaggio questo nuovo tipo di attributi viene considerato al pari di normali attributi, quindi si ha la possibilità di effettuare tutte le operazioni di confronto tra di essi, ma in più si deve avere la possibilità di modificarli e memorizzarli in modo da poterli sfruttare per \textit{Usage Control}.\\ \par
-Gli \statusattribute \ vengono inizialmente definiti nel PAS, ed avranno un tipo, un identificatore ed eventualmente un valore. Per esempio uno \statusattribute \ definito in questo modo \textit{(boolean isWriting = false)} codifica un attributo di stato di tipo booleano chiamato "isWriting" ed inizializzato a \texttt{false}.\\ \par
-Come detto prima bisogna avere la possibilità di modificare questi nuovi attributi, e per questo sono state aggiunte delle \textit{Pep Action}, ovvero delle azioni eseguite dal PEP in seguito alla valutazione di \textit{Obligations}.
-\subsection*{\textit{add(Attribute, int)} e \textit{add(Attribute, float)}} % (fold)
-\label{ssub:opadd}
- Questa \textit{Pep Action} permette, in seguito alla valutazione di una \textit{Obligations}, l'aggiunta di un valore numerico ad uno \statusattribute \ di tipo \texttt{float} o \texttt{int}. Effettuare questa operazione su un tipo non permesso porterà ad un errore in fase di valutazione.
-\begin{verbatim}
- obl:
-     [permit M add(counter, 2)]
-\end{verbatim}
-Per esempio l'esecuzione di questa \textit{Obligation} su un'attributo, chiamato \textit{counter}, inizializzato a $0$, porterà l'attributo al valore 2.
-Mentre l'esecuzione di questo
-\begin{verbatim}
- obl:
-     [permit M add(counter, "foo")]
-\end{verbatim}
-porterà ad un errore per incoerenza sul tipo.
-% subsection add (end)
-\subsection*{\textit{sub(Attribute, int)} e \textit{sub(Attribute, float)}} % (fold)
-\label{ssub:opsub}
-Questo insieme \textit{Pep Actions} è semplicemente il duale della precedente, ciò vuol dire che invece che effettuare la somma di un valore numerico ad uno \statusattribute \ farà una sottrazione.\\ \par
-Quindi, riprendendendo l'esempio citato per la add:
-\begin{verbatim}
- obl:
-     [permit M sub(counter, 2)]
-\end{verbatim}
-l'esecuzione corretta di questa \textit{Obligation} porterà nuovamente l'attributo ad il suo valore originale, ovvero $0$. Ovviamente riguardo gli errori vale lo stesso discorso fatto in precedenza.
-% subsection subsection_name (end)
-
-\subsection*{\textit{div(Attribute, int)} e \textit{div(Attribute, float)}} % (fold)
-\label{ssub:opdiv}
-Le \textit{Pep Actions} di questa categoria effettuano una divisione tra un attributo ed un numero passatogli come parametro.
-\begin{verbatim}
- obl:
-     [permit M div(number, 2)]
-\end{verbatim}
-Presupponendo che il valore dell'attributo \textit{number} sia inizialmente 6 l'esecuzione di questa operazione lo porterà a $6/2$, ovvero 3.
-% subsection div(attribute, int)_e_div(attribute, float) (end)
-
-\subsection*{\textit{mul(Attribute, int)} e \textit{mul(Attribute, float)}} % (fold)
-\label{ssub:opdiv}
-Quest'azione, come facilmente intuibile dal nome effettua la moltiplicazione.
-Considerando l'esempio fatto per la div
-\begin{verbatim}
- obl:
-     [permit M mul(number, 3)]
-\end{verbatim}
-Visto che il valore dell'attributo, modificato in precedenza dalla div, è 3 l'operazione effettuata sarà $3*3$ che darà come risultato 9.
-
-
-% subsection div(attribute, int)_e_div(attribute, float) (end)
-
-\subsection*{flag(Attribute, boolean)} % (fold)
-\label{ssub:opflag}
-Quest'operazione, definita solo sul tipo \texttt{boolean} modifica il valore di uno \statusattribute \ di tipo booleano.
-\begin{verbatim}
- obl:
-     [permit M flag(isFoo, true)]
-\end{verbatim}
-L'esecuzione con successo di questa \textit{Obligation} porterà l'attributo \textit{flag} ad avere un valore \texttt{true}.
-% subsection subsection_name (end)
-
-\subsection*{sumDate(Attribute, date)}
-\label{ssub:opdate}
-
-Anche questa azione, come quella di prima è definita su un solo tipo, ma questa volta il tipo è \texttt{Date}. Il tipo \texttt{Date} può essere espresso con in tre forme diverse
-\begin{itemize}
-\item{\texttt{HH:mm:ss}}
-\item{\texttt{yyyy/MM/dd}}
-\item{\texttt{yyyy/MM/dd-HH:mm:ss}}
-\end{itemize}
-Per fare un altro esempio consideriamo uno \statusattribute \ di tipo \texttt{date} inizializzato al giorno \texttt{2016/04/20} di nome \textit{foo}.
-\begin{verbatim}
-	 obl:
-     [permit M sumDate(foo, 24:00:00)]
-\end{verbatim}
-La corretta esecuzione di questa \textit{Obligation} porterà il valoer di \textit{foo} al giorno successivo, ovvero il \texttt{21 Aprile 2016}.
-
-\subsection*{sumString(Attribute, string)}
-\label{ssub:opsumstring}
-
-L'operazione ora descritta coinvolge il tipo \texttt{string}. Passandogli un attributo
-di tipo \texttt{String} ed una stringa effettuerà la concatenazione.
-\begin{verbatim}
-	 obl:
-     [permit M sumString(Pablo, " Neruda")]
-\end{verbatim}
-Se l'attributo \texttt{Pablo} avesse il valore \textit{"Pablo"}, il risultato di questa operazione farebbe cambiare valore all'attributo in \textit{"Pablo Neruda"}.
-
-\subsection*{setValue(Attribute, string)}
-\label{ssub:opsetvalue}
-
-Quest'operazione è molto simile alla precedente, ma invece che concatenare le stringhe sostituisce il valore presente dentro l'attributo con quello passatogli come parametro.
-\begin{verbatim}
-	 obl:
-     [permit M setValue(Pablo, "Aghiò Aghiò")]
-\end{verbatim}
-Quindi l'esecuzione corretta di quest'azione porterà l'attributo che precedentemente aveva il valore 
-\textit{"Pablo Neruda"} ad avere il valore \textit{"Aghiò Aghiò"}.
-
-
-\subsection*{setDate(Attribute, date)}
-\label{ssub:opsetvalue}
-
-Quest'operazione è uguale alla precedente, ma invece che operare sul tipo stringa opera sul tipo Data.
-\begin{verbatim}
-	 obl:
-     [permit M setDate(foo, 1993/09/24)]
-\end{verbatim}
-L'esecuzione di questa \textit{Obligation} modificherà il valore di \textit{foo} al 24 Settembre 1993.
-% section semantica (end)
-
-
-\section{Esempi} % (fold)
+\section{Formalizzazione dei case study} % (fold)
 \label{sec:esempi}
 
 Queste nuove funzionalità introdotte servono allo scopo descritto in sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.

@@ -1,8 +1,9 @@
 
 \begin{table}[h]
 \centering
-\small
+\footnotesize
 \caption{Sintassi di $FACPL_{PB}$} 
+\hrule
 $
 \begin{array}{@{\,}r@{\ \ }r@{\ }r@{\ \ }l@{\ }}
 
@@ -31,16 +32,11 @@ $
 && \mid &
 \firstApp \Sep \onlyOneApp \Sep \weakCon \Sep \strongCon 
 \\[.2cm]
-\textbf{fulfilment strategies} & \delta
-& ::= & 
-\greedy \Sep \all 
-\\[.2cm]
 {\textbf{Policies}} &
 \mathit{Policy} & ::= &
 \ruleOpt{\mathit{Effect}\ \ \x{target:} \, Expr\ \ \x{obl:} \, \mathit{Obligation}^{*} \, } \\
 && \mid &
-\{ \algNT\ \ \x{target:} \, Expr\ \ \\
-&&  &
+\{ \algNT\ \ \x{target:} \, Expr\ \
 \x{policies:} \, \mathit{Policy}^{+}  \ \ \x{obl:} \, \mathit{Obligation}^{*} \, \}
 \\[.2cm]
 {\textbf{Effects}} &
@@ -83,6 +79,7 @@ $
 \\[.1cm]
 \end{array}
 $
+\hrule
 \label{tab:facpl_new_syntax}
 \end{table}
 

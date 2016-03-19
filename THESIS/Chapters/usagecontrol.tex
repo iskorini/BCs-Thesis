@@ -141,6 +141,7 @@ I componenti necessari a questo tipo di processo decisionale sono dei predicati,
 
 
 \subsection{Caso di studio 1: Gestione lettura e scrittura di file} % (fold)
+\label{sub:case1}
 
 Dentro ad un sistema ci sono vari file, ai quali per questione di consistenza, bisogna limitare l'accesso.
 La regola è: \textit{”per un determianto file un massimo di due persone possono accedere in lettura oppure solo una persona può accedere in scrittura"}. In Figura~\ref{fig:diagrammaflussoprimoesempio} viene mostrato un diagramma di flusso che sintetizza, e permette di capire meglio, la regola di accesso. Quando arriva la richiesta viene verificata la presenza nel database del richiedente e del file richiesto, se entrambe danno esito positivo si passa all'analisi dei requisiti per soddisfare la richiesta. \par
@@ -160,6 +161,8 @@ Infine, entrambi gli utenti smettono di leggere, ma uno di loro vuole apportare 
 
 
 \subsection{Caso di studio 2: Noleggio e acquisto di contenuti}
+\label{sub:case2}
+
 Un altro utilizzo possibile di \textit{Usage Control} riguarda l'analisi del comportamento passato. Un'azienda fornisce  ai propri clienti 
 la possibilità di effettuare noleggi o acquisti di contenuti multimediali (musica, video, film, serie tv e via discorrendo).\par
 In caso il contenuto fosse stato acquistato, l’acquirente potrà ottenere
