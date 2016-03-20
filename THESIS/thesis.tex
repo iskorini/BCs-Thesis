@@ -225,7 +225,7 @@ textheight    = 21.5cm,
 \emph{"Stay hungry, stay hungry" \break --- Paolo Bitta, l'uomo chiamato contratto} \vspace{\stretch{2}}\null
 \end{flushright}
 \cleardoublepage
-
+\nocite{*}
 \include{Chapters/introduzione}
 \include{Chapters/usagecontrol}
 \include{Chapters/FACPL}
@@ -234,7 +234,11 @@ textheight    = 21.5cm,
 
 
 \include{Chapters/conclusioni}
-\include{Chapters/bibliografia}
+\bibliographystyle{abbrv}
+\bibliography{Chapters/Bib}
+
+
+
 \section*{Lista di Acronimi}
 \begin{acronym}[FACPL]
 \acro{ACL}[ACL]{Access Control List}
