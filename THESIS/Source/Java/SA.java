@@ -1,36 +1,8 @@
-public class StatusAttribute {
-	private String id;
+public class StatusAttribute extends AttributeName {
 	private FacplStatusType type;
-	private String value;
 	public StatusAttribute(String id, FacplStatusType type) {
-		this.id = id;
+		super(id,"status");
 		this.type = type;
-		if (type == (FacplStatusType.INT) || type == (FacplStatusType.DOUBLE)) {
-			value = "0";
-		} else if (type == FacplStatusType.BOOLEAN) {
-			value = "false";
-		} else if (type == FacplStatusType.DATE) {
-			value = "0";
-		} else {
-			value = "";
-		}
-	}
-	public StatusAttribute(String id, FacplStatusType type, String value) {
-		this.id = id;
-		this.type = type;
-		this.value = value;
-	}
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public FacplStatusType getType() {
 		return type;
@@ -39,16 +11,22 @@ public class StatusAttribute {
 		this.type = type;
 	}
 	@Override
+	public String toString() {
+		return this.type.toString() + "/" + super.getIDAttribute() ;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof StatusAttribute) {
 			StatusAttribute o = (StatusAttribute) obj;
-			return this.getId() == o.getId() && this.getType() == o.getType();
+			return super.getIDAttribute() == o.getIDAttribute() && this.getType() == o.getType();
 		}
 		return false;
 	}
-	@Override
-	public String toString() {
-		return this.type.toString() + "/" + this.id + "/" + this.value.toString();
-	}
-
 }

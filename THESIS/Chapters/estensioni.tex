@@ -91,75 +91,88 @@ Infine nella \textit{Obligation} si può notare come viene aggiornato lo stato d
 \label{sec:esempi}
 
 Queste nuove funzionalità introdotte servono allo scopo descritto in Sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.
-Mostreremo ora l'implementazione in FACPL dei due esempi trattati in Sezione~\ref{sec:usage_control}. 
+In questi due semplici case study lo stato gioca un ruolo fondamentale, in quanto il sistema di access control, per poter soddisfare requisiti di consistenza deve tener traccia del comportamento passato.
+Mostreremo ora l'implementazione in FACPL dei due esempi trattati in Sezione~\ref{sec:usage_control}. Per comodità è usata la sintassi del plugin di Eclipse, che differisce leggermente da quella presentata in \ref{sec:estensione_linguistica}. 
+
 \subsection{Accesso ai file} % (fold)
 \label{ssub:primo_esempio}
-\lstinputlisting[language = FACPL, caption = {Primo esempio}\label{lst:PrimoEsempio_FACPL}]{./Source/EsempioReadWrite_facpl.fpl}
-Per semplicità, in questo codice, vengono mostrate le policy di accesso per un solo file.
-Il primo esempio in Sezione~\ref{sec:usage_control} poneva una regola sull'accesso ai file, ovvero permetteva un massimo di due persone in contemporanea che potevano effettuare l'accesso in lettura oppure un massimo di una persona che poteva ottenere l'accesso in scrittura.\\ \par
-Tutte le policy del codice~\ref{lst:PrimoEsempio_FACPL} sono chiuse in un \textit{PolicySet}. Il target del PolicySet \texttt{ReadWrite\_Policy} verifica che le richieste provengano da utenti che hanno nome \textit{Alice} o \textit{Bob}, in caso contrario il responso sarà \texttt{Not Applicable}.\\ \par
-Successivamente sono state create quattro policy per gestire le quattro operazioni possibili, ovvero \texttt{read}, \texttt{write}, \texttt{stopRead} ed infine \texttt{stopWrite}.\\ \par
-Prendiamo in considerazione la prima policy, quella per la \texttt{write}. Come prima è presente un target, che richiede questa volta due diverse condizioni, la prima riguarda l'id del file richiesto, la seconda invece richiede che l'azione sia \texttt{write}. Le parti interessanti di questa policy sono due, la prima riguarda la \textit{Rule}, la seconda la \textit{Obligation}.\\ \par
-La \textit{Rule} restituisce \texttt{permit} se le due condizioni dell'equal sono vere, come si può facilmente notare l'operazione di confronto non viene fatta tra una stringa ed un normale attributo, ma tra una stringa ed uno \statusattribute.\\ \par
-L'ultima cosa da notare è l'unica \textit{Obligation} presente per questa policy. Questo tipo particolare di \textit{Obligation}, ha sempre al suo interno un'azione che verrà eseguita dal PEP, questa volta però non sarà una semplice azione come scrivere un log o mandare una mail, l'azione andrà a modificare lo stato del sistema, mettendo il valore \texttt{true} all'attributo \textit{isWriting}.\\ \par
-Prendiamo ora una serie di richieste.
+Il primo esempio in Sezione~\ref{sec:usage_control} poneva una regola sull'accesso ai file, ovvero permetteva un massimo di due persone in contemporanea che potevano effettuare l'accesso in lettura oppure un massimo di una persona che poteva ottenere l'accesso in scrittura. \par
+Tutte le policy che saranno mostrate in questa sezione sono incluse in un \textit{PolicySet} che racchiude al suo interno un espressione di tipo target, mostrata in Codice~\ref{lst:PrimoEsempio_FACPL_target}.
+\lstinputlisting[language = FACPL, linerange = 1-2,  caption = {Target PolicySet}\label{lst:PrimoEsempio_FACPL_target}]{./Source/EsempioReadWrite_facpl.fpl}
+Il target del PolicySet \texttt{ReadWrite\_Policy} verifica che le richieste provengano da utenti che hanno nome \textit{Alice} o \textit{Bob}, in caso contrario il responso sarà \texttt{Not Applicable}. \par
+Successivamente sono state scritte quattro policy per gestire le quattro operazioni possibili, ovvero \texttt{read}, \texttt{write}, \texttt{stopRead} ed infine \texttt{stopWrite}. \par
+Prendiamo in considerazione la policy mostrata in Codice~\ref{lst:PrimoEsempio_FACPL_write}, ovvero quella per la \texttt{write}. Come prima è presente un target, che richiede questa volta due diverse condizioni, la prima riguarda l'id del file richiesto, la seconda invece richiede che l'azione sia \texttt{write}. Le parti interessanti di questa policy sono due, la prima riguarda la \textit{Rule}, la seconda la \textit{Obligation}. \par
+La \textit{Rule} restituisce \texttt{permit} se le due condizioni dell'equal sono vere, come si può facilmente notare l'operazione di confronto non viene fatta tra una stringa ed un normale attributo, ma tra una stringa ed uno \statusattribute. \par
+L'ultima cosa da notare è l'unica \textit{Obligation} presente per questa policy. Questo tipo particolare di \textit{Obligation}, ha sempre al suo interno un'azione che verrà eseguita dal PEP, questa volta però non sarà una semplice azione come scrivere un log o mandare una mail, l'azione andrà a modificare lo stato del sistema, mettendo il valore \texttt{true} all'attributo \textit{isWriting}.
+\lstinputlisting[language = FACPL, linerange = 4-13, firstnumber = 4, caption = {Policy Write}\label{lst:PrimoEsempio_FACPL_write}]{./Source/EsempioReadWrite_facpl.fpl}
+Successivamente si prende in considerazione la policy per l'operazione \texttt{stopWrite}, mostrata in Codice~\ref{lst:PrimoEsempio_FACPL_stopwrite}.
+\lstinputlisting[language = FACPL, linerange = 24-32, firstnumber = 24, caption = {Policy StopWrite}\label{lst:PrimoEsempio_FACPL_stopwrite}]{./Source/EsempioReadWrite_facpl.fpl}
+Il target definito da questa policy è molto simile a quello precedente, la differenza è nella seconda parte: in questo caso l'azione richiesta non è \texttt{Write}, ma \texttt{StopWrite}.\par
+Come prima c'è una \textit{Rule} all'interno che esegue un confronto tra uno \statusattribute\ ed un valore, in questo caso \texttt{true}. Questo confronto in questo caso serve per verificare la reale presenza di uno scrittore al momento della richiesta. 
+Nel caso fosse presente, e quindi la regola restituisse \texttt{true}, viene eseguita la Obligation Status che si occupa della modifica dello stato.
+Le altre policy, per definire le restanti due operazioni, sono analoghe a quelle appena descritte e si possono trovare in Codice~\ref{lst:PrimoEsempio_FACPL}.
+\subsubsection{Valutazione}
+Prendiamo ora una serie di richieste ed analizziamone la loro valutazione.
 \lstinputlisting[language = FACPL, caption = {Richieste del primo esempio}\label{lst:PrimoEsempioRichieste_FACPL}]{./Source/EsempioReadWrite_facpl_richieste.fpl}
+La prima richiesta proviene da Alice, e sarà una lettura sul file1, la successiva proviene da Bob, è sempre sul file1, ma l'azione richiesta è di scrittura. Le altre sono analoghe.\par
 
-L'output di queste richieste sarà il sguente
-\begin{verbnobox}[\small]
- Request1:
-	  PDP Decision=
- 	  Decision: PERMIT 
- 	  Obligations: PERMIT M AddStatus([INT/counterReadFile1/0, 1])
-	  PEP Decision= PERMIT
- Request2:
-	  PDP Decision=
- 	  Decision: DENY Obligations: 
-	  PEP Decision= DENY
- Request3:
-	  PDP Decision=
- 	  Decision: PERMIT 
- 	  Obligations: PERMIT M AddStatus([INT/counterReadFile1/1, 1])
-	  PEP Decision= PERMIT
- Request4:
-	  PDP Decision=
- 	  Decision: PERMIT
- 	  Obligations: SubStatus([INT/counterReadFile1/2, 1])
-	  PEP Decision= PERMIT
- Request5
-	  PDP Decision=
- 	  Decision: PERMIT
- 	  Obligations: PERMIT M SubStatus([INT/counterReadFile1/1, 1])
-	  PEP Decision= PERMIT
- Request6:
-	  PDP Decision=
- 	  Decision: PERMIT 
- 	  Obligations: PERMIT M FlagStatus([BOOLEAN/isWriting/false, true])
-	  PEP Decision= PERMIT
- \end{verbnobox}
-Analizziamo ora il motivo di queste decisioni. Nella prima richiesta ovviamente nessuno sta leggendo o scrivendo, quindi viene tranquillamente restituito \permit. Visto che è presente una \textit{obligation} lo stato verrà aggiornato, sommando un'unità al contatore di letture.
+L'output di queste richieste è mostrato in Tabella~\ref{tab:risultati_1}. Analizziamo ora il motivo di queste decisioni. Nella prima richiesta ovviamente nessuno sta leggendo o scrivendo, quindi viene tranquillamente restituito \permit. Visto che è presente una \textit{obligation} lo stato verrà aggiornato, sommando un'unità al contatore di letture.
 Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo, però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa.\\ \par
 La quarta e la quinta richiesta vengono fatte per avvisare il sistema che la lettura è terminata, ovviamente la risposta è \permit, e la \textit{obligation} corrispondente decrementerà il contatore.
 La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, poiché nessuno sta scrivendo o leggendo.
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Risultati della valutazione}
+\label{tab:risultati_1}
+\begin{tabular}{cccc}
+\multicolumn{1}{l}{} & \textbf{Risultato} & \textbf{Stato Prima} & \textbf{Stato dopo} \\ \hline
+\textbf{Richiesta 1} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 0\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 1\end{tabular} \\ \hline
+\textbf{Richiesta 2} & \textit{DENY} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 1\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 1\end{tabular} \\ \hline
+\textbf{Richiesta 3} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 1\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 2\end{tabular} \\ \hline
+\textbf{Richiesta 4} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 2\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 1\end{tabular} \\ \hline
+\textbf{Richiesta 5} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 1\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 0\end{tabular} \\ \hline
+\textbf{Richiesta 6} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 0\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = true\\ CounterReadFile1 = 0\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
 
 
-% subsection primo_esempio (end)
 
 \subsection{Noleggio e acquisto di contenuti} % (fold)
 \label{sub:secondo_esempio}
 
 In questo secondo esempio analizzeremo il caso di un'azienda di distribuzione di contenuti multimediali che vuole regolare l'accesso di quest'ultimi attraverso policy.
 Faremo un breve esempio con un solo file e due utenti, uno dei due utenti comprerà il file, l'altro lo noleggierà a tempo determinato.
-Nel codice~\ref{lst:SecondoEsempio_FACPL} vengono mostrate solo una parte delle policy presenti nel codice completo ~\ref{lst:SecEsCompl} \ mostrato in Appendice~\ref{cap:appendiceA}.
+Nel codice~\ref{lst:SecondoEsempio_FACPL} vengono mostrate solo una parte delle policy presenti nel Codice completo ~\ref{lst:SecEsCompl} \ mostrato in Appendice~\ref{cap:appendiceA}.
 \lstinputlisting[firstline = 1, lastline = 39, language = FACPL, caption = {Secondo Esempio}\label{lst:SecondoEsempio_FACPL}]{./Source/second_example_facpl}
 Queste due policy, e anche le altre che non sono state mostrate, sono racchiuse tutte all'interno del \textit{Policy Set} Negozio il quale come prima cosa verifica se chi ha fatto la richiesta ha un determinato nome, in questo caso \textit{Bob} o \textit{Alice}.\\ \par
 Successivamente, se uno dei due effettua la richiesta di \texttt{BUY}, ovvero l'acquisto senza alcun tipo di limitazione, si entra nella prima policy e, tramite le \textit{Obligation} si cambia l'attributo di stato. Invece se un utente decidesse di effettuare il noleggio con la modalità dove si limita il numero di visioni si entrerebbe nella seconda \textit{Policy Set} la quale, attraverso \textit{Obligations} aumenterà il numero di visioni di due unità. Analogo è il caso del noleggio a tempo.\\ \par
 Per disciplinare la visione è presente un altro \textit{Policy Set}, mostrato anch'esso parzialmente in codice~\ref{lst:secondo_esempio_view}.
 \lstinputlisting[firstline = 59, lastline = 71, language = FACPL, caption = {Secondo Esempio}\label{lst:secondo_esempio_view}]{./Source/second_example_facpl}
-Mostriamo ora in Codice~\ref{lst:richieste_2} alcune richieste che possono essere fatte al sistema ed analizziamo le risposte che produrranno.
+\subsubsection{Valutazione}
+Mostriamo ora in Codice~\ref{lst:richieste_2} alcune richieste che possono essere fatte al sistema ed analizziamo le risposte che produrranno, in Tabella~\ref{tab:valutazione_2} è mostrato un quadro riassuntivo del risultato delle richieste.
 \lstinputlisting[language = FACPL, caption = {Richieste del Secondo Esempio}\label{lst:richieste_2}]{./Source/second_example_request}
-La prima e la seconda richiesta sono richieste di visione, che ovviamente restituiranno entrambe \deny, in quanto nessun utente ha effettuato acquisti o noleggi.
-Successivamente Alice effettuerà un acquisto ed una visione ed entrambi andranno a buon fine. A questo punto Bob, a cui prima era stata negata la visione effettuerà una richiesta di noleggio e dopo una richiesta di visione, il risultato di entrambe sarà \permit.
+La prima e la seconda richiesta sono richieste di visione, che ovviamente restituiranno entrambe \deny, in quanto lo stato del sistema non è stato modificato da nessuno poiché nè Alice nè Bob hanno effettuato acquisti o noleggi.
+Successivamente Alice effettuerà un acquisto, e quindi tramite la Obligation Status verrà modificato lo stato del sistema, accreditando così l'acquisto. Dopo aver effettuato questa richiesta Alice ne effettua un'altra, questa volta di visione. 
+A questo punto la policy che disciplina quest'ultima richiesta di Alice effettua una verifica dello \statusattribute \ \textit{AccessTypeAlice}, e visto che lo trova cambiato dalla precedente richiesta di acquisto permette la visione.
+Bob, a cui all'inizio era stata negata la visione effettuerà una richiesta di noleggio e quindi cambierà lo stato. Dopo, sempre Bob, richiede la visione, il risultato di entrambe sarà ovviamente \permit.
 % subsection secondo_esempio (end)
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Riassunto Valutazione}
+\label{tab:valutazione_2}
+\begin{tabular}{cccc}
+\multicolumn{1}{l}{} & \textbf{Risultato} & \textbf{Stato Prima} & \textbf{Stato dopo} \\ \hline
+\textbf{Richiesta 1} & \textit{DENY} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = null\\ AccessTypeBob = null\end{tabular} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = null\\ AccessTypeBob = null\end{tabular} \\ \hline
+\textbf{Richiesta 2} & \textit{DENY} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = null\\ AccessTypeBob = null\end{tabular} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = null\\ AccessTypeBob = null\end{tabular} \\ \hline
+\textbf{Richiesta 3} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = null\\ AccessTypeBob = null\end{tabular} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = BUY\\ AccessTypeBob = null\end{tabular} \\ \hline
+\textbf{Richiesta 4} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = BUY\\ AccessTypeBob = null\end{tabular} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = BUY\\ AccessTypeBob = null\end{tabular} \\ \hline
+\textbf{Richiesta 5} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = BUY\\ AccessTypeBob = null\end{tabular} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = BUY\\ AccessTypeBob = TIME\\ BobFile1Expiration = 2016/04/22\end{tabular} \\ \hline
+\textbf{Richiesta 6} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = BUY\\ AccessTypeBob = TIME\\ BobFile1Expiration = 2016/04/22\end{tabular} & \begin{tabular}[c]{@{}c@{}}AccessTypeAlice = BUY\\ AccessTypeBob = TIME\\ BobFile1Expiration = 2016/04/22\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
 
 % section esempi (end)

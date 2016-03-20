@@ -9,8 +9,8 @@ $
 
 &&&\\[-.2cm]
 {\textbf{Policy Authorisation Systems}} &
-\mathit{PAS} & ::= & ( \,  \x{pep:} \, \mathit{EnfAlg}\ \ \x{pdp:}\, \mathit{PDP} \, \  \x({status:}\, \mathit{
-[Attribute]^+})^*)
+\mathit{PAS} & ::= & ( \,  \x{pep:} \, \mathit{EnfAlg}\ \ \x{pdp:}\, \mathit{PDP} \, \  \x{status:}\, \mathit{
+[Attribute]})
 \\[.2cm]
 {\textbf{Attribute}} &
 \mathit{Attribute}
@@ -18,7 +18,7 @@ $
 \\[.2cm]
 {\textbf{Type}} &
 \mathit{Type}
-& ::= & \x{int} \ | \ \x{boolean} \ | \ \x{date} \ | \ \x{float}
+& ::= & \x{int} \ | \ \x{boolean} \ | \ \x{date} \ | \ \x{double}
 \\[.2cm]
 {\textbf{Enforcement algorithms}} &
 \mathit{EnfAlg}
@@ -69,7 +69,7 @@ $
 \\[.2cm]
 %
 \textbf{Attribute Names} & 
-\mathit{Name} & ::= & \mathit{Identifier}/\mathit{Identifier} \ | \ \mathit{Status}/\mathit{Identifier}\\[.2cm]
+\mathit{Name} & ::= & \mathit{Identifier}/\mathit{Identifier} \ | \ \x{status}/\mathit{Identifier}\\[.2cm]
 %
 \textbf{Literal Values} &
 \mathit{Value} & ::= & \x{true} \mid \x{false} \mid \mathit{Double} \mid \mathit{String} \mid \mathit{Date}

@@ -1,34 +1,38 @@
 public class FacplStatus {
-	private List<StatusAttribute> attributeList;
 	private String statusID;
+	private HashMap<StatusAttribute,Object> status;
 	public FacplStatus(String statusID) {
-		attributeList = new ArrayList<StatusAttribute>();
+		this.status = new HashMap<StatusAttribute,Object>();
 		this.statusID = statusID;
 	}
-	public FacplStatus(List<StatusAttribute> attributeList, String statusID) {
-		this.attributeList = attributeList;
+	public FacplStatus(HashMap<StatusAttribute,Object> attributeList, String statusID) {
+		this.status = attributeList;
 		this.statusID = statusID;
 	}
 	public FacplStatus() {
-		attributeList = new ArrayList<StatusAttribute>();
+		this.status = new HashMap<StatusAttribute,Object>();
 		this.statusID = UUID.randomUUID().toString().substring(0, 8);
+	}
+	public FacplStatus(HashMap<StatusAttribute,Object> attributeList) {
+		this.status = attributeList;
+		this.statusID =  UUID.randomUUID().toString().substring(0, 8);
 	}
 	public String getStatusID() {
 		return this.statusID;
 	}
-	public void add(StatusAttribute a) {
-		this.attributeList.add(a);
+	public void add(StatusAttribute a,String v) {
+		this.status.put(a,v);
 	}
-	public StatusAttribute retrieveAttribute(StatusAttribute attribute) throws MissingAttributeException {
-		int i = this.attributeList.indexOf(attribute);
-		if (i != -1) {
-			return this.attributeList.get(i);
-		} else {
+	public Object retrieveAttribute(StatusAttribute attribute) throws MissingAttributeException {
+		Object v = this.status.get(attribute);	
+		if (v == null){
 			throw new MissingAttributeException("attribute doesn't exist in the current status");
-		}
+		} else{ return v; }
 	}
-	public Object getValue(StatusAttribute attribute) throws MissingAttributeException {
-		return (Object) (this.retrieveAttribute(attribute).getValue());
+	public void setAttribute(StatusAttribute attribute, Object o) throws MissingAttributeException {
+		Object v = this.status.get(attribute);
+		if (v == null){
+			throw new MissingAttributeException("attribute doesn't exist in the current status");
+		} else{ this.status.put(attribute, o); }
 	}
-
 }
