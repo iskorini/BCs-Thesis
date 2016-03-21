@@ -1,11 +1,3 @@
-package primoEsempioStatus;
-
-import java.util.HashMap;
-
-import it.unifi.facpl.lib.enums.FacplStatusType;
-import it.unifi.facpl.system.status.FacplStatus;
-import it.unifi.facpl.system.status.StatusAttribute;
-
 public class StatusRW {
 
 private FacplStatus status;

@@ -23,12 +23,12 @@ componenti al grafico, rendendolo così adatto allo \textit{Usage Control}, e qu
 
 Come si nota in Figura \ref{fig:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
 Questo componente rappresenta lo \status \ (Stato), al quale il \ac{PDP} e \ac{PEP} ci accedono tramite attributi.
-Questi attributi vengono chiamati \statusattribute. Ovviamente quest'estensione non modifica il comportamento nel caso di assenza di stato, di conseguenza la valutazione rimane inalterata rispetto a quella descrita precedentemente, mentre viene modificata nel caso in cui lo stato sia presente.\\ \par
-Analizziamo quindi, a scopo esemplificativo, il secondo caso, ovvero quando lo stato è presente. Inizialmente viene definito il sistema, che ora rispetto a quelli già citati in Sezione~\ref{sec:valutazione_facpl}, ha un componente in più, ovvero lo Stato.
+Questi attributi vengono chiamati \statusattribute. \par
+Analizziamo quindi, a scopo esemplificativo, come viene gestita la presenza dello stato. Inizialmente viene definito il sistema, che ora rispetto a quelli già citati in Sezione~\ref{sec:valutazione_facpl}, ha un componente in più, ovvero lo Stato.
 Fino al quarto step il comportamento è analogo a quello precedente, mentre cambia negli step successivi.\\ \par
 Al quinto step il \textit{PDP} non necessiterà solo dei normali attributi d'ambiente, ma necessiterà anche degli \statusattribute \ coinvolti nella richiesta effettuata. Il \textit{Context Handler} quindi non andrà solo a fare la ricerca all'interno dell'environment, ma andrà a cercare anche gli \statusattribute \ all'interno dello \status.\\ \par
-A questo punto, quando il PDP avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre.\\ \par
-Nel caso in cui viene restituto \permit \ o \deny \ è necessario fare l'enforcement della risposta del PDP. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \textit{PEP} (Passo 11-14). Le nuove azioni sono eseguite attraverso un nuovo tipo di obligations, chiamate \textit{ObligationStatus}. 
+A questo punto, quando il \ac{PDP} avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre.\\ \par
+Nel caso in cui viene restituto \permit \ o \deny \ è necessario fare l'enforcement della risposta del \ac{PDP}. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \ac{PEP} (Passo 11-14). Le nuove azioni sono eseguite attraverso un nuovo tipo di obligations, chiamate \textit{ObligationStatus}. 
 Quest'ultime vengono valutate dal \ac{PEP} alla pari di una normale Obligation, ma la sostanziale differenza tra esse ed una normale Obligation è legata alla funzione che contengono. Mentre le normali Obligation conterranno generiche funzioni, come creare un log o mandare una mail, le Obligation Status potranno eseguire azioni per modificare lo stato del sistema.
 Una volta effettuato l'enforcement viene restituta la decisione finale.
 
@@ -38,12 +38,12 @@ Una volta effettuato l'enforcement viene restituta la decisione finale.
 
 \section{Estensione Linguistica} % (fold)
 \label{sec:estensione_linguistica}
-Per implementare queste nuove funzionalità è stata modificata anche la grammatica di FACPL.
+Per implementare queste nuove funzionalità è stata modificata anche la grammatica di \ac{FACPL}.
 Nella grammatica estesa sono state aggiunte nuove regole di produzione e simboli terminali che 
 codificano le nuove funzionalità.\\ \par
 \input{syntax_original/facpl_new_syntax}
 Come è facilmente osservabile dalla consultazione della Tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in Sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono.\\ \par
-La prima modifica è nel PAS, cioè  lo \status, che è della forma $$status: Attribute$$ ed è formato da uno o più \textit{Attribute}.\\ \par
+La prima modifica è nel \ac{PAS}, cioè  lo \status, che è della forma $$status: Attribute$$ ed è formato da uno o più \textit{Attribute}.\\ \par
 Passiamo ora a descrivere \textit{Attribute} che è della forma $$(Type\ Identifier (= Value)^?)$$
 questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.
 
@@ -57,12 +57,12 @@ La sintassi delle risposte è rimasta invariata.
 \section{Semantica} % (fold)
 \label{sec:semantica}
 La semantica di FACPL rimane molto simile a quella descritta in Sezione \ref{sec:semantica_originale}, quindi verranno di seguito descritte in modo informale solo le novità introdotte.\\ \par
-La prima di queste riguarda la valutazione delle richieste dal PDP. Il PDP ora non si deve più basare solo su richieste totalmente scollegate l'una dall'altra, e quindi è stato introdotto il concetto di \status.
+La prima di queste riguarda la valutazione delle richieste dal \ac{PDP}. Il \ac{PDP} ora non si deve più basare solo su richieste totalmente scollegate l'una dall'altra, e quindi è stato introdotto il concetto di \status.
 Lo stato permette di rappresentare il comportamento passato del sistema, e lo fa introducendo una nuova serie di attributi chiamati \statusattribute.\\ \par
 Nel linguaggio questo nuovo tipo di attributi viene considerato al pari di normali attributi, quindi si ha la possibilità di effettuare tutte le operazioni di confronto tra di essi, ma in più si deve avere la possibilità di modificarli e memorizzarli in modo da poterli sfruttare per \textit{Usage Control}.\\ \par
 
-Per questo sono state aggiunte delle \textit{Pep Action}, ovvero delle azioni eseguite dal PEP in seguito alla valutazione di \textit{Obligations status}. La prima di queste è l'addizione, 
- e permette, in seguito alla valutazione di una \textit{Obligations}, l'aggiunta di un valore numerico, definito dallo sviluppatore, ad uno \statusattribute \ di tipo \texttt{float} o \texttt{int}. 
+Per questo sono state aggiunte delle \textit{Pep Action}, ovvero delle azioni eseguite dal \ac{PEP} in seguito alla valutazione di \textit{Obligations status}. La prima di queste è l'addizione, 
+ e permette, in seguito alla valutazione di una \textit{Obligations}, l'aggiunta di un valore numerico, definito dallo sviluppatore, ad uno \statusattribute \ di tipo \texttt{double} o \texttt{int}. 
 \begin{verbatim}
  obl:
      [permit M add(counter, 2)]
@@ -92,7 +92,7 @@ Infine nella \textit{Obligation} si può notare come viene aggiornato lo stato d
 
 Queste nuove funzionalità introdotte servono allo scopo descritto in Sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.
 In questi due semplici case study lo stato gioca un ruolo fondamentale, in quanto il sistema di access control, per poter soddisfare requisiti di consistenza deve tener traccia del comportamento passato.
-Mostreremo ora l'implementazione in FACPL dei due esempi trattati in Sezione~\ref{sec:usage_control}. Per comodità è usata la sintassi del plugin di Eclipse, che differisce leggermente da quella presentata in \ref{sec:estensione_linguistica}. 
+Mostreremo ora l'implementazione in \ac{FACPL} dei due esempi trattati in Sezione~\ref{sec:usage_control}. Per comodità è usata la sintassi del plugin di Eclipse, che differisce leggermente da quella presentata in \ref{sec:estensione_linguistica}. 
 
 \subsection{Accesso ai file} % (fold)
 \label{ssub:primo_esempio}

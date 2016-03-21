@@ -1,37 +1,13 @@
-package primoEsempioStatus;
-
-import it.unifi.facpl.lib.enums.Effect;
-import it.unifi.facpl.lib.enums.ExprBooleanConnector;
-import it.unifi.facpl.lib.enums.FacplStatusType;
-import it.unifi.facpl.lib.enums.ObligationType;
-import it.unifi.facpl.lib.policy.ExpressionBooleanTree;
-import it.unifi.facpl.lib.policy.ExpressionFunction;
-import it.unifi.facpl.lib.policy.ObligationStatus;
-import it.unifi.facpl.lib.policy.PolicySet;
-import it.unifi.facpl.lib.policy.Rule;
-import it.unifi.facpl.lib.util.AttributeName;
-import it.unifi.facpl.system.status.StatusAttribute;
-import it.unifi.facpl.system.status.functions.arithmetic.AddStatus;
-import it.unifi.facpl.system.status.functions.arithmetic.SubStatus;
-import it.unifi.facpl.system.status.functions.bool.FlagStatus;
-
 public class PolicySet_ReadWrite extends PolicySet {
-
 	public PolicySet_ReadWrite(){
-		
 		addId("ReadWrite_Policy");
-		// Algorithm Combining
 		addCombiningAlg(it.unifi.facpl.lib.algorithm.DenyUnlessPermitGreedy.class);
-		// Target
 		ExpressionFunction e1 = new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class, "Bob",
 				new AttributeName("name", "id"));
 		ExpressionFunction e2 = new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class, "Alice",
 				new AttributeName("name", "id"));
-		
 		ExpressionBooleanTree ebt = new ExpressionBooleanTree(ExprBooleanConnector.OR, e1, e2);
-		
 		addTarget(ebt);
-		// Policy
 		addPolicyElement(new PolicySet_Write());
 		addPolicyElement(new PolicySet_Read());
 		addPolicyElement(new PolicySet_StopWrite());
@@ -39,14 +15,9 @@ public class PolicySet_ReadWrite extends PolicySet {
 	}
 
 	private class PolicySet_Write extends PolicySet {
-
-
 		public PolicySet_Write() {
-			
 			addId("Write_Policy");
-			// Algorithm Combining
 			addCombiningAlg(it.unifi.facpl.lib.algorithm.DenyUnlessPermitGreedy.class);
-			// Target
 			ExpressionFunction e1 = new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class, 
 					"file1",
 					new AttributeName("file", "id")
@@ -57,25 +28,20 @@ public class PolicySet_ReadWrite extends PolicySet {
 					);
 			ExpressionBooleanTree ebt = new ExpressionBooleanTree(ExprBooleanConnector.AND, e1, e2);
 			addTarget(ebt);
-			// PolElements
 			addPolicyElement(new Rule_write());
-			// Obligation
 			addObligation(new ObligationStatus(new FlagStatus(), Effect.PERMIT, ObligationType.M,
 					new StatusAttribute("isWriting", FacplStatusType.BOOLEAN), true));
 		}
-
 		private class Rule_write extends Rule {
-
 			Rule_write() {
 				addId("write");
-				// Effect
 				addEffect(Effect.PERMIT);
 				ExpressionFunction e1=new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class,
 										new StatusAttribute("isWriting", FacplStatusType.BOOLEAN),
-						false);//se nessuno scrive
+						false);
 				ExpressionFunction e2=new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class,
 									new StatusAttribute("counterReadFile1", FacplStatusType.INT),
-						0);//se nessuno legge
+						0);
 				ExpressionBooleanTree ebt = new ExpressionBooleanTree(ExprBooleanConnector.AND, e1, e2);
 				addTarget(ebt);
 			}

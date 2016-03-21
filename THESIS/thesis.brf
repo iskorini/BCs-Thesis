@@ -1,4 +1,7 @@
 \backcite {ucon}{{9}{1}{chapter.1}}
+\backcite {NISTACM}{{11}{2.1}{section.2.1}}
 \backcite {SurveyUsageControl}{{17}{2.2}{section.2.2}}
 \backcite {SurveyUsageControl}{{17}{2.2}{section.2.2}}
-\backcite {SurveyUsageControl}{{59}{6}{chapter.6}}
+\backcite {UsageControlCloud}{{18}{2.2}{section.2.2}}
+\backcite {fullfacpl}{{28}{3.4}{section.3.4}}
+\backcite {DBLP:conf/icitst/2012}{{63}{6.1}{chapter*.39}}

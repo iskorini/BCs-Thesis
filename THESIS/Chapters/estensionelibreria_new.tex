@@ -18,7 +18,7 @@ di cui ne verrà mostrato un pezzo in Codice~\ref{lst:PezzoStatus1}. Il fulcro d
 
 In Figura~\ref{fig:statusUML.png} è possibile vedere la relazione che intecorre tra lo stato ed i suoi attributi. 
 \MyFig{statusUML.png}{Grafico UML delle classi Status e StatusAttribute}{1}{H}
-Come si vede dal grafico UML in Figura \ref{fig:statusUML.png} la classe che modella lo stato include altri due metodi non mostrati in Codice~\ref{lst:PezzoStatus1}. Per via del nome assegnatogli i metodi risultano abbastanza autoesplicativi, per questo ne verrà mostrato solo uno in Codice~\ref{lst:PezzoStatus2}.
+Come si vede dal grafico UML in Figura \ref{fig:statusUML.png} la classe che modella lo stato include altri due metodi non mostrati in Codice~\ref{lst:PezzoStatus1}. Per via dei rispettivi nomi i metodi risultano abbastanza autoesplicativi, per questo ne verrà mostrato solo uno in Codice~\ref{lst:PezzoStatus2}.
 \myIjava{status.java}{Set Attribute della classe Status}{32}{37}{PezzoStatus2}
 
 \subsection{Status Attribute}
@@ -53,12 +53,12 @@ La ragione dietro la verbosità creata dall'utilizzo di un valutatore, oltre che
 
 \subsection{Estensione del PEP}
 \label{sub:estensione_PEP}
-La struttura del PEP è rimasta pressoché uguale in quanto non è stato esteso, bensì modificato.
-In seguito alla valutazione di una policy il PDP darà una risposta, su questa risposta il PEP dovrà effettuare il suo processo di enforcement.
+La struttura del \ac{PEP} è rimasta pressoché uguale in quanto non è stato esteso, bensì modificato.
+In seguito alla valutazione di una policy il \ac{PDP} darà una risposta, su questa risposta il \ac{PEP} dovrà effettuare il suo processo di enforcement.
 Durante questo processo vengono valutate le \textit{Obligation} in modo che l'operazione al loro interno sia eseguita; il metodo che effettua questo compito è 
 \textit{dischargeObligation}. La modifica ha coinvolto proprio quest'ultimo, in quanto è bastato aggiungere un \textit{else if}, mostrato in Codice~\ref{lst:PEP}, a quelli già presenti.
 \myIjava{PEP.java}{Discharge delle Fulfilled Obligation di stato}{102}{106}{PEP}
-In questo modo vengono prese in considerazione anche le nuove Obligation Status, quindi ora il PEP, durante il suo processo di enforcement, riuscendo ad eseguire questo nuovo tipo di Obligation potrà modificare lo stato.
+In questo modo vengono prese in considerazione anche le nuove Obligation Status, quindi ora il \ac{PEP}, durante il suo processo di enforcement, riuscendo ad eseguire questo nuovo tipo di Obligation potrà modificare lo stato.
 
 
 \section{Estensione delle politiche}
@@ -73,7 +73,7 @@ Questo metodo riceve come parametro un attributo, ed in base al suo tipo andrà 
 \subsection{Funzioni di controllo su status}
 \label{sub:funzioni_controllo_status}
 
-Il PDP per poter valutare correttamente le richieste deve avere la possibilità di comparare anche questo nuovo tipo di attributi.
+Il \ac{PDP} per poter valutare correttamente le richieste deve avere la possibilità di comparare anche questo nuovo tipo di attributi.
 Raggiungere quest'obiettivo non è stato difficile in quanto la struttura era già esistente e funzionante, ed essendo i nuovi attributi soltanto un estensione di quelli 
 creati in precedenza è stato possibile usarla senza alcun tipo di problema.\par
 
@@ -90,13 +90,13 @@ Il refactoring ha coinvolto anche il metodo che si occupa del \textit{Fulfilling
 \myIjava{oblStat.java}{CreateObligation nelle status}{17}{24}{createoblstat}
 \myIjava{oblNorm.java}{CreateObligation nelle normali}{11}{14}{createoblnorm}
 La \textit{Obligation} di stato necessiterà anche di argomenti su cui eseguire l'azione, che le verranno passati in fase di costruzione.\\ \par
-Alla fine della valutazione il PDP crea un oggetto di tipo \textit{AuthorisationPDP} che conterrà la decisione e una lista di \textit{FulfilledObligation}, quest'ultime poi andranno al PEP per la loro valutazione. Vediamo ora come sono state implementate.\\ \par
+Alla fine della valutazione il \ac{PDP} crea un oggetto di tipo \textit{AuthorisationPDP} che conterrà la decisione e una lista di \textit{FulfilledObligation}, quest'ultime poi andranno al \ac{PEP} per la loro valutazione. Vediamo ora come sono state implementate.\\ \par
 Anche in questo caso è stato necessario un refactoring analogo a quello fatto per le prime.
 \myIjava{FulOblStat.java}{Peculiarità della classe FulfilledObligationStatus}{1}{15}{pecfulstat}
-Come si può notare, in fase di costruzione, gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal PEP il metodo \textit{evaluateObl}.\\ \par
-Il PEP nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime, è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} .
+Come si può notare, in fase di costruzione, gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal \ac{PEP} il metodo \textit{evaluateObl}.\\ \par
+Il \ac{PEP} nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime, è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} .
 \myIjava{PEP.java}{Discharge delle Fulfilled Obligation di stato}{102}{106}{PEP}
-\begin{sidewaysfigure}
+\begin{sidewaysfigure}[H]
     \centering
 	\includegraphics[width=1.1\linewidth]{obl.png}
     \caption{Relazioni tra Obligation e PEP}
@@ -116,8 +116,28 @@ Il PEP nella fase di enforcement effettua la valutazione delle \textit{Obligatio
 \section{Esempi}
 \label{sec:implementazione_esempi}
 
-In questa sezione 
+In questa sezione vengono ripresi i case study già dicussi in Sezione \ref{sec:esempi} mostrando com'è il loro corrispettivo in Java. 
+Per facilitare la lettura verrà proposto una parte del codice in Java degli esempi, il codice completo si può trovare in Capitolo~\ref{cap:appendiceA}.
+
 
 \subsection{Primo case study}
+\label{sub:primo_std_java}
+
+
+Il punto di partenza del sistema è la classe dov'è contenuto il metodo Main; quest'ultima rappresenta il punto dove il \ac{PDP} e \ac{PEP} vengono inizializzati e preparati all'esecuzione. In questa classe vengono inizializzati gli oggetti che modellano le policy, le richieste. \par
+Le richieste sono modellate da una serie di classi che accolgono al loro interno un contesto, lo stato e diverse Hashmap. Ognuna di questa contiene gli attributi di una determinata categoria che il richiedente manda al sistema e che saranno valutati dalle policy. In Codice~\ref{lst:request_1} si può vedere come è fatta una richiesta, in particolare la seconda di Codice \ref{lst:PrimoEsempioRichieste_FACPL}.
+\lstinputlisting[language = Java, caption = {Esempio di richiesta}\label{lst:request_1}]{./Source/CodiceEsempi/Primo/ContextRequest_WriteRequestBob.java}
+Le Hashmap in questo caso sono tre, una per la categoria Name, una per Action e l'ultima per la categoria File. \par
+Lo stato, contenuto all'interno della richiesta è rappresentato da una classe mostrata in Codice~\ref{lst:stato_java}. Questa classe utilizza il pattern singleton per far si che ne esista una sola istanza in tutta l'esecuzione. 
+\lstinputlisting[language = Java, caption = {Esempio di stato}\label{lst:stato_java}]{./Source/CodiceEsempi/Primo/StatusRW.java}
+Come la classe per modellare le richieste, lo stato utilizza una Hashmap per contenere gli attributi.\par
+La policy è definita estendendo una classe astratta presente nella libreria. Per aggiungere tutti gli elementi è sufficiente istanziarli e usare i metodi ereditati per inserirli al suo interno.
+La Policy \textit{Write} in Codice \ref{lst:PrimoEsempio_FACPL_write} ha al suo interno un target, una obligation ed una Rule; vediamo, in Codice~\ref{lst:PolicyWrite_java}, com'è il suo corrispettivo in Java.
+\lstinputlisting[firstline = 17, lastline = 49, firstnumber = 17, language = Java, caption = {Policy Write}\label{lst:PolicyWrite_java}]{./Source/CodiceEsempi/Primo/PolicySet_ReadWrite.java}
+Questa classe, come detto in precedenza estende una classe già esistende nella libreria, ovvero la classe PolicySet. In questo caso gli elementi che caratterizzano la Policy sono tre, il target, l'obligation e la rule al suo interno. I primi due vengono istanziati e aggiunti tramite metodi ereditati senza alcun problema. Per la rule invece il discorso è un po' più complicato, in quanto viene creata una classe annidata del tutto analoga a quella creata per la policy. Dopo aver creato questa classe viene semplicemente aggiunta un'istanza di essa attraverso un metodo ereditato.
+
+
 
 \subsection{Secondo case study}
+
+Verrebbe abbastanza uguale, lo devo fare lo stesso? In caso non lo dovessi scrivere levo le sottosezioni e ne faccio una singola chiamata \textit{Esempio}.

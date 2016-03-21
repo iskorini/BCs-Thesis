@@ -13,8 +13,7 @@ linea difensiva contro accessi indesiderati.
 
 
 Nella prima parte di questo capitolo vengono trattati in maggior dettaglio i vari modelli 
-di controllo all'accesso proposti negli ultimi decenni, infine viene analizzato anche un nuovo modello chiamato \textit{Usage Control}.
-
+di controllo all'accesso proposti negli ultimi decenni, infine viene analizzato anche un nuovo modello chiamato \textit{Usage Control}. Infine nell'ultima sezione vengono proposti due case study.
 \section{Access Control}
 \label{sec:history}
 
@@ -25,24 +24,24 @@ modello efficiente e scalabile. Andremo ora ad eseguire una classificazione
 dei modelli di Access Control, seguendo la catalogazione del NIST \cite{NISTACM}.
 
 \begin{itemize}
-\item \acl{ACL} è il primo di questi modelli ed è stato proposto intorno al 1970 spinto
+\item \acf{ACL} è il primo di questi modelli ed è stato proposto intorno al 1970 spinto
 dall’avvento dei primi sistemi multi utente.
-\item \acl{RBAC} è nato successivamente ad \ac{ACL} e ne modifica alcuni aspetti in modo da rimuovere
+\item \acf{RBAC} è nato successivamente ad \ac{ACL} e ne modifica alcuni aspetti in modo da rimuovere
 molte delle limitazioni di quest’ultimo. 
-\item \acl{ABAC} è nato dopo \ac{RBAC} e fornisce un paradigma dinamico che aiuta a 
-\item \acl{PBAC} è molto simile ad \ac{ABAC} ma migliora e standardizza quest ultimo modello.
+\item \acf{ABAC} è nato dopo \ac{RBAC} e fornisce un paradigma dinamico che aiuta a sviluppare policy che si adattano all'ambiente. 
+\item \acf{PBAC} è molto simile ad \ac{ABAC} ma migliora e standardizza quest ultimo modello.
 
 \end{itemize}
 
-\subsection*{Access Control Lists (ACLs)}
+\subsection*{Access Control Lists}
 \label{sub:ACL}
 
-\ac{ACL} è il primo modello di controlli agli accessi, è stato introdotto intorno agli anni 70 grazie all'avvento dei sistemi multi utente allo scopo di limitare l'accesso a file e dati condivisi, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX. Con la comparsa della multiutenza per sistemi ad uso personale lo standard ACL è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows. \par
-Il concetto dietro ACL è uno dei più semplici, in quanto ogni risorsa del sistema che deve essere controllata ha una sua lista, che ad ogni soggetto associa le azioni che può effettuare sulla risorsa, ed il sistema operativo quando viene fatta richiesta decide in base alla lista se dare il permesso o meno. 
+\ac{ACL} è il primo modello di controlli agli accessi, è stato introdotto intorno al 1970 grazie all'avvento dei sistemi multi utente allo scopo di limitare l'accesso a file e dati appartenenti a diversi utenti, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX. Con la comparsa della multiutenza per sistemi ad uso personale lo standard \ac{ACL} è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows. \par
+Il concetto dietro \ac{ACL} è uno dei più semplici, in quanto ogni risorsa del sistema che deve essere controllata ha una sua lista, che ad ogni soggetto associa le azioni che può effettuare sulla risorsa, ed il sistema operativo quando viene fatta richiesta decide in base alla lista se dare il permesso o meno. 
 
 
 Per esempio in Figura \ref{fig:acl_osx}, si può vedere come \textit{test\_folder} sia la risorsa da controllare, \textit{federicoschipani}, \textit{staff} e \textit{everyone} siano i soggetti e le azioni associate sono, in questo caso, \textit{Read \& Write} al primo soggetto e \textit{Read only} agli altri due.
-\MyFig{acl_osx}{ACL in OS X}{0.8}{h}
+\MyFig{acl_osx}{\acf{ACL} in OS X}{0.8}{h}
 
 
 La semplicità di questo modello non richiede grandi infrastrutture sottostanti, la  sua implementazione dal punto di vista applicativo risulta abbastanza semplice attraverso l'uso di linguaggi ad alto livello come Python o Java, poiché le strutture che servono per implementare questo standard sono già definite.
@@ -51,10 +50,10 @@ Un aspetto negativo si manifesta quando si trattano grandi quantità di risorse.
 Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di una determinata risorsa, in quanto è necessario andare ad operare sulla lista di quest'ultima, il che rende questo compito incline ad errori ed oneroso dal punto di vista del tempo.
 
 
-\subsection*{Role-based Access Control (RBAC)} % (fold)
+\subsection*{Role-based Access Control} % (fold)
 \label{sub:role_based_access_control}
 
-RBAC è l'evoluzione di ACL, in quanto tende a correggerne alcuni difetti come la limitata scalabilità. \par
+\ac{RBAC} è l'evoluzione di \ac{ACL}, in quanto tende a correggerne alcuni difetti come la limitata scalabilità. \par
 A differenza di \ac{ACL} è presente il concetto il ruolo del richiedente, ovvero un titolo che definisce un livello di autorità, che raggrupperà diversi utenti in una categoria. 
 \ac{RBAC} attraverso questa nuova caratteristica riesce a porre rimedio ai difetti di \ac{ACL} in quanto
 questo tipo di gestione offre il vantaggio di facilitare l'assegnazione dei permessi, poiché per ogni risorsa non si devono più gestire tutti i singoli utenti, ma basta gestire i permessi associati a queste nuove categorie. 
@@ -64,11 +63,11 @@ Un utente può anche far parte di più gruppi, per esempio un contabile di un az
 Come si può vedere in Figura \ref{fig:group2} il concetto di gruppo è implementato nei sistemi operativi moderni, in particolare in OS X, Windows e sistemi UNIX-Like.
 
 \MyFig{group2}{Gruppo in OS X}{0.9}{h}
-\ac{RBAC} però ha i suoi difetti, uno dei più evidenti è l'impossibilità di gestire le autorizzazioni a livello di singola persona, ed è quindi necessario creare diversi gruppi o trovare altri escamotage\footnote{Gioco di destrezza con cui si sottrae qualche cosa all’attenzione degli interessati o dei presenti, gioco di bussolotti; in senso fig., inganno elegante o ingegnoso, gioco di abilità politica e diplomatica, o in genere sotterfugio per aggirare un ostacolo} per autorizzare, o vietare, singoli utenti appartenti a determinati gruppi.
+\ac{RBAC} però ha i suoi difetti, uno dei più evidenti è l'impossibilità di gestire le autorizzazioni a livello di singola persona, ed è quindi necessario creare diversi gruppi o trovare altri escamotage per autorizzare, o vietare, singoli utenti appartenti a determinati gruppi.
 
 % subsection role_based_access_control (end)
 
-\subsection*{Attribute-based Access Control (ABAC)} % (fold)
+\subsection*{Attribute-based Access Control } % (fold)
 \label{sub:attribute_based_access_control_}
 
 \ac{ABAC} è un modello di controllo all'accesso  nel quale le decisioni sono prese in base ad un insieme 
@@ -144,15 +143,15 @@ I componenti necessari a questo tipo di processo decisionale sono dei predicati,
 \label{sub:case1}
 
 Dentro ad un sistema ci sono vari file, ai quali per questione di consistenza, bisogna limitare l'accesso.
-La regola è: \textit{”per un determianto file un massimo di due persone possono accedere in lettura oppure solo una persona può accedere in scrittura"}. In Figura~\ref{fig:diagrammaflussoprimoesempio} viene mostrato un diagramma di flusso che sintetizza, e permette di capire meglio, la regola di accesso. Quando arriva la richiesta viene verificata la presenza nel database del richiedente e del file richiesto, se entrambe danno esito positivo si passa all'analisi dei requisiti per soddisfare la richiesta. \par
+La regola è: \textit{”per un determinato file un massimo di due persone possono accedere in lettura oppure solo una persona può accedere in scrittura"}. In Figura~\ref{fig:diagrammaflussoprimoesempio} viene mostrato un diagramma di flusso che sintetizza, e permette di capire meglio, la regola di accesso. Quando arriva la richiesta viene verificata la presenza nel database del richiedente e del file richiesto, se entrambe danno esito positivo si passa all'analisi dei requisiti per soddisfare la richiesta. \par
 \begin{figure}[h]
  \centering 
 
  \includegraphics[scale = 0.75, , trim=1.5cm 0 0 0]{./Visio_Project/DiagrammaFlussoPrimoEsempio.pdf}
- \caption{Diagramma di flusso del primo esempio}
+ \caption{Diagramma di flusso del case study sull'accesso dei file}
  \label{fig:diagrammaflussoprimoesempio}
 \end{figure}
-In un primo momento nessuno sta visualizzando o scrivendo un determinato file, ed un utente generico 
+Se in un primo momento nessuno sta visualizzando o scrivendo un determinato file, ed un utente generico 
 chiederà l'accesso in lettura per questo file, ovviamente il responso sarà positivo in quanto non viola la regola preposta prima.\par
 Dopo un po' di tempo, mentre il primo sta ancora leggendo, un altro utente chiede l'accesso in scrittura, che gli viene negato.
 In un istante di tempo successivo il primo utente sta continuando a leggere, ed anche il secondo utente vuole leggere. In questo caso viene dato responso positivo.\par
@@ -167,19 +166,18 @@ Un altro utilizzo possibile di \textit{Usage Control} riguarda l'analisi del com
 la possibilità di effettuare noleggi o acquisti di contenuti multimediali (musica, video, film, serie tv e via discorrendo).\par
 In caso il contenuto fosse stato acquistato, l’acquirente potrà ottenere
 l’accesso infinite volte per infinito tempo. Nel caso di noleggio invece
-saranno presenti delle condizioni, come per esempio il massimo numero
-di fruizioni del contenuto o una data di scadenza che, una volta oltrepassata,
-impedirà l’ulteriore visione del contenuto noleggiato in precedenza.\par
-Come nell’esempio precedente viene proposto un diagramma di flusso,
+saranno presenti delle condizioni, come per esempio un numero massimo di visioni che quando superato non permette più di fruire del contenuto o una data di scadenza che, una volta oltrepassata,
+impedirà l’ulteriore visione del file noleggiato in precedenza.\par
+Come nell’esempio precedente viene mostrato un diagramma di flusso,
 proposto Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire meglio il funzionamento questo sistema di \textit{Usage Control}. Innanzitutto viene verificata la presenza nei due relativi database dell'utente e del file richiesto, successivamente viene analizzata la richiesta, che può essere di tre tipi.
 \begin{itemize}
-\item Visione: nel caso la richiesta fosse di visione viene verificato se realemente l'utente ha diritto ad avere accesso a quella risorsa, e di conseguenza viene presa una decisione.
+\item Visione: nel caso la richiesta fosse di visione viene verificato se realmente l'utente ha diritto ad avere accesso a quella risorsa, e di conseguenza viene presa una decisione.
 \item Acquisto: nel caso la richiesta fosse di acquisto verrà accreditato l'acquisto all'utente che ha effettuato la richiesta.
 \item Noleggio: per questa forma ci sono due diverse tipologie, il noleggio a tempo e il noleggio a numero di visualizzazioni. Nel primo caso all'utente sarà concesso di vedere il file per un determinato periodo di tempo, mentre nel secondo il richiedente potrà visionare il file per un numero limitato di volte.
 \end{itemize}
 \begin{figure}[h]
  \centering 
 	\includegraphics[scale = 0.75]{./Visio_Project/DiagrammaFlussoSecondoEsempio.pdf}
- \caption{Diagramma di flusso del secondo esempio}
+ \caption{Diagramma di flusso del case study sul noleggio e acquisto di contenuti}
  \label{fig:diagrammaflussosecondoesempio}
 \end{figure}
