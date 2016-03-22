@@ -1,46 +1,26 @@
 \myChapter{Introduzione}
-
-
-I sistemi informatici si sono diffusi molto rapidamente, e grazie all'avvento di nuove tecnologie, come la rete, la condivisione di dati e risorse è diventata alla portata di tutti. Proteggere queste risorse da accessi 
-indesiderati è diventato molto importante, motivo per cui negli ultimi decenni la questione 
-del \textit{Access Control} è diventata sempre più rilevante.
-In particolare,
-a partire dal 1970, sono stati proposti vari modelli (come \ac{ACL},
-\ac{RBAC}, \ac{ABAC} e \ac{PBAC}), ognuno dei quali ha i suoi pro e contro.
-
-
-Il primo modello proposto è \ac{ACL} ed ha come obiettivo il controllo delle risorse di un sistema operativo. Questo modello si basa su liste di accesso associate
-ad ogni risorsa che definiscono le regole di accesso; è un modello molto
-semplice da implementare, ma quando i dati sono eccessivi diventa
-poco efficiente. 
-Successivamente è stato introdotto un modello basato su
-ruoli, ovvero dei gruppi
-di utenti suddivisi secondo caratteristiche comuni, chiamato \ac{RBAC}, il quale associa a degli insiemi di risorse dei diritti di accesso. Un punto debole
-di questo modello è l'assenza di costrutti che permettono la definizione
-delle regole che rende difficile assegnare permessi particolari a singole
-risorse. A seguire è stato utilizzato un modello basato su attributi chiamato \ac{ABAC}, dove
-le decisioni vengono prese valutando caratteristiche del richiedente,
-della risorsa e dell’ambiente in cui è stata fatta la richiesta. Quest’ultimo
-modello tuttavia non offre una buona scalabilità. Per porre
-rimedio a questo difetto è stato introdotto un ulteriore modello, che si chiama \ac{PBAC}
-il quale risulta essere uno dei più utilizzati ed è basato su politiche, 
-ovvero un insieme di regole su attributi. 
-
-Recentemente, Sandhu e Park \cite{ucon}
-hanno introdotto \textit{Usage Control}
-che permette di prendere decisioni durante
+I sistemi informatici moderni sono sempre più interconnessi tra di loro, quindi
+impedire accessi indesiderati è diventato un argomento di studio molto rilevante negli ultimi decenni.
+A partire dal 1970 sono stati proposti molti sistemi di controllo agli accessi, ognuno con i suoi pro ed i suoi contro.\par
+\textit{Usage Control} è un nuovo approccio sul controllo degli accessi
+introdotto recentemente da Sandhu e Park \cite{ucon}.
+Quest ultimo permette di ottenere decisioni durante
 l’accesso e di basarsi sul comportamento passato in fase di valutazione
 di una richiesta. Questa caratteristica lo rende molto adatto ad ambienti come il Web,
 il Cloud o in generale legati in qualche modo alla rete. \par
-
-\ac{FACPL} è un linguaggio basato su \ac{XACML}, supportato da una libreria
+L'obiettivo di questa tesi è estendere \ac{FACPL} in modo tale da poter prendere decisioni 
+di Usage Control.
+\ac{FACPL} è un linguaggio basato su \ac{XACML} ed è supportato da una libreria
 scritta in Java. Rispetto a \ac{XACML} la sintassi di \ac{FACPL} è molto più semplice
 e concisa, quindi permette di formalizzare in modo facile e rapido
-politiche di \textit{access control}. Tuttavia, \ac{FACPL} non gode di caratteristiche
-per eseguire richieste ed ottenere risposte valutando
-anche il comportamento passato, quindi l’obiettivo di questa tesi è stato
-quello di estenderlo in modo da implementare nuove e fondamentali funzionalità
-che permettono di sfruttare caratteristiche tipiche di \textit{Usage Control}.  \par
+politiche di \textit{Access Control}. 
+Tuttavia, \ac{FACPL} non gode di caratteristiche
+per eseguire richieste ed ottenere risposte valutando il comportamento passato. Questo è dovuto alla mancanza di un componente che permette di tenere traccia del comportamento precedente, che può essere assimilabile ad uno stato.\par
+L'estensione di \ac{FACPL} è stata divisa fondamentalmente in due parti. 
+Nella prima parte del lavoro è stata elaborata una nuova grammatica, una nuova semantica ed un processo di valutazione delle policy esteso che includesse anche lo stato.
+La seconda parte del lavoro, a differenza della prima, è stata più concreta poiché in questa fase è stata estesa la libreria Java in modo da dare un supporto alle estensioni pensate precedentemente. \par
+
+
 
 La tesi, dopo questa breve introduzione, è organizzata in questo modo: 
 \begin{itemize}

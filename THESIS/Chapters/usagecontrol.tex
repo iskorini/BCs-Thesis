@@ -12,8 +12,8 @@ definiti da un insieme di condizioni che permettono di creare una prima
 linea difensiva contro accessi indesiderati.
 
 
-Nella prima parte di questo capitolo vengono trattati in maggior dettaglio i vari modelli 
-di controllo all'accesso proposti negli ultimi decenni, infine viene analizzato anche un nuovo modello chiamato \textit{Usage Control}. Infine nell'ultima sezione vengono proposti due case study.
+In Sezione~\ref{sec:history} vengono trattati in maggior dettaglio i vari modelli 
+di controllo all'accesso proposti negli ultimi decenni, successivamente, nella Sezione~\ref{sec:usage_control} viene analizzato anche un nuovo modello chiamato \textit{Usage Control}. Infine nell'ultima Sezione, la ~\ref{sec:casi_studio}, vengono proposti due case study.
 \section{Access Control}
 \label{sec:history}
 
@@ -138,19 +138,28 @@ I componenti necessari a questo tipo di processo decisionale sono dei predicati,
 \MyFig{Usage}{Insieme dei componenti di $UCON_{ABC}$}{1}{}
  Come questi componenti contribuiscono a prendere una decisione viene mostrato in Figura \ref{fig:Usage}.
 
+\section{Casi di studio}
+\label{sec:casi_studio}
+In questa sezione sono presentati due case study che possono essere implementati attraverso funzionalità di Usage Control. Il primo di questi riguarda la 
+regolamentazione dell'accesso a dei files. Il secondo invece tratta un semplice caso in cui ci sono 
+degli utenti che desiderano effettuare acquisti o noleggi di contenuti multimediali.
 
-\subsection{Caso di studio 1: Gestione lettura e scrittura di file} % (fold)
+
+\subsection{Gestione lettura e scrittura di file} % (fold)
 \label{sub:case1}
 
 Dentro ad un sistema ci sono vari file, ai quali per questione di consistenza, bisogna limitare l'accesso.
 La regola è: \textit{”per un determinato file un massimo di due persone possono accedere in lettura oppure solo una persona può accedere in scrittura"}. In Figura~\ref{fig:diagrammaflussoprimoesempio} viene mostrato un diagramma di flusso che sintetizza, e permette di capire meglio, la regola di accesso. Quando arriva la richiesta viene verificata la presenza nel database del richiedente e del file richiesto, se entrambe danno esito positivo si passa all'analisi dei requisiti per soddisfare la richiesta. \par
-\begin{figure}[h]
- \centering 
 
- \includegraphics[scale = 0.75, , trim=1.5cm 0 0 0]{./Visio_Project/DiagrammaFlussoPrimoEsempio.pdf}
- \caption{Diagramma di flusso del case study sull'accesso dei file}
- \label{fig:diagrammaflussoprimoesempio}
+
+\begin{figure}[h]
+	\centering 
+	\includegraphics[width = 1.0\textwidth]{./Visio_Project/DiagrammaFlussoPrimoEsempio.pdf}
+	%scale = 0.72, , trim=1.18cm 0 0 0
+ 	\caption{Diagramma di flusso del case study sull'accesso dei file}
+ 	\label{fig:diagrammaflussoprimoesempio}
 \end{figure}
+
 Se in un primo momento nessuno sta visualizzando o scrivendo un determinato file, ed un utente generico 
 chiederà l'accesso in lettura per questo file, ovviamente il responso sarà positivo in quanto non viola la regola preposta prima.\par
 Dopo un po' di tempo, mentre il primo sta ancora leggendo, un altro utente chiede l'accesso in scrittura, che gli viene negato.
@@ -159,7 +168,7 @@ Infine, entrambi gli utenti smettono di leggere, ma uno di loro vuole apportare 
 
 
 
-\subsection{Caso di studio 2: Noleggio e acquisto di contenuti}
+\subsection{Noleggio e acquisto di contenuti}
 \label{sub:case2}
 
 Un altro utilizzo possibile di \textit{Usage Control} riguarda l'analisi del comportamento passato. Un'azienda fornisce  ai propri clienti 
@@ -177,7 +186,7 @@ proposto Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire 
 \end{itemize}
 \begin{figure}[h]
  \centering 
-	\includegraphics[scale = 0.75]{./Visio_Project/DiagrammaFlussoSecondoEsempio.pdf}
+	\includegraphics[width = 1.1\textwidth]{./Visio_Project/DiagrammaFlussoSecondoEsempio.pdf}
  \caption{Diagramma di flusso del case study sul noleggio e acquisto di contenuti}
  \label{fig:diagrammaflussosecondoesempio}
 \end{figure}

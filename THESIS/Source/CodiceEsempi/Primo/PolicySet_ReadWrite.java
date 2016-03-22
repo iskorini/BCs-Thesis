@@ -17,12 +17,13 @@ public class PolicySet_ReadWrite extends PolicySet {
 	private class PolicySet_Write extends PolicySet {
 		public PolicySet_Write() {
 			addId("Write_Policy");
-			addCombiningAlg(it.unifi.facpl.lib.algorithm.DenyUnlessPermitGreedy.class);
-			ExpressionFunction e1 = new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class, 
+			addCombiningAlg(
+				it.unifi.facpl.lib.algorithm.DenyUnlessPermitGreedy.class);
+			ExpressionFunction e1 = new ExpressionFunction(comparison.Equal.class, 
 					"file1",
 					new AttributeName("file", "id")
 					);
-			ExpressionFunction e2 = new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class, 
+			ExpressionFunction e2 = new ExpressionFunction(comparison.Equal.class, 
 					"write",
 					new AttributeName("action", "id")
 					);
@@ -36,13 +37,16 @@ public class PolicySet_ReadWrite extends PolicySet {
 			Rule_write() {
 				addId("write");
 				addEffect(Effect.PERMIT);
-				ExpressionFunction e1=new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class,
+				ExpressionFunction e1=
+				new ExpressionFunction(comparison.Equal.class,
 										new StatusAttribute("isWriting", FacplStatusType.BOOLEAN),
 						false);
-				ExpressionFunction e2=new ExpressionFunction(it.unifi.facpl.lib.function.comparison.Equal.class,
+				ExpressionFunction e2=
+				new ExpressionFunction(comparison.Equal.class,
 									new StatusAttribute("counterReadFile1", FacplStatusType.INT),
 						0);
-				ExpressionBooleanTree ebt = new ExpressionBooleanTree(ExprBooleanConnector.AND, e1, e2);
+				ExpressionBooleanTree ebt = 
+					new ExpressionBooleanTree(ExprBooleanConnector.AND, e1, e2);
 				addTarget(ebt);
 			}
 		}

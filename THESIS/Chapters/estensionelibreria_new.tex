@@ -7,8 +7,8 @@ In Sezione~\ref{sec:imp_stato} è presentata l'implementazione in Java dello sta
 Nella Sezione~\ref{sec:estensione_politiche} è trattata l'estensione delle politiche. In particolare si parla di come è stato possibile 
 effettuare comparazioni su attributi di stato e di come sono state estese le obligation.
 In Sezione~\ref{sec:plugin_eclipse} viene mostrato come è stato esteso il plugin di \ac{FACPL} per supportare le nuove estensioni.
-Infine, in Sezione~\ref{sec:implementazione_esempi}, vengono presentati in Java i case study già proposti in Capitolo \ref{cap:usagecontrolfacpl} e
-\ref{cap:accessControl}
+Infine, in Sezione~\ref{sec:implementazione_esempi}, vengono presentati in Java i case study già proposti in \ref{sec:casi_studio} e
+\ref{sec:esempi}
 \section{Implementazione Stato}
 \label{sec:imp_stato}
 Il primo passo per estendere la libreria è stato la creazione di uno \status, che è modellato da una semplice classe 
@@ -76,24 +76,25 @@ Questo metodo riceve come parametro un attributo, ed in base al suo tipo andrà 
 Il \ac{PDP} per poter valutare correttamente le richieste deve avere la possibilità di comparare anche questo nuovo tipo di attributi.
 Raggiungere quest'obiettivo non è stato difficile in quanto la struttura era già esistente e funzionante, ed essendo i nuovi attributi soltanto un estensione di quelli 
 creati in precedenza è stato possibile usarla senza alcun tipo di problema.\par
-
-\MyFig{comparisonUML.png}{Comparatori}{1.2}{H}
+\centering
+\MyFig{comparisonUML.png}{Comparatori}{1.07}{H}
+\flushleft
 Come nel caso delle funzioni di modifica dello stato, la struttura è basata su un factory che ritorna il valutatore corretto in base al tipo su cui deve essere effettuato il confronto.
 
 \subsection{Obligation}
 \label{sub:estensione_obligation}
 Le \textit{Obligation} sono state estese introducendo un nuovo tipo chiamato \textit{Obligation Status}, questo tipo particolare di \textit{Obligation} servono per andare ad eseguire azioni sullo stato.
-Nella libreria sono presenti due tipi fondamentali di \textit{Obligation}, il primo sono quelle a livello sintattico, le seconde, chiamate \textit{FulfilledObligations} sono quelle pronte ad essere valutate. Vediamo adesso come sono state estese quelle a livello sintattico.\\ \par
+Nella libreria sono presenti due tipi fondamentali di \textit{Obligation}, il primo sono quelle a livello sintattico, le seconde, chiamate \textit{FulfilledObligations} sono quelle pronte ad essere valutate. Vediamo adesso come sono state estese quelle a livello sintattico. \par
 Per eseguire questa estensione è stato reso necessario un refactoring, per prima cosa è stato astratto tutto il comportamento comune in una superclasse astratta, successivamente è stata creata la nuova classe che modella questo nuovo tipo.
 Il refactoring ha coinvolto anche il metodo che si occupa del \textit{Fulfilling} delle \textit{Obligation} in quanto ora deve creare anche questo nuovo tipo, la scelta più ovvia è stata creare un metodo astratto implementato nelle due sottoclassi che viene chiamato dalla superclasse per creare il tipo corretto.
 \myIjava{absObl.java}{Parte rifattorizzata del metodo che si occupa del fulfilling}{16}{18}{fulfilabs}
 \myIjava{oblStat.java}{CreateObligation nelle status}{17}{24}{createoblstat}
 \myIjava{oblNorm.java}{CreateObligation nelle normali}{11}{14}{createoblnorm}
-La \textit{Obligation} di stato necessiterà anche di argomenti su cui eseguire l'azione, che le verranno passati in fase di costruzione.\\ \par
-Alla fine della valutazione il \ac{PDP} crea un oggetto di tipo \textit{AuthorisationPDP} che conterrà la decisione e una lista di \textit{FulfilledObligation}, quest'ultime poi andranno al \ac{PEP} per la loro valutazione. Vediamo ora come sono state implementate.\\ \par
+La \textit{Obligation} di stato necessiterà anche di argomenti su cui eseguire l'azione, che le verranno passati in fase di costruzione. \par
+Alla fine della valutazione il \ac{PDP} crea un oggetto di tipo \textit{AuthorisationPDP} che conterrà la decisione e una lista di \textit{FulfilledObligation}, quest'ultime poi andranno al \ac{PEP} per la loro valutazione. Vediamo ora come sono state implementate. \par
 Anche in questo caso è stato necessario un refactoring analogo a quello fatto per le prime.
 \myIjava{FulOblStat.java}{Peculiarità della classe FulfilledObligationStatus}{1}{15}{pecfulstat}
-Come si può notare, in fase di costruzione, gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal \ac{PEP} il metodo \textit{evaluateObl}.\\ \par
+Come si può notare, in fase di costruzione, gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal \ac{PEP} il metodo \textit{evaluateObl}. \par
 Il \ac{PEP} nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime, è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} .
 \myIjava{PEP.java}{Discharge delle Fulfilled Obligation di stato}{102}{106}{PEP}
 \begin{sidewaysfigure}[H]
@@ -133,7 +134,7 @@ Lo stato, contenuto all'interno della richiesta è rappresentato da una classe m
 Come la classe per modellare le richieste, lo stato utilizza una Hashmap per contenere gli attributi.\par
 La policy è definita estendendo una classe astratta presente nella libreria. Per aggiungere tutti gli elementi è sufficiente istanziarli e usare i metodi ereditati per inserirli al suo interno.
 La Policy \textit{Write} in Codice \ref{lst:PrimoEsempio_FACPL_write} ha al suo interno un target, una obligation ed una Rule; vediamo, in Codice~\ref{lst:PolicyWrite_java}, com'è il suo corrispettivo in Java.
-\lstinputlisting[firstline = 17, lastline = 49, firstnumber = 17, language = Java, caption = {Policy Write}\label{lst:PolicyWrite_java}]{./Source/CodiceEsempi/Primo/PolicySet_ReadWrite.java}
+\lstinputlisting[firstline = 17, lastline = 53, firstnumber = 17, language = Java, caption = {Policy Write}\label{lst:PolicyWrite_java}]{./Source/CodiceEsempi/Primo/PolicySet_ReadWrite.java}
 Questa classe, come detto in precedenza estende una classe già esistende nella libreria, ovvero la classe PolicySet. In questo caso gli elementi che caratterizzano la Policy sono tre, il target, l'obligation e la rule al suo interno. I primi due vengono istanziati e aggiunti tramite metodi ereditati senza alcun problema. Per la rule invece il discorso è un po' più complicato, in quanto viene creata una classe annidata del tutto analoga a quella creata per la policy. Dopo aver creato questa classe viene semplicemente aggiunta un'istanza di essa attraverso un metodo ereditato.
 
 

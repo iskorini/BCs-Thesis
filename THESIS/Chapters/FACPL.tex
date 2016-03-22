@@ -10,15 +10,7 @@ Nella Sezione~\ref{sec:valutazione_facpl} è effettuata una disamina sul process
 Nelle Sezioni~\ref{sec:facpl_syntax} e ~\ref{sec:semantica_originale} viene analizzata rispettivamente la sintassi e la semantica di \ac{FACPL}.
 In Sezione~\ref{sec:esempio_di_politica_con_facpl} è proposto un esempio di politica con \ac{FACPL} ed inoltre è spiegato in maggior dettaglio perché non è possibile prendere decisioni basate sul comportamento passato.
 
-\section{Tool}
-\label{sec:tool}
-Il plugin per Eclipse di \ac{FACPL} è stato scritto con l'ausilio di un \textit{Framework} chiamato \textit{Xtext}. Quest'ultimo a sua volta utilizza \textit{Xtend} poiché permette di scrivere regole di traduzione per generare automaticamente codice Java.\par
-Attraverso il plugin si riesce a rendere Eclipse un vero e proprio ambiente di sviluppo per \ac{FACPL} in quanto si ottengono funzioni come l'autocompletamento o l'highlighting del codice.\par
-L'ambiente di sviluppo con il relativo plugin, le regole di traduzione, e la libreria Java formano insieme la \textit{toolchain} di \ac{FACPL}, mostrata in Figura~\ref{fig:toolChain.png}.
 
-\MyFig{toolChain.png}{ToolChain di FACPL}{1}{h}
-
-Lo sviluppatore che utilizza l'\ac{IDE} di \ac{FACPL} può generare codice Java o \ac{XACML} a partire da politiche scritte in \ac{FACPL}. La traduzione da codice \ac{FACPL} a Java o \ac{XACML} è effettuata attraverso le regole di traduzione scritte in Xtend.
 
 
 
@@ -69,7 +61,7 @@ Un \textit{Attribute Name} indica il valore di un attributo che può essere cont
 Per esempio \textit{Action / ID} rappresenta il valore di un attributo ID di categoria Action. \par
 I \textit{Combining Algorithm} implementano diverse strategie che servono per risolvere conflitti tra le varie decisioni, restituendo alla fine un'unica decisione finale. \par
 Una \textit{obligation} ha al suo interno un effect, un tipo, ed una azione eseguita dal PEP con la relativa \textit{Expression}. \par
-Una \textit{request} consiste di una sequenza di attributi organizzati in categorie.\\ \par
+Una \textit{request} consiste di una sequenza di attributi organizzati in categorie. \par
 La risposta ad una valutazione di una richiesta \ac{FACPL} è scritta usando la sintassi riportata in Tabella \ref{tab:facpl_context_syntax}.
 La valutazione in due step, descritta precedentemente in Sezione~\ref{sec:valutazione_facpl}, produce due tipi di risultati. Il primo è la risposta del \ac{PDP}, il secondo è una decisione, ovvero una risposta del \ac{PEP}.
 La decisione del \ac{PDP}, nel caso in cui ritorni \permit \ o \deny, viene associata ad una lista, anche vuota, di \textit{fulfilled obligation}. \par
@@ -87,15 +79,26 @@ Supponiamo ora che l'applicabilità non dia esito positivo, ovvero la valutazion
 
 Valutare le espressioni corrisponde ad applicare degli operatori e risolvere i nomi degli attributi che contengono, e di conseguenza ricavarne un valore. \par
 
-La valutazione di una \textit{policy} termina con il \textit{fulfillment} di tutte le obligations  che hanno il valore di applicabilità coincidente con quello ritornato dalla valutazione della \textit{policy}. Quest'operazione consiste nel valutare tutte le espressioni presenti al interno delle \texttt{obligations} coinvolte nel processo. Se ci sarà un errore nel processo di \textit{fulfillment} allora il risultato della \textit{policy} sarà \texttt{indet}, altrimenti il risultato del \textit{fulfillment} sarà uguale a quello della valutazione del PDP.\\ \par
+La valutazione di una \textit{policy} termina con il \textit{fulfillment} di tutte le obligations  che hanno il valore di applicabilità coincidente con quello ritornato dalla valutazione della \textit{policy}. Quest'operazione consiste nel valutare tutte le espressioni presenti al interno delle \texttt{obligations} coinvolte nel processo. Se ci sarà un errore nel processo di \textit{fulfillment} allora il risultato della \textit{policy} sarà \texttt{indet}, altrimenti il risultato del \textit{fulfillment} sarà uguale a quello della valutazione del PDP. \par
 Gli algoritmi di combining hanno lo scopo di combinare le decisioni risultanti dalla valutazione delle richieste in accordo con le policy. Un'altra funzione che hanno è, nel caso nel caso in cui la valutazione finale risulti \permit \ o \texttt{deny}, ritornare le \textit{obligations} coerenti con il risultato della decisione.  
 Come ultimo step il risultato del \ac{PDP} viene mandato al \ac{PEP} per l'enforcement.
-Il PEP per effettuare questo processo deve eseguire l'azione all'interno di ogni \textit{fulfilled obligation} e decidere come comportarsi per le decisioni di tipo \texttt{not-app} e \texttt{indet.}\\ \par
+Il PEP per effettuare questo processo deve eseguire l'azione all'interno di ogni \textit{fulfilled obligation} e decidere come comportarsi per le decisioni di tipo \texttt{not-app} e \texttt{indet.} \par
 Per fare questo processo il \ac{PEP} usa delle strategie. In particolare, l'algoritmo \texttt{deny-biased} (rispettivamente, \texttt{permit-based}) effettua l'enforcement dei \permit \ (rispettivamente \deny) solo quando tutte le corrispondenti obligations sono correttamente eseguite, mentre effettua l'enforcement dei \deny \  (rispettivamente \permit) in tutti gli altri casi. Invece, l'algoritmo di base lascia tutte le decisioni non cambiate ma, in caso di decisioni \permit \ e \deny, effettua l'enforcement di \texttt{indet} se ci sarà un errore durante l'esecuzione delle \texttt{obligations}. Questo evidenzia che le \texttt{obligations} non solo influenzano il processo di autorizzazione, ma anche l'enforcement. Gli errori causati dalle \texttt{obligations} con tipo O vengono ignorati.
+
+
+\section{Tool}
+\label{sec:tool}
+Il plugin per Eclipse di \ac{FACPL} è stato scritto con l'ausilio di un \textit{Framework} chiamato \textit{Xtext}. Quest'ultimo a sua volta utilizza \textit{Xtend} poiché permette di scrivere regole di traduzione per generare automaticamente codice Java.\par
+Attraverso il plugin si riesce a rendere Eclipse un vero e proprio ambiente di sviluppo per \ac{FACPL} in quanto si ottengono funzioni come l'autocompletamento o l'highlighting del codice.\par
+L'ambiente di sviluppo con il relativo plugin, le regole di traduzione, e la libreria Java formano insieme la \textit{toolchain} di \ac{FACPL}, mostrata in Figura~\ref{fig:toolChain.png}.
+
+\MyFig{toolChain.png}{ToolChain di FACPL}{1}{h}
+
+Lo sviluppatore che utilizza l'\ac{IDE} di \ac{FACPL} può generare codice Java o \ac{XACML} a partire da politiche scritte in \ac{FACPL}. La traduzione da codice \ac{FACPL} a Java o \ac{XACML} è effettuata attraverso le regole di traduzione scritte in Xtend.
 
 \section{Esempi di politiche} % (fold)
 \label{sec:esempio_di_politica_con_facpl}
-In questa sezione è analizzata una semplice politica scritta in \ac{FACPL} con delle possibili richieste di accesso, la sintassi delle richieste e delle politiche è leggermente diversa da quella riportata in Tabella \ref{tab:facpl_syntax} in quanto, per questioni di comodità e facilità di lettura del codice, è stata usata quella del plugin.\\
+In questa sezione è analizzata una semplice politica scritta in \ac{FACPL} con delle possibili richieste di accesso, la sintassi delle richieste e delle politiche è leggermente diversa da quella riportata in Tabella \ref{tab:facpl_syntax} in quanto, per questioni di comodità e facilità di lettura del codice, è stata usata quella del plugin.\par
 \lstinputlisting[firstline = 1, lastline = 17, language = FACPL, caption = {Esempio di politica in FACPL}\label{lst:facpl_es_cap3}]{./Source/EsempioFacplCap3} 
 Con il Codice \ref{lst:facpl_es_cap3} si vuole ottenere lo scopo di regolare l'accesso ad una risorsa chiamata 458. In questo caso gli utenti che hanno ruolo \textit{GUEST} non possono accedere, mentre gli \textit{ADMINISTRATOR} si, fatta eccezione per l'utente Peronio, che qualunque ruolo abbia può accedere.
 Le richieste effettuate al sistema vengono mostrate in Codice~\ref{lst:facpl_es_cap3_req}, e sono tre. La prima proviene dall'utente Gianfabrizio che fa parte degli \textit{ADMINISTRATOR}, la seconda e la terza rispettivamente dall'utente Gianpietro e Peronio che fanno entrambi parte dei \textit{GUEST}. 
@@ -114,7 +117,7 @@ Le richieste effettuate al sistema vengono mostrate in Codice~\ref{lst:facpl_es_
 \end{tabular}
 \hrule
 \end{table}
-In Tabella \ref{tab:risultati_richieste} sono riassunti i risultati delle richieste. Ovviamente alla prima richiesta il risultato è \permit, in quanto l'utente è un amministratore. Alla seconda richiesta il risultato è \deny \ poiché l'utente è un ospite, mentre alla terza, nonostante l'utente faccia parte dello stesso gruppo del secondo riesce ad ottenere risultato \permit \ per via della regola che considera il suo nome.\\ \par
+In Tabella \ref{tab:risultati_richieste} sono riassunti i risultati delle richieste. Ovviamente alla prima richiesta il risultato è \permit, in quanto l'utente è un amministratore. Alla seconda richiesta il risultato è \deny \ poiché l'utente è un ospite, mentre alla terza, nonostante l'utente faccia parte dello stesso gruppo del secondo riesce ad ottenere risultato \permit \ per via della regola che considera il suo nome. \par
 \ac{FACPL}, come mostrato dall'esempio, permette di fare richieste ed ottenere delle risposte, ma queste richieste sono totalmente indipendenti l'una dall'altra, quindi l'ordine di esecuzione non avrebbe influenzato in alcun modo il risultato finale.
 In sezione \ref{sec:usage_control} sono stati introdotti due esempi i quali non possono, per ora, essere implementati in FACPL poiché manca quest'aspetto che crea dipendenza tra le richieste.
 Per creare questa dipendenza tra richieste è necessario che il sistema di controllo agli accessi riesca a tenere traccia degli avvenimenti precedenti, perciò si inizia a parlare di un nuovo concetto che può essere assimilabile ad uno stato. Nel Capitolo~\ref{cap:usagecontrolfacpl} e ~\ref{cap:estensione_libreria} l'obiettivo è proprio permettere a \ac{FACPL} questo tipo di valutazione.
