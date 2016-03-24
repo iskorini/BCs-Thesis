@@ -39,7 +39,7 @@ headinclude,12pt,a4paper,BCOR5mm,footinclude]{scrbook}
 \usepackage{ellipsis}
 \usepackage{listings}
 \usepackage{subfig}
-\usepackage{caption}
+\usepackage[figurename=Figura]{caption}
 \usepackage{appendix}
 \usepackage{siunitx}
 \usepackage{float}
@@ -68,6 +68,7 @@ parts]{classicthesis}
 \usepackage[pdftex]{graphicx}
 \usepackage{rotating}
 \usepackage{acronym}
+\captionsetup[figure]{labelformat=simple, labelsep=colon}
 \graphicspath{{Chapters/Image/}}
 \newcommand{\MyFigure}[3]{
 	\begin{figure}[H]
@@ -99,7 +100,20 @@ parts]{classicthesis}
 \definecolor{dkgreen}{rgb}{0,.6,0}
 \definecolor{brightpink}{rgb}{1.0, 0.0, 0.5}
 \definecolor{burgundy}{rgb}{0.5, 0.0, 0.13}
-
+\lstdefinelanguage{Xtend}{
+ morekeywords={cached,case,default,extension,false,import,JAVA,WORKFLOWSLOT,let,new,null,private,create,switch,this,true,reexport,around,if,then,else,context},
+ keywordstyle=[2]{\textbf},
+ morecomment=[l]{//}, 
+ morecomment=[s]{/*}{*/}, 
+ morestring=[b]",
+ tabsize=4}
+ \lstdefinelanguage{Xtext}{
+ morekeywords={grammar, with, hidden, generate, as, import, returns, current, terminal, enum},
+ keywordstyle=[2]{\textbf},
+ morecomment=[l]{//}, 
+ morecomment=[s]{/*}{*/}, 
+ morestring=[b]",
+ tabsize=4}
 \lstdefinelanguage{FACPL} {
   % list of keywords
 	keywords = [1] {
@@ -225,6 +239,7 @@ textheight    = 21.5cm,
 \end{flushright}
 \cleardoublepage
 \nocite{*}
+
 \include{Chapters/introduzione}
 \include{Chapters/usagecontrol}
 \include{Chapters/FACPL}
@@ -235,7 +250,7 @@ textheight    = 21.5cm,
 \bibliography{Chapters/Bib}
 
 
-
+\newpage
 \section*{Lista di Acronimi}
 \begin{acronym}[FACPL]
 \acro{ACL}[ACL]{Access Control List}
@@ -253,7 +268,9 @@ textheight    = 21.5cm,
 \acro{IDE}[IDE]{Integrated Development Environment}
 \acro{PR}[PR]{Policy Repository}
 \acro{EBNF}[EBNF]{Extended Backus Naur form}
+\acro{FACPLPB}[\bfseries{$FACPL_{PB}$}]{$Formal\ Access\ Control\  Policy\ Language_{Past Behaviour}$}
 \end{acronym}
+
 \include{Chapters/appendici}
 
 %--------------------------------------------------------------

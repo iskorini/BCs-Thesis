@@ -65,7 +65,7 @@ In questo modo vengono prese in considerazione anche le nuove Obligation Status,
 \label{sec:estensione_politiche}
 
 Le politiche, in seguito all'estensione, vengono valutate basandosi anche sullo stato indi per cui è stato necessario estendere il contesto intorno a cui sono valutate. Come mostrato in Figura~\ref{fig:contextrequest.png} l'estensione del contesto si ottiene mediante la creazione di una nuova classe, a estensione di quella esistente.
-\MyFig{contextrequest.png}{Contesto}{0.5}{H}
+\MyFig{contextrequest.png}{Contesto}{0.40}{H}
 La nuova classe ContextRequest\_Status contiene lo stato sottoforma di campo privato. L'accesso allo stato è effettuato tramite il metodo getContextRequestValue (Codice~\ref{lst:cxtReq}), che in questa sottoclasse è stato riscritto.
 \myIjava{context_request_status.java}{Discharge delle Fulfilled Obligation di stato}{37}{55}{cxtReq}
 Questo metodo riceve come parametro un attributo, ed in base al suo tipo andrà a cercarlo nello stato o nell'ambiente.
@@ -76,9 +76,9 @@ Questo metodo riceve come parametro un attributo, ed in base al suo tipo andrà 
 Il \ac{PDP} per poter valutare correttamente le richieste deve avere la possibilità di comparare anche questo nuovo tipo di attributi.
 Raggiungere quest'obiettivo non è stato difficile in quanto la struttura era già esistente e funzionante, ed essendo i nuovi attributi soltanto un estensione di quelli 
 creati in precedenza è stato possibile usarla senza alcun tipo di problema.\par
-\centering
+
 \MyFig{comparisonUML.png}{Comparatori}{1.07}{H}
-\flushleft
+
 Come nel caso delle funzioni di modifica dello stato, la struttura è basata su un factory che ritorna il valutatore corretto in base al tipo su cui deve essere effettuato il confronto.
 
 \subsection{Obligation}
@@ -110,8 +110,28 @@ Il \ac{PEP} nella fase di enforcement effettua la valutazione delle \textit{Obli
 \section{Plugin Eclipse}
 \label{sec:plugin_eclipse}
 
+La sintassi di \ac{FACPL} è definita in Xtext. Quest ultimo è un framework, basato su Java, per lo sviluppo di linguaggi, e fa uso di Xtend per tradurre da \ac{FACPL} a codice Java.
+XTend ha le sue radici in Java, ma si concentra maggiormente su aspetti come una sintassi più concisa, ed altre funzionalità come l'inferenza sui tipi, l'overload degli operatori o l'estensione dei metodi. 
+È principalmente un linguaggio Object-oriented, ma integra caratteristiche tipiche di un linguaggio funzionale, come ad esempio le Lambda Expression. Il sistema dei tipi di XTend è lo stesso di Java, ed è quindi statico.\par
+Inizialmente è stata estesa la grammatica, introducendo i nuovi costrutti come lo Stato, gli \statusattribute \ e le nuove Obligation.
+Successivamente sono state scritte le regole di traduzione in Xtend in modo che il codice scritto in $FACPL_{PB}$ venisse tradotto in Java.\par
+Il primo passo è stato quello di creare gli attributi e lo stato per poi integrarli nel PAS.
+Sono state scritte tre nuove regole di produzione mostrate in Figura~\ref{fig:reg_prod}
+\MyFig{reg_prod}{Regole di produzione per lo stato}{1}{H}
+La prima regola serve ad introdurre lo stato all'interno del PAS.
+La seconda definisce lo stato come un insieme di attributi dichiarabili.
+Nella terza regola sono definiti gli attributi, i quali avranno un tipo, un nome ed un valore.
+La quarta regola invece sono gli attributi dichiarabili, ovvero degli attributi racchiusi tra parentesi tonde.\par
+Lo step successivo è stato estendere le Obligation e l'espressioni.
+Per estendere le obligation è stato necessario modificare la regola ed introdurre nuove funzioni. Per introdurre la valutazione degli \statusattribute \ è stata estesa la regola Function. Tutte queste modifiche sono mostrate in Figura~\ref{fig:obl_fun}
+\MyFig{obl_fun}{Regole di produzione per obligation e le espressioni}{1}{H}
+Dopo aver esteso la grammatica sono state estese anche le regole di traduzione. Mostriamo ora com'è stato realizzato lo stato.
+Chiamando la funzione in Figura~\ref{fig:stato_xtend} verrà generata una sequenza di caratteri che verrà successivamnete scritta su un file Java, creando così la classe che andrà a definire lo stato.
+\MyFig{stato_xtend}{Stato in Xtend}{1}{H}
+Lo stato è formato da una hashmap contentente una serie di attributi. Ovviamente quest ultimi saranno l'unica parte variabile di questa classe, quindi per far si che vengano ogni volta aggiunti in modo corretto è presente un ciclo che scorre i vari attributi e per ognuno di essi genera il codice Java necessario per istanziarli. \par
+Il plugin si presenta come in Figura~\ref{fig:plugin}. Le funzionalità di questo plugin sono proprie di un ambiente di sviluppo, in quanto offre l'autocompletamento e il syntax highlighting. 
+\MyFig{plugin}{Plugin di \ac{FACPL}}{0.75}{H}
 
-[IN SOSPESO]
 
 
 \section{Esempi}
@@ -140,5 +160,3 @@ Questa classe, come detto in precedenza estende una classe già esistende nella 
 
 
 \subsection{Secondo case study}
-
-Verrebbe abbastanza uguale, lo devo fare lo stesso? In caso non lo dovessi scrivere levo le sottosezioni e ne faccio una singola chiamata \textit{Esempio}.

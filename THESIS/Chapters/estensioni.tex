@@ -117,9 +117,6 @@ Prendiamo ora una serie di richieste ed analizziamone la loro valutazione.
 La prima richiesta proviene da Alice, e sarà una lettura sul file1, la successiva proviene da Bob, è sempre sul file1, ma l'azione richiesta è di scrittura. Le altre sono analoghe.\par
 
 L'output di queste richieste è mostrato in Tabella~\ref{tab:risultati_1}. Analizziamo ora il motivo di queste decisioni. Nella prima richiesta ovviamente nessuno sta leggendo o scrivendo, quindi viene tranquillamente restituito \permit. Visto che è presente una \textit{obligation} lo stato verrà aggiornato, sommando un'unità al contatore di letture.
-Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo, però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa. \par
-La quarta e la quinta richiesta vengono fatte per avvisare il sistema che la lettura è terminata, ovviamente la risposta è \permit, e la \textit{obligation} corrispondente decrementerà il contatore.
-La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, poiché nessuno sta scrivendo o leggendo.
 \begin{table}[H]
 \centering
 \footnotesize
@@ -135,6 +132,10 @@ La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, 
 \textbf{Richiesta 6} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 0\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = true\\ CounterReadFile1 = 0\end{tabular} \\ \hline
 \end{tabular}
 \end{table}
+Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo, però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa.
+La quarta e la quinta richiesta vengono fatte per avvisare il sistema che la lettura è terminata, ovviamente la risposta è \permit, e la \textit{obligation} corrispondente decrementerà il contatore.
+La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, poiché nessuno sta scrivendo o leggendo.
+
 
 
 

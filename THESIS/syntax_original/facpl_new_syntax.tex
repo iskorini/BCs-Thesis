@@ -45,14 +45,14 @@ $
 {\textbf{Obligations}} &
 \mathit{Obligation} & ::= & [ \, \mathit{Effect} \ \ \mathit{ObType} \ \ \obl{Expr} \, ]
 \\[.2cm]
-{\textbf{PepAction}} & \mathit{PepAction} & ::= & \, \x{add(\mathit{Attribute}, int)} \Sep \x{flag(\mathit{Attribute}, boolean)} \\ 
-&& & \Sep \x{sumDate(\mathit{Attribute}, date)} \Sep \x{div(\mathit{Attribute}, int)} \\
-&& & \Sep \x{add(\mathit{Attribute}, float)} \ \Sep \x{mul(\mathit{Attribute}, float)} \\
-&& & \Sep \x{mul(\mathit{Attribute}, int)} \ \Sep \x{div(\mathit{Attribute}, float)} \\
-&& & \Sep \x{sub(\mathit{Attribute}, int)} \ \Sep \x{sub(\mathit{Attribute}, float)} \\
-&& & \Sep \x{sumString(\mathit{Attribute}, string)} \\ 
-&& & \Sep \x{setValue(\mathit{Attribute}, string)}\\
-&& & \Sep \x{setDate(\mathit{Attribute}, date)}  
+{\textbf{PepAction}} & \mathit{PepAction} & ::= & \, \x{add(\mathit{Attribute}, \mathit{int})} \Sep \x{flag(\mathit{Attribute}, \mathit{boolean})} \\ 
+&& & \Sep \x{sumDate(\mathit{Attribute}, \mathit{date})} \Sep \x{div(\mathit{Attribute}, \mathit{int})} \\
+&& & \Sep \x{add(\mathit{Attribute}, \mathit{double})} \ \Sep \x{mul(\mathit{Attribute}, \mathit{double})} \\
+&& & \Sep \x{mul(\mathit{Attribute}, \mathit{int})} \ \Sep \x{div(\mathit{Attribute}, \mathit{double})} \\
+&& & \Sep \x{sub(\mathit{Attribute}, \mathit{int})} \ \Sep \x{sub(\mathit{Attribute}, \mathit{double})} \\
+&& & \Sep \x{sumString(\mathit{Attribute}, \mathit{string})} \\ 
+&& & \Sep \x{setValue(\mathit{Attribute}, \mathit{string})}\\
+&& & \Sep \x{setDate(\mathit{Attribute}, \mathit{date})}  
 \\[.2cm]
 {\textbf{Obligation Types}} &
 \mathit{ObType} & ::= & M \Sep O

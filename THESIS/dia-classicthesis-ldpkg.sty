@@ -179,8 +179,8 @@
 	% ********************************************************************
 	% Using PDFLaTeX:
 	% ********************************************************************
-	\RequirePackage[pdftex,hyperfootnotes=false,pdfpagelabels,pagebackref]{hyperref}  % backref linktocpage pagebackref
-	\pdfcompresslevel=9
+	\RequirePackage[pdftex,hyperfootnotes=false,pdfpagelabels]{hyperref}  % backref linktocpage pagebackref
+	\pdfcompresslevel=7
 	\pdfadjustspacing=1 
 	\RequirePackage[pdftex]{graphicx} % PDFTeX driver for graphicx
 	\DeclareGraphicsRule{*}{mps}{*}{} % enables use of MetaPost graphics with pdflatex 
@@ -216,8 +216,8 @@
 % ********************************************************************
 % setup the style of the backrefs from the bibliography
 \newcommand{\backrefnotcitedstring}{\relax}%(Not cited.)
-\newcommand{\backrefcitedsinglestring}[1]{(Cited on page~#1.)}
-\newcommand{\backrefcitedmultistring}[1]{(Cited on pages~#1.)}
+\newcommand{\backrefcitedsinglestring}[1]{}
+\newcommand{\backrefcitedmultistring}[1]{}
 
 \RequirePackage[hyperpageref]{backref} % to be loaded after hyperref package 
    \renewcommand{\backreftwosep}{ and~} % seperate 2 pages
