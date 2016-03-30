@@ -1,7 +1,10 @@
 \backcite {ucon}{{9}{1}{chapter.1}}
 \backcite {NISTACM}{{11}{2.1}{section.2.1}}
+\backcite {XACML}{{17}{2.1}{figure.caption.14}}
 \backcite {SurveyUsageControl}{{17}{2.2}{section.2.2}}
 \backcite {SurveyUsageControl}{{17}{2.2}{section.2.2}}
 \backcite {UsageControlCloud}{{18}{2.2}{section.2.2}}
+\backcite {XACML}{{23}{3}{chapter.3}}
+\backcite {fullfacpl}{{23}{3}{chapter.3}}
 \backcite {fullfacpl}{{27}{3.3}{section.3.3}}
 \backcite {DBLP:conf/icitst/2012}{{65}{6.1}{chapter*.43}}

@@ -48,8 +48,8 @@ Passiamo ora a descrivere \textit{Attribute} che è della forma $$(Type\ Identif
 questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.
 
 \textit{Type} è il tipo che avrà l'attributo di stato, e potrà essere \texttt{int, boolean, date o double}. \par
-La regola \textit{PepAction} è stata modificata in modo tale che includesse nuove funzioni per operare sugli attributi di stato.
-Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata semplicemente aggiunto, a fianco di \textit{Identifier/Identifier}, una nuova produzione Status/\textit{Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
+La regola \textit{PepAction} è stata modificata in modo tale che includa nuove funzioni per operare sugli attributi di stato.
+Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata aggiunta, a fianco di \textit{Identifier/Identifier}, una nuova produzione Status/\textit{Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
 La sintassi delle risposte è rimasta invariata.
 
 % section estensione_linguistica (end)
@@ -91,7 +91,7 @@ Infine nella \textit{Obligation} si può notare come viene aggiornato lo stato d
 \label{sec:esempi}
 
 Queste nuove funzionalità introdotte servono allo scopo descritto in Sezione~\ref{sec:usage_control}, ovvero l'implementazione di un nuovo modello chiamato \textit{Usage Control}.
-In questi due semplici case study lo stato gioca un ruolo fondamentale, in quanto il sistema di access control, per poter soddisfare requisiti di consistenza deve tener traccia del comportamento passato.
+In questi due semplici casi di studio lo stato gioca un ruolo fondamentale, in quanto il sistema di access control, per poter soddisfare requisiti di consistenza deve tener traccia del comportamento passato.
 Mostreremo ora l'implementazione in \ac{FACPL} dei due esempi trattati in Sezione~\ref{sec:casi_studio}. Per comodità è usata la sintassi del plugin di Eclipse, che differisce leggermente da quella presentata in \ref{sec:estensione_linguistica}. 
 
 \subsection{Accesso ai file} % (fold)
@@ -145,18 +145,18 @@ La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, 
 In questo secondo esempio analizzeremo il caso di un'azienda di distribuzione di contenuti multimediali che vuole regolare l'accesso di quest'ultimi attraverso policy.
 Faremo un breve esempio con un solo file e due utenti, uno dei due utenti comprerà il file, l'altro lo noleggierà a tempo determinato.
 Nel codice~\ref{lst:SecondoEsempio_FACPL} vengono mostrate solo una parte delle policy presenti nel Codice completo ~\ref{lst:SecEsCompl} \ mostrato in Appendice~\ref{cap:appendiceA}.
-\lstinputlisting[firstline = 1, lastline = 39, language = FACPL, caption = {Secondo Esempio}\label{lst:SecondoEsempio_FACPL}]{./Source/second_example_facpl}
+\lstinputlisting[firstline = 1, lastline = 39, language = FACPL, caption = {Codice \ac{FACPL} del secondo caso di studio}\label{lst:SecondoEsempio_FACPL}]{./Source/second_example_facpl}
 Queste due policy, e anche le altre che non sono state mostrate, sono racchiuse tutte all'interno del \textit{Policy Set} Negozio il quale come prima cosa verifica se chi ha fatto la richiesta ha un determinato nome, in questo caso \textit{Bob} o \textit{Alice}. \par
 Successivamente, se uno dei due effettua la richiesta di \texttt{BUY}, ovvero l'acquisto senza alcun tipo di limitazione, si entra nella prima policy e, tramite le \textit{Obligation} si cambia l'attributo di stato. Invece se un utente decidesse di effettuare il noleggio con la modalità dove si limita il numero di visioni si entrerebbe nella seconda \textit{Policy Set} la quale, attraverso \textit{Obligations} aumenterà il numero di visioni di due unità. Analogo è il caso del noleggio a tempo. \par
 Per disciplinare la visione è presente un altro \textit{Policy Set}, mostrato anch'esso parzialmente in codice~\ref{lst:secondo_esempio_view}.
-\lstinputlisting[firstline = 59, lastline = 71, language = FACPL, caption = {Secondo Esempio}\label{lst:secondo_esempio_view}]{./Source/second_example_facpl}
+\lstinputlisting[firstline = 59, lastline = 71, language = FACPL, caption = {Codice \ac{FACPL} del secondo caso di studio}\label{lst:secondo_esempio_view}]{./Source/second_example_facpl}
 \subsubsection{Valutazione}
 Mostriamo ora in Codice~\ref{lst:richieste_2} alcune richieste che possono essere fatte al sistema ed analizziamo le risposte che produrranno, in Tabella~\ref{tab:valutazione_2} è mostrato un quadro riassuntivo del risultato delle richieste.
 \lstinputlisting[language = FACPL, caption = {Richieste del Secondo Esempio}\label{lst:richieste_2}]{./Source/second_example_request}
 La prima e la seconda richiesta sono richieste di visione, che ovviamente restituiranno entrambe \deny, in quanto lo stato del sistema non è stato modificato da nessuno poiché nè Alice nè Bob hanno effettuato acquisti o noleggi.
 Successivamente Alice effettuerà un acquisto, e quindi tramite la Obligation Status verrà modificato lo stato del sistema, accreditando così l'acquisto. Dopo aver effettuato questa richiesta Alice ne effettua un'altra, questa volta di visione. 
 A questo punto la policy che disciplina quest'ultima richiesta di Alice effettua una verifica dello \statusattribute \ \textit{AccessTypeAlice}, e visto che lo trova cambiato dalla precedente richiesta di acquisto permette la visione.
-Bob, a cui all'inizio era stata negata la visione effettuerà una richiesta di noleggio e quindi cambierà lo stato. Dopo, sempre Bob, richiede la visione, il risultato di entrambe sarà ovviamente \permit.
+Bob, a cui all'inizio era stata negata la visione effettuerà una richiesta di noleggio e quindi cambierà lo stato. Dopo, sempre Bob, richiede la visione. Il risultato di entrambe sarà ovviamente \permit.
 % subsection secondo_esempio (end)
 
 \begin{table}[H]

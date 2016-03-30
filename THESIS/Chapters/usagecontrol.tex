@@ -7,13 +7,13 @@ una priorità inderogabile.
 I motivi che portano a questa decisione possono essere legati alla privacy o alla consistenza dei dati durante una computazione.
 Ad esempio, molte informazioni personali possono essere
 raccolte durante alcune attività quotidiane, dunque diventa necessario
-proteggere questi dati da malintenzionati. Per questo motivo esistono sistemi di Access Control, ovvero dei sistemi
+proteggere questi dati da malintenzionati. Per questo motivo esistono sistemi di Access Control, ovvero sistemi
 definiti da un insieme di condizioni che permettono di creare una prima
 linea difensiva contro accessi indesiderati.
 
 
 In Sezione~\ref{sec:history} vengono trattati in maggior dettaglio i vari modelli 
-di controllo all'accesso proposti negli ultimi decenni, successivamente, nella Sezione~\ref{sec:usage_control} viene analizzato anche un nuovo modello chiamato \textit{Usage Control}. Infine nell'ultima Sezione, la ~\ref{sec:casi_studio}, vengono proposti due case study.
+di controllo all'accesso proposti negli ultimi decenni, successivamente, nella Sezione~\ref{sec:usage_control} viene analizzato anche un nuovo modello chiamato \textit{Usage Control}. Infine nell'ultima Sezione, la ~\ref{sec:casi_studio}, vengono proposti due casi di studio.
 \section{Access Control}
 \label{sec:history}
 
@@ -27,9 +27,9 @@ dei modelli di Access Control, seguendo la catalogazione del NIST \cite{NISTACM}
 \item \acf{ACL} è il primo di questi modelli ed è stato proposto intorno al 1970 spinto
 dall’avvento dei primi sistemi multi utente.
 \item \acf{RBAC} è nato successivamente ad \ac{ACL} e ne modifica alcuni aspetti in modo da rimuovere
-molte delle limitazioni di quest’ultimo. 
+molte delle limitazioni di quest'ultimo. 
 \item \acf{ABAC} è nato dopo \ac{RBAC} e fornisce un paradigma dinamico che aiuta a sviluppare policy che si adattano all'ambiente. 
-\item \acf{PBAC} è molto simile ad \ac{ABAC} ma migliora e standardizza quest ultimo modello.
+\item \acf{PBAC} è molto simile ad \ac{ABAC} ma migliora e standardizza quest'ultimo modello.
 
 \end{itemize}
 
@@ -54,7 +54,7 @@ Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di
 \label{sub:role_based_access_control}
 
 \ac{RBAC} è l'evoluzione di \ac{ACL}, in quanto tende a correggerne alcuni difetti come la limitata scalabilità. \par
-A differenza di \ac{ACL} è presente il concetto il ruolo del richiedente, ovvero un titolo che definisce un livello di autorità, che raggrupperà diversi utenti in una categoria. 
+A differenza di \ac{ACL}, in \ac{RBAC}, è presente il concetto il ruolo del richiedente, ovvero un titolo che definisce un livello di autorità, che raggrupperà diversi utenti in una categoria. 
 \ac{RBAC} attraverso questa nuova caratteristica riesce a porre rimedio ai difetti di \ac{ACL} in quanto
 questo tipo di gestione offre il vantaggio di facilitare l'assegnazione dei permessi, poiché per ogni risorsa non si devono più gestire tutti i singoli utenti, ma basta gestire i permessi associati a queste nuove categorie. 
 
@@ -78,7 +78,7 @@ Ogni attributo è un campo distinto dagli altri che il \ac{PDP} compara con un i
 In Figura~\ref{fig:ABAC} viene mostrato il funzionamento di \ac{ABAC}. Di particolare rilevanza è il secondo step, che porta alla raccolta di tutte le informazioni per produrre una decisione finale.
 Inizialmente il sistema richiede al \ac{ACS} le policy, successivamente effettua la raccolta degli attributi dalle varie fonti.
 \MyFig{ABAC}{Scenario ABAC base}{0.8}{} %SOSTITUIRE CON GRAFICO SIMILE
-Questi attributi possono provenire da disparate fonti ed essere di svariati tipi. Per esempio nella valutazione di una richiesta possono essere considerati attributi come la data di assunzione di un dipendente ed il suo grado all'interno dell'azienda. 
+Questi attributi possono provenire da fonti disparate ed essere di svariati tipi. Per esempio nella valutazione di una richiesta possono essere considerati attributi come la data di assunzione di un dipendente ed il suo grado all'interno dell'azienda. 
 
 
 Un vantaggio di \ac{ABAC} è che non c'è la necessità che il richiedente conosca in anticipo
@@ -88,7 +88,7 @@ cui i proprietari delle risorse vogliono far accedere utenti che non conoscono d
 Diversamente da \ac{ACL} e \ac{RBAC} questo tipo di controllo agli 
 accessi non è implementato nei sistemi operativi, ma è largamente usato a livello applicativo.
 Spesso si usano applicazioni intermedie per mediare gli accessi da parte degli utenti a specifiche risorse.
-Implementazioni semplici di questo modello non richiedono grandi \textit{database} o altre infrastrutture, tuttavia in ambienti dove non basta una semplice applicazione c'è necessità di grandi banche di dati.\par
+Implementazioni semplici di questo modello non richiedono grandi \textit{database} o altre infrastrutture, tuttavia in ambienti dove non basta una semplice applicazione c'è necessità di grandi banche dati.\par
 Una limitazione di \ac{ABAC} è che in grandi ambienti, con tante risorse, individui e applicazioni ci saranno molte regole, ed organizzarle in maniera efficiente diventa un compito oneroso.
 
 
@@ -107,7 +107,7 @@ Con \ac{PBAC} invece si ha un solo punto dove vengono gestite le policy, e quest
 \ac{PBAC} non richiede solo un applicazione per gestire la valutazione delle policy, ma
 anche un sistema per la scrittura di queste ultime in modo che
 non risultino ambigue.
-Uno standard basato su \ac{XML}, e che si chiama \ac{XACML}, è sviluppato in modo tale da creare policy facilmente leggibili da una macchina. \par
+Per facilitare la creazione e la leggibilità delle policy è stato creato da OASIS \cite{XACML} uno standard, basato su \ac{XML}, che si chiama \ac{XACML}.\par
 
 Sfortunatamente però, queste policy non sono facili da scrivere e l’uso
 di \ac{XACML} non necessariamente rende facile il processo di creazione, specifica e valutazione corretta di una policy. \par
@@ -117,16 +117,16 @@ attributi, deve anche occuparsi della loro consistenza. In più bisogna instaura
 un meccanismo per verificare che questi attributi provengano
 realmente dall’\ac{AAS}. Può sembrare facile fare una cosa del genere, ma
 bisogna considerare il caso in cui più aziende lavorano insieme e devono
-implementare un sistema di controllo degli accessi in comune. Un problema
-si può verificare quando un’azienda valuta la gestione dell’\ac{AAS}
-tramite una particolare \textit{repository}, ma un’altra azienda non è d’accordo a
+implementare un sistema di controllo degli accessi in comune. Si può verificare un problema
+ quando un’azienda valuta la gestione dell’\ac{AAS}
+tramite un particolare \textit{repository}, ma un’altra azienda non è d’accordo a
 questo tipo di soluzione
 
 \section{Usage Control} % (fold)
 \label{sec:usage_control}
 Oggi sono presenti differenti tipi di sistemi diversi che richiedono un modello più flessibile e continuativo per gestire la sicurezza. Questa sezione parlerà di un nuovo sistema, chiamato \textit{Usage Control} \cite{SurveyUsageControl}. \par
-\textit{Usage Control} si propone come un nuovo e promettente approccio per il controllo degli accessi. In particolare verrà trattato il modello, inizialmente proposto da Sandhu e Park\cite{SurveyUsageControl}, chiamato $UCON_{ABC}$. \par
-$UCON_{ABC}$ utilizza un approccio diverso rispetto a \textit{Access Control} in quanto, rispetto a quest ultimo, si riesce ad avere una continuità delle decisioni sull'accesso. Ciò vuol dire che le decisioni non vengono più prese decisioni solo a priori, ma anche durante l'accesso.  Quindi, se durante l'utilizzo, qualche attributo di stato cambia e la \textit{policy} non è più soddisfatta viene revocato l'accesso. Di conseguenza è richiesto un componente che modella lo stato del sistema, in modo tale da effettuare valutazioni in base a quelle effettuate in precedenza. \par
+\textit{Usage Control} si propone come un approccio nuovo e promettente per il controllo degli accessi. In particolare verrà trattato il modello, inizialmente proposto da Sandhu e Park\cite{SurveyUsageControl}, chiamato $UCON_{ABC}$. \par
+$UCON_{ABC}$ utilizza un approccio diverso rispetto a \textit{Access Control} in quanto, rispetto a quest ultimo, si riesce ad avere una continuità delle decisioni sull'accesso. Ciò vuol dire che le decisioni non vengono più prese solo a priori, ma anche durante l'accesso.  Quindi, se durante l'utilizzo, qualche attributo di stato cambia e la \textit{policy} non è più soddisfatta viene revocato l'accesso. Di conseguenza è richiesto un componente che modella lo stato del sistema, in modo tale da effettuare valutazioni in base a quelle effettuate in precedenza. \par
 Il vantaggio di \textit{Usage Control} è la sua capacità di adattarsi a vari casi di utilizzo, riuscendo così a includere e migliorare sistemi come \ac{ACL}, \ac{RBAC}, \ac{ABAC} e \ac{PBAC} descritti in \ref{sec:history}.
 Il passaggio da Access Control a Usage Control è importante soprattutto quando si va a considerare ambienti legati alla rete, come possono essere il web o il cloud. \par
 Il processo decisionale in Usage Control è diviso in due fasi \cite{UsageControlCloud}. 
@@ -136,12 +136,12 @@ Il processo decisionale in Usage Control è diviso in due fasi \cite{UsageContro
 \end{itemize}
 I componenti necessari a questo tipo di processo decisionale sono dei predicati, che possono essere di tre tipi, \textit{authorizations}, \textit{conditions} oppure \textit{rights}, delle azioni chiamate \textit{obligations} che devono essere eseguite durante l'accesso ed infine uno stato. 
 \MyFig{Usage}{Insieme dei componenti di $UCON_{ABC}$}{1}{}
- Come questi componenti contribuiscono a prendere una decisione viene mostrato in Figura \ref{fig:Usage}.
+ Come questi componenti contribuiscono a prendere una decisione viene mostrato in Figura \ref{fig:Usage}. Ad un soggetto (Subject) sono associati dei diritti (Rights) e gli appartengono degli attributi (Subject Attributes) su degli oggetti (Objects). \textit{Authorisation, Obligation} e \textit{Condition} sono predicati che sono valutati per prendere la decisione di Usage Control. Access Control utilizza solo \textit{Authorisation} per prendere decisioni, quindi \textit{Obligation} e \textit{Condition} sono componenti nuove.
 
 \section{Casi di studio}
 \label{sec:casi_studio}
-In questa sezione sono presentati due case study che possono essere implementati attraverso funzionalità di Usage Control. Il primo di questi riguarda la 
-regolamentazione dell'accesso a dei files. Il secondo invece tratta un semplice caso in cui ci sono 
+In questa sezione sono presentati due casi di studio che possono essere implementati attraverso funzionalità di Usage Control. Il primo di questi riguarda la 
+regolamentazione dell'accesso a dei file. Il secondo invece tratta un semplice caso in cui ci sono 
 degli utenti che desiderano effettuare acquisti o noleggi di contenuti multimediali.
 
 
@@ -156,7 +156,7 @@ La regola è: \textit{”per un determinato file un massimo di due persone posso
 	\centering 
 	\includegraphics[width = 1.0\textwidth]{./Visio_Project/DiagrammaFlussoPrimoEsempio.pdf}
 	%scale = 0.72, , trim=1.18cm 0 0 0
- 	\caption{Diagramma di flusso del case study sull'accesso dei file}
+ 	\caption{Diagramma di flusso del caso di studio sull'accesso dei file}
  	\label{fig:diagrammaflussoprimoesempio}
 \end{figure}
 
@@ -174,11 +174,11 @@ Infine, entrambi gli utenti smettono di leggere, ma uno di loro vuole apportare 
 Un altro utilizzo possibile di \textit{Usage Control} riguarda l'analisi del comportamento passato. Un'azienda fornisce  ai propri clienti 
 la possibilità di effettuare noleggi o acquisti di contenuti multimediali (musica, video, film, serie tv e via discorrendo).\par
 In caso il contenuto fosse stato acquistato, l’acquirente potrà ottenere
-l’accesso infinite volte per infinito tempo. Nel caso di noleggio invece
+l’accesso infinite volte per tempo infinito. Nel caso di noleggio invece
 saranno presenti delle condizioni, come per esempio un numero massimo di visioni che quando superato non permette più di fruire del contenuto o una data di scadenza che, una volta oltrepassata,
 impedirà l’ulteriore visione del file noleggiato in precedenza.\par
 Come nell’esempio precedente viene mostrato un diagramma di flusso,
-proposto Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire meglio il funzionamento questo sistema di \textit{Usage Control}. Innanzitutto viene verificata la presenza nei due relativi database dell'utente e del file richiesto, successivamente viene analizzata la richiesta, che può essere di tre tipi.
+proposto in Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire meglio il funzionamento di questo sistema di \textit{Usage Control}. Innanzitutto viene verificata la presenza nei due relativi database dell'utente e del file richiesto, successivamente viene analizzata la richiesta, che può essere di tre tipi.
 \begin{itemize}
 \item Visione: nel caso la richiesta fosse di visione viene verificato se realmente l'utente ha diritto ad avere accesso a quella risorsa, e di conseguenza viene presa una decisione.
 \item Acquisto: nel caso la richiesta fosse di acquisto verrà accreditato l'acquisto all'utente che ha effettuato la richiesta.
@@ -187,6 +187,6 @@ proposto Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire 
 \begin{figure}[h]
  \centering 
 	\includegraphics[width = 1.1\textwidth]{./Visio_Project/DiagrammaFlussoSecondoEsempio.pdf}
- \caption{Diagramma di flusso del case study sul noleggio e acquisto di contenuti}
+ \caption{Diagramma di flusso del caso di studio sul noleggio e acquisto di contenuti}
  \label{fig:diagrammaflussosecondoesempio}
 \end{figure}

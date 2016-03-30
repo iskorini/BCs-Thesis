@@ -1,14 +1,13 @@
 \myChapter{Formal Access Control Policy Language}
 \label{cap:facpl}
-Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è \acf{XACML} di OASIS, e la sua prima versione risale al $2003$. Questo linguaggio ha una sintassi basata su \ac{XML} e fornisce caratteristiche avanzate per l'\textit{Access Control}. Il problema fondamentale di \ac{XACML} è che non ha una sintassi facile da leggere e da scrivere. \par
-\acf{FACPL} è un linguaggio per formalizzare policy di access control supportato da una solida libreria Java ed utilizzabile attraverso un plugin per il famoso ambiente di sviluppo Eclipse.
-L'obiettivo di \ac{FACPL} è definire una sintassi alternativa per \ac{XACML} in modo da renderlo più agevole da usare.
-\ac{FACPL} quindi è parzialmente inspirato a \ac{XACML}, ma oltre ad introdurre una nuova sintassi ridefinisce alcuni aspetti aggiungendo nuove caratteristiche. Il suo scopo però non è sostituire \ac{XACML}, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.\par
+Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è \acf{XACML} di OASIS \cite{XACML}, e la sua prima versione risale al $2003$. Questo linguaggio ha una sintassi basata su \ac{XML} e fornisce caratteristiche avanzate per l'\textit{Access Control}. Il problema fondamentale di \ac{XACML} è che non ha una sintassi facile da leggere e da scrivere. \par
+\acf{FACPL} \cite{fullfacpl} è un linguaggio per formalizzare policy di access control supportato da una solida libreria Java ed utilizzabile attraverso un plugin per il famoso ambiente di sviluppo Eclipse.
+\ac{FACPL} è parzialmente inspirato a \ac{XACML}, ma oltre ad introdurre una nuova sintassi ridefinisce alcuni aspetti aggiungendo nuove caratteristiche. Il suo scopo però non è sostituire \ac{XACML}, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.\par
 In Sezione~\ref{sec:tool} sono descritti i tool necessari per l'utilizzo di 
 \ac{FACPL}.
 Nella Sezione~\ref{sec:valutazione_facpl} è effettuata una disamina sul processo di valutazione di \ac{FACPL}, nella quale sono presentati i componenti principali e la descrizione dell'interazione tra di essi.
-Nelle Sezioni~\ref{sec:facpl_syntax} e ~\ref{sec:semantica_originale} viene analizzata rispettivamente la sintassi e la semantica di \ac{FACPL}.
-In Sezione~\ref{sec:esempio_di_politica_con_facpl} è proposto un esempio di politica con \ac{FACPL} ed inoltre è spiegato in maggior dettaglio perché non è possibile prendere decisioni basate sul comportamento passato.
+Nelle Sezioni~\ref{sec:facpl_syntax} e ~\ref{sec:semantica_originale} vengono analizzate rispettivamente la sintassi e la semantica di \ac{FACPL}.
+In Sezione~\ref{sec:esempio_di_politica_con_facpl} è proposto un esempio di politica con \ac{FACPL} ed inoltre è spiegato in maggior dettaglio perché in \ac{FACPL} non è possibile prendere decisioni basate sul comportamento passato.
 
 
 
@@ -41,7 +40,7 @@ La decisione del \ac{PDP} può essere di quattro tipi:
 Il significato delle prime due decisioni è facilmente intuibile, mentre per le ultime due vuol dire che c'è stato un errore durante la valutazione.
 Gli errori possono essere di diverso tipo, e vengono gestiti attraverso algoritmi che combinano le decisioni delle varie policy per ottenere un risultato finale.
 Le \textit{obligations} sono azioni, eseguite dal \ac{PEP}, correlate al sistema di controllo degli accessi. Queste azioni possono essere di svariati tipi, come per esempio generare un file di log, o mandare una mail.
-Allo step 13, sulla base del risultato delle \textit{obligations}, il ac{PEP} esegue un processo chiamato \textit{Enforcement} il quale restituirà un'altra decisione.
+Allo step 13, sulla base del risultato delle \textit{obligations}, il \ac{PEP} esegue un processo chiamato \textit{Enforcement} il quale restituirà un'altra decisione.
 Quest'ultima decisione corrisponde alla decisione finale del sistema e può differire da quella del PDP.
 
 
@@ -71,10 +70,10 @@ Una \textit{fulfilled obligation} è una semplice coppia formata da un tipo (M o
 \section{Semantica}
 \label{sec:semantica_originale}
 
-Molteplici sono le componenti di \ac{FACPL}, e la semantica ora verrà informalmente analizzata. La semantica formale è presente in \cite{fullfacpl}.
+Le componenti di \ac{FACPL} sono molteplici, e la semantica ora verrà informalmente analizzata. La semantica formale è presente in \cite{fullfacpl}.
 Prima è presentato il processo di decisione del \ac{PDP}, successivamente quello \ac{PEP}. \par
 Quando il \ac{PDP} riceve una richiesta, per prima cosa la valuta sulle basi delle \textit{policy} disponibili, successivamente determinerà un risultato combinando le decisioni ritornate da queste \textit{policy} attraverso degli algoritmi di combining. \par
-La valutazione della \textit{policy} rispetto alla richiesta comincia verificando l'applicabilità alla richiesta, che è fatta valutando un espressione definita \textit{target}. \par
+La valutazione della \textit{policy} rispetto alla richiesta comincia verificando l'applicabilità alla richiesta, che è fatta valutando un'espressione definita \textit{target}. \par
 Supponiamo che l'applicabilità dia esito positivo, nel caso ci sia una \textit{rule} sarà ritornato il valore risultante dalla valutazione di quest'ultima, mentre se c'è un \textit{policy set} il risultato è ottenuto valutando le \textit{policy} contenute all'interno, e combinando i loro valori con uno specifico algoritmo. Successivamente a queste valutazioni viene effettuato il \textit{fulfilment} delle obligation contenute all'interno delle \textit{policy}. \par
 Supponiamo ora che l'applicabilità non dia esito positivo, ovvero la valutazione del \textit{target} restituisca \texttt{false}. In questo caso il risultato della \textit{policy} sarà \texttt{not-app}. Mentre se il \textit{target} restituisce un valore non booleano o ritorna un errore il risultato della \textit{policy} sarà \texttt{indet}.
 
@@ -87,7 +86,7 @@ Il PEP per effettuare questo processo deve eseguire l'azione all'interno di ogni
 Per fare questo processo il \ac{PEP} usa delle strategie. In particolare, l'algoritmo \texttt{deny-biased} (rispettivamente, \texttt{permit-based}) effettua l'enforcement dei \permit \ (rispettivamente \deny) solo quando tutte le corrispondenti obligations sono correttamente eseguite, mentre effettua l'enforcement dei \deny \  (rispettivamente \permit) in tutti gli altri casi. Invece, l'algoritmo di base lascia tutte le decisioni non cambiate ma, in caso di decisioni \permit \ e \deny, effettua l'enforcement di \texttt{indet} se ci sarà un errore durante l'esecuzione delle \texttt{obligations}. Questo evidenzia che le \texttt{obligations} non solo influenzano il processo di autorizzazione, ma anche l'enforcement. Gli errori causati dalle \texttt{obligations} con tipo O vengono ignorati.
 
 
-\section{Tool}
+\section{Tool di supporto}
 \label{sec:tool}
 Il plugin per Eclipse di \ac{FACPL} è stato scritto con l'ausilio di un \textit{Framework} chiamato \textit{Xtext}. Quest'ultimo a sua volta utilizza \textit{Xtend} poiché permette di scrivere regole di traduzione per generare automaticamente codice Java.\par
 Attraverso il plugin si riesce a rendere Eclipse un vero e proprio ambiente di sviluppo per \ac{FACPL} in quanto si ottengono funzioni come l'autocompletamento o l'highlighting del codice.\par

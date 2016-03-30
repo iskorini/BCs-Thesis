@@ -45,8 +45,7 @@ Nel Codice~\ref{lst:addStatus.java} viene mostrata la sottoclasse che si occupa 
 La ragione dietro la verbosità creata dall'utilizzo di un valutatore, oltre che da una moltitudine di classi e sottoclassi, potrebbe sembrare superflua; ciononostante quest'ultima è una scelta lungimirante, in quanto in futuro sarà più agevole implementare nuovi tipi di attributo e relative funzioni su di essi.
 
 \begin{sidewaysfigure}
-    \centering
-	\includegraphics[width=1.0\linewidth]{functionarith.png}
+	\includegraphics[width=1.03\linewidth, trim = 10cm 0 0 0]{functionarith2.png}
     \caption{Grafico UML per la gerarchia di funzioni aritmetiche}
     \label{fig:functionarith.png}
 \end{sidewaysfigure}
@@ -66,7 +65,7 @@ In questo modo vengono prese in considerazione anche le nuove Obligation Status,
 
 Le politiche, in seguito all'estensione, vengono valutate basandosi anche sullo stato indi per cui è stato necessario estendere il contesto intorno a cui sono valutate. Come mostrato in Figura~\ref{fig:contextrequest.png} l'estensione del contesto si ottiene mediante la creazione di una nuova classe, a estensione di quella esistente.
 \MyFig{contextrequest.png}{Contesto}{0.40}{H}
-La nuova classe ContextRequest\_Status contiene lo stato sottoforma di campo privato. L'accesso allo stato è effettuato tramite il metodo getContextRequestValue (Codice~\ref{lst:cxtReq}), che in questa sottoclasse è stato riscritto.
+La nuova classe ContextRequest\_Status contiene lo stato sotto forma di campo privato. L'accesso allo stato è effettuato tramite il metodo getContextRequestValue (Codice~\ref{lst:cxtReq}), che in questa sottoclasse è stato riscritto.
 \myIjava{context_request_status.java}{Discharge delle Fulfilled Obligation di stato}{37}{55}{cxtReq}
 Questo metodo riceve come parametro un attributo, ed in base al suo tipo andrà a cercarlo nello stato o nell'ambiente.
 
@@ -122,13 +121,13 @@ La prima regola serve ad introdurre lo stato all'interno del PAS.
 La seconda definisce lo stato come un insieme di attributi dichiarabili.
 Nella terza regola sono definiti gli attributi, i quali avranno un tipo, un nome ed un valore.
 La quarta regola invece sono gli attributi dichiarabili, ovvero degli attributi racchiusi tra parentesi tonde.\par
-Lo step successivo è stato estendere le Obligation e l'espressioni.
-Per estendere le obligation è stato necessario modificare la regola ed introdurre nuove funzioni. Per introdurre la valutazione degli \statusattribute \ è stata estesa la regola Function. Tutte queste modifiche sono mostrate in Figura~\ref{fig:obl_fun}
+Lo step successivo è stato estendere le Obligation e le espressioni.
+Per estendere le obligation è stato necessario modificare la regola ed introdurre nuove funzioni. Per introdurre la valutazione degli \statusattribute \ è stata estesa la regola Function. Tutte queste modifiche sono mostrate in Figura~\ref{fig:obl_fun}.
 \MyFig{obl_fun}{Regole di produzione per obligation e le espressioni}{1}{H}
 Dopo aver esteso la grammatica sono state estese anche le regole di traduzione. Mostriamo ora com'è stato realizzato lo stato.
 Chiamando la funzione in Figura~\ref{fig:stato_xtend} verrà generata una sequenza di caratteri che verrà successivamnete scritta su un file Java, creando così la classe che andrà a definire lo stato.
-\MyFig{stato_xtend}{Stato in Xtend}{1}{H}
-Lo stato è formato da una hashmap contentente una serie di attributi. Ovviamente quest ultimi saranno l'unica parte variabile di questa classe, quindi per far si che vengano ogni volta aggiunti in modo corretto è presente un ciclo che scorre i vari attributi e per ognuno di essi genera il codice Java necessario per istanziarli. \par
+\MyFig{stato_xtend}{Stato in Xtend}{1.2}{H}
+Lo stato è formato da una hashmap contentente una serie di attributi. Ovviamente quest'ultimi saranno l'unica parte variabile di questa classe, quindi per far si che vengano ogni volta aggiunti in modo corretto è presente un ciclo che scorre i vari attributi e per ognuno di essi genera il codice Java necessario per istanziarli. \par
 Il plugin si presenta come in Figura~\ref{fig:plugin}. Le funzionalità di questo plugin sono proprie di un ambiente di sviluppo, in quanto offre l'autocompletamento e il syntax highlighting. 
 \MyFig{plugin}{Plugin di \ac{FACPL}}{0.75}{H}
 
@@ -137,11 +136,11 @@ Il plugin si presenta come in Figura~\ref{fig:plugin}. Le funzionalità di quest
 \section{Esempi}
 \label{sec:implementazione_esempi}
 
-In questa sezione vengono ripresi i case study già dicussi in Sezione \ref{sec:esempi} mostrando com'è il loro corrispettivo in Java. 
-Per facilitare la lettura verrà proposto una parte del codice in Java degli esempi, il codice completo si può trovare in Capitolo~\ref{cap:appendiceA}.
+In questa sezione vengono ripresi i casi di studio già dicussi in Sezione \ref{sec:esempi} mostrando com'è il loro corrispettivo in Java. 
+Per facilitare la lettura verrà proposto una parte del codice in Java degli esempi, il codice completo si può trovare in Appendice~\ref{cap:appendiceA}.
 
 
-\subsection{Primo case study}
+\subsection{Gestione lettura e scrittura di file}
 \label{sub:primo_std_java}
 
 
@@ -156,7 +155,3 @@ La policy è definita estendendo una classe astratta presente nella libreria. Pe
 La Policy \textit{Write} in Codice \ref{lst:PrimoEsempio_FACPL_write} ha al suo interno un target, una obligation ed una Rule; vediamo, in Codice~\ref{lst:PolicyWrite_java}, com'è il suo corrispettivo in Java.
 \lstinputlisting[firstline = 17, lastline = 53, firstnumber = 17, language = Java, caption = {Policy Write}\label{lst:PolicyWrite_java}]{./Source/CodiceEsempi/Primo/PolicySet_ReadWrite.java}
 Questa classe, come detto in precedenza estende una classe già esistende nella libreria, ovvero la classe PolicySet. In questo caso gli elementi che caratterizzano la Policy sono tre, il target, l'obligation e la rule al suo interno. I primi due vengono istanziati e aggiunti tramite metodi ereditati senza alcun problema. Per la rule invece il discorso è un po' più complicato, in quanto viene creata una classe annidata del tutto analoga a quella creata per la policy. Dopo aver creato questa classe viene semplicemente aggiunta un'istanza di essa attraverso un metodo ereditato.
-
-
-
-\subsection{Secondo case study}
