@@ -22,10 +22,9 @@ componenti al grafico, rendendolo così adatto allo \textit{Usage Control}, e qu
 \end{figure}
 
 Come si nota in Figura \ref{fig:evalStatus} è stato aggiunto un componente alla struttura della valutazione.
-Questo componente rappresenta lo \status \ (Stato), al quale il \ac{PDP} e \ac{PEP} ci accedono tramite attributi.
-Questi attributi vengono chiamati \statusattribute. \par
+Questo rappresenta lo \status \ (Stato), al quale il \ac{PDP} e \ac{PEP} ci accedono tramite attributi, che vengono chiamati \statusattribute. \par
 Analizziamo quindi, a scopo esemplificativo, come viene gestita la presenza dello stato. Inizialmente viene definito il sistema, che ora rispetto a quelli già citati in Sezione~\ref{sec:valutazione_facpl}, ha un componente in più, ovvero lo Stato.
-Fino al quarto step il comportamento è analogo a quello precedente, mentre cambia negli step successivi. \par
+Fino al quarto step il comportamento è analogo a quello precedente. \par
 Al quinto step il \textit{PDP} non necessiterà solo dei normali attributi d'ambiente, ma necessiterà anche degli \statusattribute \ coinvolti nella richiesta effettuata. Il \textit{Context Handler} quindi non andrà solo a fare la ricerca all'interno dell'environment, ma andrà a cercare anche gli \statusattribute \ all'interno dello \status. \par
 A questo punto, quando il \ac{PDP} avrà tutte le informazioni necessarie si potrà passare alla vera e propria valutazione della richiesta che avviene come sempre. \par
 Nel caso in cui viene restituto \permit \ o \deny \ è necessario fare l'enforcement della risposta del \ac{PDP}. Questo processo differisce dal precedente poiché ora sono state implementate nuove azioni sullo stato che devono essere eseguite dal \ac{PEP} (Passo 11-14). Le nuove azioni sono eseguite attraverso un nuovo tipo di obligations, chiamate \textit{ObligationStatus}. 
@@ -45,11 +44,11 @@ codificano le nuove funzionalità. \par
 Come è facilmente osservabile dalla consultazione della Tabella~\ref{tab:facpl_new_syntax} le aggiunte rispetto alla tabella riporta in Sezione~\ref{sec:facpl_syntax} sono state diverse, vediamo adesso quali sono. \par
 La prima modifica è nel \ac{PAS}, cioè  lo \status, che è della forma $$status: Attribute$$ ed è formato da uno o più \textit{Attribute}. \par
 Passiamo ora a descrivere \textit{Attribute} che è della forma $$(Type\ Identifier (= Value)^?)$$
-questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale, all'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.
+questo tipo particolare di attribute, che è lo \statusattribute \ descritto in precedenza, è formato innanzitutto da un \textit{Type}, dopo il tipo è richiesta una generica stringa chiamata \textit{Identifier}, che sarà un generico nome da dare all'attributo, infine viene richiesto un \textit{Value}, ovvero un valore, che in questo caso è opzionale. All'atto pratico vuol dire che l'attributo di stato potrà essere inizializzato con un valore oppure potrà essere solamente definito, lasciando che il valore sia quello di default.
 
 \textit{Type} è il tipo che avrà l'attributo di stato, e potrà essere \texttt{int, boolean, date o double}. \par
 La regola \textit{PepAction} è stata modificata in modo tale che includa nuove funzioni per operare sugli attributi di stato.
-Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}, in questo caso è stata aggiunta, a fianco di \textit{Identifier/Identifier}, una nuova produzione Status/\textit{Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
+Infine l'ultima regola di produzione modificata è stata quella riguardante \textit{Attribute Names}; in questo caso è stata aggiunta, a fianco di \textit{Identifier/Identifier}, una nuova produzione Status/\textit{Identifier}. Questa nuova produzione serve semplicemente per permettere il confronto tra attributi di stato attraverso le già esistenti \textit{Expression}.
 La sintassi delle risposte è rimasta invariata.
 
 % section estensione_linguistica (end)
@@ -67,11 +66,11 @@ Per questo sono state aggiunte delle \textit{Pep Action}, ovvero delle azioni es
  obl:
      [permit M add(counter, 2)]
 \end{verbatim}
-Per esempio l'esecuzione di questa \textit{Obligation} su un'attributo, chiamato \textit{counter}, inizializzato a $0$, porterà l'attributo al 
+Per esempio l'esecuzione di questa \textit{Obligation} su un'attributo, chiamato \textit{counter}, se inizializzato a $0$, porterà l'attributo al 
 valore 2. 
 
 L'operazione di somma è stata implementata anche per altri due tipi, \texttt{Date} e \texttt{String}.
-Oltre all'addizione sono presenti funzioni per la sottrazione, divisione e moltiplicazione che operano in modo analogo a questa appena descritta, ma sono definite soltanto su tipi numerici.
+Oltre all'addizione sono presenti funzioni per la sottrazione, divisione e moltiplicazione che operano in modo analogo a quella appena descritta, ma sono definite soltanto su tipi numerici.
 
 Un'altra operazione implementata modifica il valore originale di uno \statusattribute \ con il valore passatogli come secondo parametro.
 \begin{verbatim}
@@ -102,8 +101,8 @@ Tutte le policy che saranno mostrate in questa sezione sono incluse in un \texti
 Il target del PolicySet \texttt{ReadWrite\_Policy} verifica che le richieste provengano da utenti che hanno nome \textit{Alice} o \textit{Bob}, in caso contrario il responso sarà \texttt{Not Applicable}. \par
 Successivamente sono state scritte quattro policy per gestire le quattro operazioni possibili, ovvero \texttt{read}, \texttt{write}, \texttt{stopRead} ed infine \texttt{stopWrite}. \par
 Prendiamo in considerazione la policy mostrata in Codice~\ref{lst:PrimoEsempio_FACPL_write}, ovvero quella per la \texttt{write}. Come prima è presente un target, che richiede questa volta due diverse condizioni, la prima riguarda l'id del file richiesto, la seconda invece richiede che l'azione sia \texttt{write}. Le parti interessanti di questa policy sono due, la prima riguarda la \textit{Rule}, la seconda la \textit{Obligation}. \par
-La \textit{Rule} restituisce \texttt{permit} se le due condizioni dell'equal sono vere, come si può facilmente notare l'operazione di confronto non viene fatta tra una stringa ed un normale attributo, ma tra una stringa ed uno \statusattribute. \par
-L'ultima cosa da notare è l'unica \textit{Obligation} presente per questa policy. Questo tipo particolare di \textit{Obligation}, ha sempre al suo interno un'azione che verrà eseguita dal PEP, questa volta però non sarà una semplice azione come scrivere un log o mandare una mail, l'azione andrà a modificare lo stato del sistema, mettendo il valore \texttt{true} all'attributo \textit{isWriting}.
+La \textit{Rule} restituisce \texttt{permit} se le due condizioni dell'equal sono vere; come si può facilmente notare l'operazione di confronto non viene fatta tra una stringa ed un normale attributo, ma tra una stringa ed uno \statusattribute. \par
+L'ultima cosa da notare è l'unica \textit{Obligation} presente per questa policy. Questo tipo particolare di \textit{Obligation} ha sempre al suo interno un'azione che verrà eseguita dal PEP; questa volta però non sarà una semplice azione come scrivere un log o mandare una mail: l'azione andrà a modificare lo stato del sistema, mettendo il valore \texttt{true} all'attributo \textit{isWriting}.
 \lstinputlisting[language = FACPL, linerange = 4-13, firstnumber = 4, caption = {Policy Write}\label{lst:PrimoEsempio_FACPL_write}]{./Source/EsempioReadWrite_facpl.fpl}
 Successivamente si prende in considerazione la policy per l'operazione \texttt{stopWrite}, mostrata in Codice~\ref{lst:PrimoEsempio_FACPL_stopwrite}.
 \lstinputlisting[language = FACPL, linerange = 24-32, firstnumber = 24, caption = {Policy StopWrite}\label{lst:PrimoEsempio_FACPL_stopwrite}]{./Source/EsempioReadWrite_facpl.fpl}
@@ -114,7 +113,7 @@ Le altre policy, per definire le restanti due operazioni, sono analoghe a quelle
 \subsubsection{Valutazione}
 Prendiamo ora una serie di richieste ed analizziamone la loro valutazione.
 \lstinputlisting[language = FACPL, caption = {Richieste del primo esempio}\label{lst:PrimoEsempioRichieste_FACPL}]{./Source/EsempioReadWrite_facpl_richieste.fpl}
-La prima richiesta proviene da Alice, e sarà una lettura sul file1, la successiva proviene da Bob, è sempre sul file1, ma l'azione richiesta è di scrittura. Le altre sono analoghe.\par
+La prima richiesta proviene da Alice, e sarà una lettura sul file1; la successiva proviene da Bob: è sempre sul file1, ma l'azione richiesta è di scrittura. Le altre sono analoghe.\par
 
 L'output di queste richieste è mostrato in Tabella~\ref{tab:risultati_1}. Analizziamo ora il motivo di queste decisioni. Nella prima richiesta ovviamente nessuno sta leggendo o scrivendo, quindi viene tranquillamente restituito \permit. Visto che è presente una \textit{obligation} lo stato verrà aggiornato, sommando un'unità al contatore di letture.
 \begin{table}[H]
@@ -132,7 +131,7 @@ L'output di queste richieste è mostrato in Tabella~\ref{tab:risultati_1}. Anali
 \textbf{Richiesta 6} & \textit{PERMIT} & \begin{tabular}[c]{@{}c@{}}isWriting = false\\ CounterReadFile1 = 0\end{tabular} & \begin{tabular}[c]{@{}c@{}}isWriting = true\\ CounterReadFile1 = 0\end{tabular} \\ \hline
 \end{tabular}
 \end{table}
-Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo, però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa.
+Alla seconda richiesta l'utente richiede la scrittura, che gli viene negata perché c'è già qualcuno che sta leggendo; però lo stesso utente effettua un'altra richiesta, questa volta in lettura, che gli viene concessa.
 La quarta e la quinta richiesta vengono fatte per avvisare il sistema che la lettura è terminata, ovviamente la risposta è \permit, e la \textit{obligation} corrispondente decrementerà il contatore.
 La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, poiché nessuno sta scrivendo o leggendo.
 
@@ -143,20 +142,20 @@ La sesta ed ultima richiesta è una scrittura, che questa volta viene permessa, 
 \label{sub:secondo_esempio}
 
 In questo secondo esempio analizzeremo il caso di un'azienda di distribuzione di contenuti multimediali che vuole regolare l'accesso di quest'ultimi attraverso policy.
-Faremo un breve esempio con un solo file e due utenti, uno dei due utenti comprerà il file, l'altro lo noleggierà a tempo determinato.
-Nel codice~\ref{lst:SecondoEsempio_FACPL} vengono mostrate solo una parte delle policy presenti nel Codice completo ~\ref{lst:SecEsCompl} \ mostrato in Appendice~\ref{cap:appendiceA}.
+Faremo un breve esempio con un solo file e due utenti; uno dei due utenti comprerà il file, l'altro lo noleggierà a tempo determinato.
+Nel Codice~\ref{lst:SecondoEsempio_FACPL} vengono mostrate solo una parte delle policy presenti nel Codice completo ~\ref{lst:SecEsCompl} \ mostrato in Appendice~\ref{cap:appendiceA}.
 \lstinputlisting[firstline = 1, lastline = 39, language = FACPL, caption = {Codice \ac{FACPL} del secondo caso di studio}\label{lst:SecondoEsempio_FACPL}]{./Source/second_example_facpl}
 Queste due policy, e anche le altre che non sono state mostrate, sono racchiuse tutte all'interno del \textit{Policy Set} Negozio il quale come prima cosa verifica se chi ha fatto la richiesta ha un determinato nome, in questo caso \textit{Bob} o \textit{Alice}. \par
-Successivamente, se uno dei due effettua la richiesta di \texttt{BUY}, ovvero l'acquisto senza alcun tipo di limitazione, si entra nella prima policy e, tramite le \textit{Obligation} si cambia l'attributo di stato. Invece se un utente decidesse di effettuare il noleggio con la modalità dove si limita il numero di visioni si entrerebbe nella seconda \textit{Policy Set} la quale, attraverso \textit{Obligations} aumenterà il numero di visioni di due unità. Analogo è il caso del noleggio a tempo. \par
+Successivamente, se uno dei due effettua la richiesta di \texttt{BUY}, ovvero l'acquisto senza alcun tipo di limitazione, si entra nella prima policy e, tramite le \textit{Obligation}, si cambia l'attributo di stato. Invece, se un utente decidesse di effettuare il noleggio con la modalità dove si limita il numero di visioni si entrerebbe nella seconda \textit{Policy Set}, la quale attraverso \textit{Obligations} aumenterà il numero di visioni di due unità. Analogo è il caso del noleggio a tempo. \par
 Per disciplinare la visione è presente un altro \textit{Policy Set}, mostrato anch'esso parzialmente in codice~\ref{lst:secondo_esempio_view}.
 \lstinputlisting[firstline = 59, lastline = 71, language = FACPL, caption = {Codice \ac{FACPL} del secondo caso di studio}\label{lst:secondo_esempio_view}]{./Source/second_example_facpl}
 \subsubsection{Valutazione}
-Mostriamo ora in Codice~\ref{lst:richieste_2} alcune richieste che possono essere fatte al sistema ed analizziamo le risposte che produrranno, in Tabella~\ref{tab:valutazione_2} è mostrato un quadro riassuntivo del risultato delle richieste.
+Mostriamo ora in Codice~\ref{lst:richieste_2} alcune richieste che possono essere fatte al sistema ed analizziamo le risposte che produrranno. In Tabella~\ref{tab:valutazione_2} è mostrato un quadro riassuntivo del risultato delle richieste.
 \lstinputlisting[language = FACPL, caption = {Richieste del Secondo Esempio}\label{lst:richieste_2}]{./Source/second_example_request}
 La prima e la seconda richiesta sono richieste di visione, che ovviamente restituiranno entrambe \deny, in quanto lo stato del sistema non è stato modificato da nessuno poiché nè Alice nè Bob hanno effettuato acquisti o noleggi.
 Successivamente Alice effettuerà un acquisto, e quindi tramite la Obligation Status verrà modificato lo stato del sistema, accreditando così l'acquisto. Dopo aver effettuato questa richiesta Alice ne effettua un'altra, questa volta di visione. 
 A questo punto la policy che disciplina quest'ultima richiesta di Alice effettua una verifica dello \statusattribute \ \textit{AccessTypeAlice}, e visto che lo trova cambiato dalla precedente richiesta di acquisto permette la visione.
-Bob, a cui all'inizio era stata negata la visione effettuerà una richiesta di noleggio e quindi cambierà lo stato. Dopo, sempre Bob, richiede la visione. Il risultato di entrambe sarà ovviamente \permit.
+Bob, a cui all'inizio era stata negata la visione, effettuerà una richiesta di noleggio e quindi cambierà lo stato. Dopo, sempre Bob, richiede la visione. Il risultato di entrambe sarà ovviamente \permit.
 % subsection secondo_esempio (end)
 
 \begin{table}[H]

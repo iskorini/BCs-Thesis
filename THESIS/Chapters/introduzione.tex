@@ -3,12 +3,12 @@ I sistemi informatici moderni sono sempre più interconnessi tra di loro, quindi
 impedire accessi indesiderati è diventato un argomento di studio molto rilevante negli ultimi decenni.
 A partire dal 1970 sono stati proposti molti sistemi di controllo agli accessi, ognuno con i suoi pro ed i suoi contro.\par
 \textit{Usage Control} è un nuovo approccio sul controllo degli accessi
-introdotto recentemente da Sandhu e Park \cite{ucon}, due ricercatori dell'università di San Antonio in Texas.
-Quest'ultimo permette di ottenere decisioni durante
+introdotto recentemente da Ravi Sandhu e Jaehong Park \cite{ucon}, due ricercatori dell'università di San Antonio in Texas.
+Questo metodo permette di ottenere decisioni durante
 l’accesso e di basarsi sul comportamento passato in fase di valutazione
-di una richiesta. Questa caratteristica lo rende molto adatto ad ambienti come il Web,
+di una richiesta. Una tale caratteristica lo rende molto adatto ad ambienti come il Web,
 il Cloud o in generale legati in qualche modo alla rete. \par
-L'obiettivo di questa tesi è estendere \ac{FACPL} in modo tale da poter prendere decisioni 
+L'obiettivo della tesi è estendere \ac{FACPL} in modo tale da poter prendere decisioni 
 di Usage Control.
 \ac{FACPL} è un linguaggio basato su \ac{XACML} ed è supportato da una libreria
 scritta in Java. Rispetto a \ac{XACML} la sintassi di \ac{FACPL} è molto più semplice
@@ -18,7 +18,7 @@ Tuttavia, \ac{FACPL} non gode di caratteristiche
 per eseguire richieste ed ottenere risposte valutando il comportamento passato. Questo è dovuto alla mancanza di un componente che permette di tenere traccia del comportamento precedente, che può essere assimilabile ad uno stato.\par
 L'estensione di \ac{FACPL} è stata divisa fondamentalmente in due parti. 
 Nella prima parte del lavoro è stata elaborata una nuova grammatica, una nuova semantica ed un processo di valutazione delle policy esteso che includesse anche lo stato.
-La seconda parte del lavoro è stata più concreta, poiché in questa fase è stata estesa la libreria Java in modo da dare un supporto alle estensioni pensate precedentemente. \par
+La seconda parte del lavoro è stata più concreta, poiché in questa fase è stata ampliata la libreria Java in modo da dare un supporto alle estensioni pensate precedentemente. \par
 
 
 

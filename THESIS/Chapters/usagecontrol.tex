@@ -36,17 +36,17 @@ molte delle limitazioni di quest'ultimo.
 \subsection*{Access Control Lists}
 \label{sub:ACL}
 
-\ac{ACL} è il primo modello di controlli agli accessi, è stato introdotto intorno al 1970 grazie all'avvento dei sistemi multi utente allo scopo di limitare l'accesso a file e dati appartenenti a diversi utenti, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX. Con la comparsa della multiutenza per sistemi ad uso personale lo standard \ac{ACL} è stato implementato in molte più ambienti come sistemi UNIX-Like e Windows. \par
+\ac{ACL} è il primo modello di controlli agli accessi, è stato introdotto intorno al 1970 grazie all'avvento dei sistemi multi utente allo scopo di limitare l'accesso a file e dati appartenenti a diversi utenti, infatti i primi sistemi ad utilizzare questo modello sono stati sistemi di tipo UNIX. Con la comparsa della multiutenza per sistemi ad uso personale lo standard \ac{ACL} è stato implementato in molti più ambienti come sistemi UNIX-Like e Windows. \par
 Il concetto dietro \ac{ACL} è uno dei più semplici, in quanto ogni risorsa del sistema che deve essere controllata ha una sua lista, che ad ogni soggetto associa le azioni che può effettuare sulla risorsa, ed il sistema operativo quando viene fatta richiesta decide in base alla lista se dare il permesso o meno. 
 
 
-Per esempio in Figura \ref{fig:acl_osx}, si può vedere come \textit{test\_folder} sia la risorsa da controllare, \textit{federicoschipani}, \textit{staff} e \textit{everyone} siano i soggetti e le azioni associate sono, in questo caso, \textit{Read \& Write} al primo soggetto e \textit{Read only} agli altri due.
+Per esempio, in Figura \ref{fig:acl_osx}, si può vedere come \textit{test\_folder} sia la risorsa da controllare, \textit{federicoschipani}, \textit{staff} e \textit{everyone} siano i soggetti e le azioni associate sono, in questo caso, \textit{Read \& Write} al primo soggetto e \textit{Read only} agli altri due.
 \MyFig{acl_osx}{\acf{ACL} in OS X}{0.8}{h}
 
 
-La semplicità di questo modello non richiede grandi infrastrutture sottostanti, la  sua implementazione dal punto di vista applicativo risulta abbastanza semplice attraverso l'uso di linguaggi ad alto livello come Python o Java, poiché le strutture che servono per implementare questo standard sono già definite.
+La semplicità di questo modello non richiede grandi infrastrutture sottostanti, la  sua implementazione dal punto di vista applicativo risulta abbastanza immediata attraverso l'uso di linguaggi ad alto livello come Python o Java, poiché le strutture che servono per implementare questo standard sono già definite.
 Nonostante negli anni sono stati sviluppati modelli più complessi, come \ac{ABAC}, \ac{PBAC} e \ac{RBAC}, il sistema descritto in questa sezione viene comunque usato nei sistemi operativi recenti. Come si può vedere in Figura \ref{fig:acl_osx} OS X sfrutta questo standard per la gestione dei permessi sul filesystem. \par
-Un aspetto negativo si manifesta quando si trattano grandi quantità di risorse. Ogni volta che viene richiesto l'accesso ad una risorsa da parte di un entità, utente o applicazione che sia, è necessario verificare nella lista associata, il che lo rende abbastanza oneroso dal punto di vista computazionale. \par
+Un aspetto negativo si manifesta quando si trattano grandi quantità di risorse. Ogni volta che viene richiesto l'accesso ad una risorsa da parte di un'entità, utente o applicazione che sia, è necessario verificare nella lista associata, il che lo rende abbastanza oneroso dal punto di vista computazionale. \par
 Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di una determinata risorsa, in quanto è necessario andare ad operare sulla lista di quest'ultima, il che rende questo compito incline ad errori ed oneroso dal punto di vista del tempo.
 
 
@@ -54,12 +54,12 @@ Un altro lato negativo emerge quando bisogna effettuare modifiche ai permessi di
 \label{sub:role_based_access_control}
 
 \ac{RBAC} è l'evoluzione di \ac{ACL}, in quanto tende a correggerne alcuni difetti come la limitata scalabilità. \par
-A differenza di \ac{ACL}, in \ac{RBAC}, è presente il concetto il ruolo del richiedente, ovvero un titolo che definisce un livello di autorità, che raggrupperà diversi utenti in una categoria. 
+A differenza di \ac{ACL}, in \ac{RBAC}, è presente il concetto di ruolo del richiedente, ovvero un titolo che definisce un livello di autorità, che raggrupperà diversi utenti in una categoria. 
 \ac{RBAC} attraverso questa nuova caratteristica riesce a porre rimedio ai difetti di \ac{ACL} in quanto
 questo tipo di gestione offre il vantaggio di facilitare l'assegnazione dei permessi, poiché per ogni risorsa non si devono più gestire tutti i singoli utenti, ma basta gestire i permessi associati a queste nuove categorie. 
 
 
-Un utente può anche far parte di più gruppi, per esempio un contabile di un azienda può far parte del gruppo \textit{impiegati} e \textit{contabili} in modo da permettergli l'accesso sia ai documenti riservati ai soli impiegati che quelli riservati ai soli contabili.
+Un utente può anche far parte di più gruppi, per esempio un contabile di un'azienda può far parte del gruppo \textit{impiegati} e \textit{contabili} in modo da permettergli l'accesso sia ai documenti riservati ai soli impiegati che quelli riservati ai soli contabili.
 Come si può vedere in Figura \ref{fig:group2} il concetto di gruppo è implementato nei sistemi operativi moderni, in particolare in OS X, Windows e sistemi UNIX-Like.
 
 \MyFig{group2}{Gruppo in OS X}{0.9}{h}
@@ -84,7 +84,7 @@ Questi attributi possono provenire da fonti disparate ed essere di svariati tipi
 Un vantaggio di \ac{ABAC} è che non c'è la necessità che il richiedente conosca in anticipo
 la risorsa o il sistema a cui dovrà accedere. Fino a quando gli attributi che il richiedente fornisce 
 coincidono con i requisiti dettati dalle policy l'accesso sarà garantito. \ac{ABAC} perciò è utilizzato in situazioni in 
-cui i proprietari delle risorse vogliono far accedere utenti che non conoscono direttamente a patto che però rispettino i criteri preposti, il che rende il tutto molto più dinamico rispetto ad \ac{ACL} e \ac{RBAC} \par
+cui i proprietari delle risorse vogliono far accedere utenti che non conoscono direttamente a patto che però rispettino i criteri preposti, il che rende il tutto molto più dinamico rispetto ad \ac{ACL} e \ac{RBAC}. \par
 Diversamente da \ac{ACL} e \ac{RBAC} questo tipo di controllo agli 
 accessi non è implementato nei sistemi operativi, ma è largamente usato a livello applicativo.
 Spesso si usano applicazioni intermedie per mediare gli accessi da parte degli utenti a specifiche risorse.
@@ -120,13 +120,13 @@ bisogna considerare il caso in cui più aziende lavorano insieme e devono
 implementare un sistema di controllo degli accessi in comune. Si può verificare un problema
  quando un’azienda valuta la gestione dell’\ac{AAS}
 tramite un particolare \textit{repository}, ma un’altra azienda non è d’accordo a
-questo tipo di soluzione
+questo tipo di soluzione.
 
 \section{Usage Control} % (fold)
 \label{sec:usage_control}
-Oggi sono presenti differenti tipi di sistemi diversi che richiedono un modello più flessibile e continuativo per gestire la sicurezza. Questa sezione parlerà di un nuovo sistema, chiamato \textit{Usage Control} \cite{SurveyUsageControl}. \par
+Oggi sono presenti differenti tipi di sistemi che richiedono un modello più flessibile e continuativo per gestire la sicurezza. Questa sezione parlerà di un nuovo sistema, chiamato \textit{Usage Control} \cite{SurveyUsageControl}. \par
 \textit{Usage Control} si propone come un approccio nuovo e promettente per il controllo degli accessi. In particolare verrà trattato il modello, inizialmente proposto da Sandhu e Park\cite{SurveyUsageControl}, chiamato $UCON_{ABC}$. \par
-$UCON_{ABC}$ utilizza un approccio diverso rispetto a \textit{Access Control} in quanto, rispetto a quest ultimo, si riesce ad avere una continuità delle decisioni sull'accesso. Ciò vuol dire che le decisioni non vengono più prese solo a priori, ma anche durante l'accesso.  Quindi, se durante l'utilizzo, qualche attributo di stato cambia e la \textit{policy} non è più soddisfatta viene revocato l'accesso. Di conseguenza è richiesto un componente che modella lo stato del sistema, in modo tale da effettuare valutazioni in base a quelle effettuate in precedenza. \par
+$UCON_{ABC}$ utilizza un approccio diverso rispetto a \textit{Access Control} in quanto, rispetto a quest'ultimo, si riesce ad avere una continuità delle decisioni sull'accesso. Ciò vuol dire che le decisioni non vengono più prese solo a priori, ma anche durante l'accesso.  Quindi, se durante l'utilizzo qualche attributo di stato cambia e la \textit{policy} non è più soddisfatta viene revocato l'accesso. Di conseguenza è richiesto un componente che modella lo stato del sistema, in modo tale da effettuare valutazioni in base a quelle effettuate in precedenza. \par
 Il vantaggio di \textit{Usage Control} è la sua capacità di adattarsi a vari casi di utilizzo, riuscendo così a includere e migliorare sistemi come \ac{ACL}, \ac{RBAC}, \ac{ABAC} e \ac{PBAC} descritti in \ref{sec:history}.
 Il passaggio da Access Control a Usage Control è importante soprattutto quando si va a considerare ambienti legati alla rete, come possono essere il web o il cloud. \par
 Il processo decisionale in Usage Control è diviso in due fasi \cite{UsageControlCloud}. 
@@ -134,7 +134,7 @@ Il processo decisionale in Usage Control è diviso in due fasi \cite{UsageContro
 \item La prima fase è una fase di \textit{pre decision} che fondamentalmente è la classica decisione presa in \textit{Access Control}, questa decisione viene presa al momento in cui è effettuata la prima richiesta per produrre la decisione di accesso.
 \item La seconda fase è chiamata \textit{ongoing decision}, ed è un processo che implementa il concetto di continuità in quanto le decisioni vengono prese durante l'accesso.\par
 \end{itemize}
-I componenti necessari a questo tipo di processo decisionale sono dei predicati, che possono essere di tre tipi, \textit{authorizations}, \textit{conditions} oppure \textit{rights}, delle azioni chiamate \textit{obligations} che devono essere eseguite durante l'accesso ed infine uno stato. 
+I componenti necessari a questo tipo di processo decisionale sono dei predicati, che possono essere di tre tipi: \textit{authorizations}, \textit{conditions}oppure \textit{rights}, delle azioni chiamate \textit{obligations} che devono essere eseguite durante l'accesso ed infine uno stato. 
 \MyFig{Usage}{Insieme dei componenti di $UCON_{ABC}$}{1}{}
  Come questi componenti contribuiscono a prendere una decisione viene mostrato in Figura \ref{fig:Usage}. Ad un soggetto (Subject) sono associati dei diritti (Rights) e gli appartengono degli attributi (Subject Attributes) su degli oggetti (Objects). \textit{Authorisation, Obligation} e \textit{Condition} sono predicati che sono valutati per prendere la decisione di Usage Control. Access Control utilizza solo \textit{Authorisation} per prendere decisioni, quindi \textit{Obligation} e \textit{Condition} sono componenti nuove.
 
@@ -178,11 +178,11 @@ l’accesso infinite volte per tempo infinito. Nel caso di noleggio invece
 saranno presenti delle condizioni, come per esempio un numero massimo di visioni che quando superato non permette più di fruire del contenuto o una data di scadenza che, una volta oltrepassata,
 impedirà l’ulteriore visione del file noleggiato in precedenza.\par
 Come nell’esempio precedente viene mostrato un diagramma di flusso,
-proposto in Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire meglio il funzionamento di questo sistema di \textit{Usage Control}. Innanzitutto viene verificata la presenza nei due relativi database dell'utente e del file richiesto, successivamente viene analizzata la richiesta, che può essere di tre tipi.
+proposto in Figura~\ref{fig:diagrammaflussosecondoesempio}, che permette di capire meglio il funzionamento di questo sistema di \textit{Usage Control}. Innanzitutto viene verificata la presenza nei due relativi database dell'utente e del file richiesto, successivamente viene analizzata la richiesta, che può essere di tre tipi:
 \begin{itemize}
-\item Visione: nel caso la richiesta fosse di visione viene verificato se realmente l'utente ha diritto ad avere accesso a quella risorsa, e di conseguenza viene presa una decisione.
-\item Acquisto: nel caso la richiesta fosse di acquisto verrà accreditato l'acquisto all'utente che ha effettuato la richiesta.
-\item Noleggio: per questa forma ci sono due diverse tipologie, il noleggio a tempo e il noleggio a numero di visualizzazioni. Nel primo caso all'utente sarà concesso di vedere il file per un determinato periodo di tempo, mentre nel secondo il richiedente potrà visionare il file per un numero limitato di volte.
+\item Visione: viene verificato se realmente l'utente ha diritto ad avere accesso a quella risorsa, e di conseguenza viene presa una decisione.
+\item Acquisto: verrà accreditato l'acquisto all'utente che ha effettuato la richiesta.
+\item Noleggio: per questa forma ci sono due diverse tipologie: il noleggio a tempo e il noleggio a numero di visualizzazioni. Nel primo caso all'utente sarà concesso di vedere il file per un determinato periodo di tempo, mentre nel secondo il richiedente potrà visionare il file per un numero limitato di volte.
 \end{itemize}
 \begin{figure}[h]
  \centering 

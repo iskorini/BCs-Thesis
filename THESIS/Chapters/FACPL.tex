@@ -2,7 +2,7 @@
 \label{cap:facpl}
 Negli anni molti linguaggi sono stati proposti per definire policy di access control. Uno di questi è \acf{XACML} di OASIS \cite{XACML}, e la sua prima versione risale al $2003$. Questo linguaggio ha una sintassi basata su \ac{XML} e fornisce caratteristiche avanzate per l'\textit{Access Control}. Il problema fondamentale di \ac{XACML} è che non ha una sintassi facile da leggere e da scrivere. \par
 \acf{FACPL} \cite{fullfacpl} è un linguaggio per formalizzare policy di access control supportato da una solida libreria Java ed utilizzabile attraverso un plugin per il famoso ambiente di sviluppo Eclipse.
-\ac{FACPL} è parzialmente inspirato a \ac{XACML}, ma oltre ad introdurre una nuova sintassi ridefinisce alcuni aspetti aggiungendo nuove caratteristiche. Il suo scopo però non è sostituire \ac{XACML}, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.\par
+\ac{FACPL} è parzialmente ispirato a \ac{XACML}, ma oltre ad introdurre una nuova sintassi ridefinisce alcuni aspetti aggiungendo nuove caratteristiche. Il suo scopo però non è sostituire \ac{XACML}, ma fornire un linguaggio compatto ed espressivo per facilitare le tecniche di analisi attraverso tool specifici.\par
 In Sezione~\ref{sec:tool} sono descritti i tool necessari per l'utilizzo di 
 \ac{FACPL}.
 Nella Sezione~\ref{sec:valutazione_facpl} è effettuata una disamina sul processo di valutazione di \ac{FACPL}, nella quale sono presentati i componenti principali e la descrizione dell'interazione tra di essi.
@@ -27,7 +27,7 @@ I componenti principali sono tre:
 \item{\acf{PEP}}
 \end{itemize}
 Le policy sono memorizzate nel \ac{PR}, il quale le rende disponibili al \ac{PDP} che deciderà, successivamente, se garantire l'accesso o meno (Primo step).
-Nello step 2, quando il \ac{PEP} riceve una richiesta, le credenziali di quest'ultima vengono codificate in una sequenza di attributi (ogni attributo è una coppia stringa valore) che, nello step 3, andranno a loro volta a formare una \ac{FACPL} Request.
+Nello step 2, quando il \ac{PEP} riceve una richiesta, le credenziali di quest'ultima vengono codificate in una sequenza di attributi (ogni attributo è una coppia stringa-valore) che, nello step 3, andranno a loro volta a formare una \ac{FACPL} Request.
 Al quarto step il \textit{context handler} aggiungerà attributi di ambiente (per esempio l'ora di ricezione della richiesta) e manderà la richiesta al \ac{PDP}.
 A questo punto il \ac{PDP}, tra il quinto e l'ottavo step, valuterà la richiesta e fornirà un risultato, il quale può eventualmente contenere delle \textit{obligations}.
 La decisione del \ac{PDP} può essere di quattro tipi:
@@ -65,7 +65,7 @@ Una \textit{request} consiste di una sequenza di attributi organizzati in catego
 La risposta ad una valutazione di una richiesta \ac{FACPL} è scritta usando la sintassi riportata in Tabella \ref{tab:facpl_context_syntax}.
 La valutazione in due step, descritta precedentemente in Sezione~\ref{sec:valutazione_facpl}, produce due tipi di risultati. Il primo è la risposta del \ac{PDP}, il secondo è una decisione, ovvero una risposta del \ac{PEP}.
 La decisione del \ac{PDP}, nel caso in cui ritorni \permit \ o \deny, viene associata ad una lista, anche vuota, di \textit{fulfilled obligation}. \par
-Una \textit{fulfilled obligation} è una semplice coppia formata da un tipo (M o O) ed una azione i quali argomenti sono ottenuti dalla valutazione del \ac{PDP}. Rappresenta una obligation valutata dal \ac{PEP}
+Una \textit{fulfilled obligation} è una semplice coppia formata da un tipo (M o O) ed una azione i quali argomenti sono ottenuti dalla valutazione del \ac{PDP}. Rappresenta una obligation valutata dal \ac{PEP}.
 
 \section{Semantica}
 \label{sec:semantica_originale}
@@ -90,7 +90,7 @@ Per fare questo processo il \ac{PEP} usa delle strategie. In particolare, l'algo
 \label{sec:tool}
 Il plugin per Eclipse di \ac{FACPL} è stato scritto con l'ausilio di un \textit{Framework} chiamato \textit{Xtext}. Quest'ultimo a sua volta utilizza \textit{Xtend} poiché permette di scrivere regole di traduzione per generare automaticamente codice Java.\par
 Attraverso il plugin si riesce a rendere Eclipse un vero e proprio ambiente di sviluppo per \ac{FACPL} in quanto si ottengono funzioni come l'autocompletamento o l'highlighting del codice.\par
-L'ambiente di sviluppo con il relativo plugin, le regole di traduzione, e la libreria Java formano insieme la \textit{toolchain} di \ac{FACPL}, mostrata in Figura~\ref{fig:toolChain.png}.
+L'ambiente di sviluppo, con il relativo plugin, le regole di traduzione e la libreria Java formano insieme la \textit{toolchain} di \ac{FACPL}, mostrata in Figura~\ref{fig:toolChain.png}.
 
 \MyFig{toolChain.png}{ToolChain di FACPL}{1}{h}
 
@@ -100,7 +100,7 @@ Lo sviluppatore che utilizza l'\ac{IDE} di \ac{FACPL} può generare codice Java 
 \label{sec:esempio_di_politica_con_facpl}
 In questa sezione è analizzata una semplice politica scritta in \ac{FACPL} con delle possibili richieste di accesso, la sintassi delle richieste e delle politiche è leggermente diversa da quella riportata in Tabella \ref{tab:facpl_syntax} in quanto, per questioni di comodità e facilità di lettura del codice, è stata usata quella del plugin.\par
 \lstinputlisting[firstline = 1, lastline = 17, language = FACPL, caption = {Esempio di politica in FACPL}\label{lst:facpl_es_cap3}]{./Source/EsempioFacplCap3} 
-Con il Codice \ref{lst:facpl_es_cap3} si vuole ottenere lo scopo di regolare l'accesso ad una risorsa chiamata 458. In questo caso gli utenti che hanno ruolo \textit{GUEST} non possono accedere, mentre gli \textit{ADMINISTRATOR} si, fatta eccezione per l'utente Peronio, che qualunque ruolo abbia può accedere.
+Con il Codice \ref{lst:facpl_es_cap3} si vuole ottenere lo scopo di regolare l'accesso ad una risorsa chiamata 458. In questo caso gli utenti che hanno ruolo \textit{GUEST} non possono accedere, mentre gli \textit{ADMINISTRATOR} si, fatta eccezione per l'utente Peronio, che può accedervi qualunque ruolo abbia.
 Le richieste effettuate al sistema vengono mostrate in Codice~\ref{lst:facpl_es_cap3_req}, e sono tre. La prima proviene dall'utente Gianfabrizio che fa parte degli \textit{ADMINISTRATOR}, la seconda e la terza rispettivamente dall'utente Gianpietro e Peronio che fanno entrambi parte dei \textit{GUEST}. 
 \lstinputlisting[firstline = 21, lastline = 38, language = FACPL, caption = {Richieste per Codice~\ref{lst:facpl_es_cap3} }\label{lst:facpl_es_cap3_req}]{./Source/EsempioFacplCap3} 
 
@@ -120,6 +120,6 @@ Le richieste effettuate al sistema vengono mostrate in Codice~\ref{lst:facpl_es_
 In Tabella \ref{tab:risultati_richieste} sono riassunti i risultati delle richieste. Ovviamente alla prima richiesta il risultato è \permit, in quanto l'utente è un amministratore. Alla seconda richiesta il risultato è \deny \ poiché l'utente è un ospite, mentre alla terza, nonostante l'utente faccia parte dello stesso gruppo del secondo riesce ad ottenere risultato \permit \ per via della regola che considera il suo nome. \par
 \ac{FACPL}, come mostrato dall'esempio, permette di fare richieste ed ottenere delle risposte, ma queste richieste sono totalmente indipendenti l'una dall'altra, quindi l'ordine di esecuzione non avrebbe influenzato in alcun modo il risultato finale.
 In sezione \ref{sec:usage_control} sono stati introdotti due esempi i quali non possono, per ora, essere implementati in FACPL poiché manca quest'aspetto che crea dipendenza tra le richieste.
-Per creare questa dipendenza tra richieste è necessario che il sistema di controllo agli accessi riesca a tenere traccia degli avvenimenti precedenti, perciò si inizia a parlare di un nuovo concetto che può essere assimilabile ad uno stato. Nel Capitolo~\ref{cap:usagecontrolfacpl} e ~\ref{cap:estensione_libreria} l'obiettivo è proprio permettere a \ac{FACPL} questo tipo di valutazione.
+Per creare questo legame tra richieste è necessario che il sistema di controllo agli accessi riesca a tenere traccia degli avvenimenti precedenti, perciò si inizia a parlare di un nuovo concetto che può essere assimilabile ad uno stato. Nel Capitolo~\ref{cap:usagecontrolfacpl} e ~\ref{cap:estensione_libreria} l'obiettivo è proprio permettere a \ac{FACPL} questo tipo di valutazione.
 
 % section esempio_di_politica_con_facpl (end)

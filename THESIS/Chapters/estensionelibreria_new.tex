@@ -38,9 +38,9 @@ Il costruttore riceve due parametri: l'ID e il tipo. In questo metodo viene invo
 \label{sub:funzioni_status_attribute}
 Le funzioni sugli status attribute sono operazioni che ne vanno a modificare il valore. Derivano tutte da un unica interfaccia mostrata in Codice~\ref{lst:IExpressionFunctionStatus.java}, che avrà come unico metodo quello che eseguirà la vera e propria operazione.
 \myjava{IExpressionFunctionStatus.java}{Interfaccia per le operazioni}
-Dal grafico UML in Figura~\ref{fig:functionarith.png} si vede chiaramente che ci sono due grandi gerarchie di classi, quelle che fanno operazioni sui numeri, e quelle che fanno operazioni sulle stringhe.
-Per eseguire un operazione è sufficiente istanziare una classe che estende \textit{StringOperationStatus} o \textit{MathOperationStatus}, e chiamare l'unico metodo definito nell'interfaccia in Codice \ref{lst:IExpressionFunctionStatus.java} passandogli i parametri corretti. La sottoclasse istanziata eredita il metodo \textit{evaluateFunction} dalla superclasse ed implementa il metodo astratto \textit{op}. Il metodo \textit{evaluateFunction} implementato nella superclasse, in base ai parametri che gli vengono passati si fa restituire da una factory, in base al tipo del attributo, il valutatore corretto che passerà a sua volta al metodo astratto \textit{op}. Il valutatore è una classe dove è scritto il codice Java che eseguirà l'operazione vera e propria.
-Nel Codice~\ref{lst:addStatus.java} viene mostrata la sottoclasse che si occupa della somma su numeri. Si nota subito che questa è una sottoclasse di \textit{MathOperationStatus} e che implementa solo il metodo \textit{Op}.
+Dal grafico UML in Figura~\ref{fig:functionarith.png} si vede chiaramente che ci sono due grandi gerarchie di classi: quelle che fanno operazioni sui numeri e quelle che fanno operazioni sulle stringhe.
+Per eseguire un'operazione è sufficiente istanziare una classe che estende \textit{StringOperationStatus} o \textit{MathOperationStatus}, e chiamare l'unico metodo definito nell'interfaccia in Codice \ref{lst:IExpressionFunctionStatus.java} passandogli i parametri corretti. La sottoclasse istanziata eredita il metodo \textit{evaluateFunction} dalla superclasse ed implementa il metodo astratto \textit{op}. Il metodo \textit{evaluateFunction} implementato nella superclasse, in base ai parametri che gli vengono passati, si fa restituire da una factory, in base al tipo del attributo, il valutatore corretto che passerà a sua volta al metodo astratto \textit{op}. Il valutatore è una classe dove è scritto il codice Java che eseguirà l'operazione vera e propria.
+Nel Codice~\ref{lst:addStatus.java} viene mostrata la sottoclasse che si occupa della somma su numeri. Si nota subito che questa è una sottoclasse di \textit{MathOperationStatus} e che implementa solo il metodo \textit{op}.
 \myjava{addStatus.java}{Add Status}
 La ragione dietro la verbosità creata dall'utilizzo di un valutatore, oltre che da una moltitudine di classi e sottoclassi, potrebbe sembrare superflua; ciononostante quest'ultima è una scelta lungimirante, in quanto in futuro sarà più agevole implementare nuovi tipi di attributo e relative funzioni su di essi.
 
@@ -63,7 +63,7 @@ In questo modo vengono prese in considerazione anche le nuove Obligation Status,
 \section{Estensione delle politiche}
 \label{sec:estensione_politiche}
 
-Le politiche, in seguito all'estensione, vengono valutate basandosi anche sullo stato indi per cui è stato necessario estendere il contesto intorno a cui sono valutate. Come mostrato in Figura~\ref{fig:contextrequest.png} l'estensione del contesto si ottiene mediante la creazione di una nuova classe, a estensione di quella esistente.
+Le politiche, in seguito all'estensione, vengono valutate basandosi anche sullo stato indi per cui si è reso necessario estendere il contesto intorno a cui sono valutate. Come mostrato in Figura~\ref{fig:contextrequest.png} l'estensione del contesto si ottiene mediante la creazione di una nuova classe, a estensione di quella esistente.
 \MyFig{contextrequest.png}{Contesto}{0.40}{H}
 La nuova classe ContextRequest\_Status contiene lo stato sotto forma di campo privato. L'accesso allo stato è effettuato tramite il metodo getContextRequestValue (Codice~\ref{lst:cxtReq}), che in questa sottoclasse è stato riscritto.
 \myIjava{context_request_status.java}{Discharge delle Fulfilled Obligation di stato}{37}{55}{cxtReq}
@@ -82,8 +82,8 @@ Come nel caso delle funzioni di modifica dello stato, la struttura è basata su 
 
 \subsection{Obligation}
 \label{sub:estensione_obligation}
-Le \textit{Obligation} sono state estese introducendo un nuovo tipo chiamato \textit{Obligation Status}, questo tipo particolare di \textit{Obligation} servono per andare ad eseguire azioni sullo stato.
-Nella libreria sono presenti due tipi fondamentali di \textit{Obligation}, il primo sono quelle a livello sintattico, le seconde, chiamate \textit{FulfilledObligations} sono quelle pronte ad essere valutate. Vediamo adesso come sono state estese quelle a livello sintattico. \par
+Le \textit{Obligation} sono state estese introducendo un nuovo tipo chiamato \textit{Obligation Status}, questo tipo particolare di \textit{Obligation} serve per andare ad eseguire azioni sullo stato.
+Nella libreria sono presenti due tipi fondamentali di \textit{Obligation}, i primi sono quelli a livello sintattico, i secondi, chiamati \textit{FulfilledObligations} sono quelli pronti ad essere valutati. Vediamo adesso come sono state estesi quelle a livello sintattico. \par
 Per eseguire questa estensione è stato reso necessario un refactoring, per prima cosa è stato astratto tutto il comportamento comune in una superclasse astratta, successivamente è stata creata la nuova classe che modella questo nuovo tipo.
 Il refactoring ha coinvolto anche il metodo che si occupa del \textit{Fulfilling} delle \textit{Obligation} in quanto ora deve creare anche questo nuovo tipo, la scelta più ovvia è stata creare un metodo astratto implementato nelle due sottoclassi che viene chiamato dalla superclasse per creare il tipo corretto.
 \myIjava{absObl.java}{Parte rifattorizzata del metodo che si occupa del fulfilling}{16}{18}{fulfilabs}
@@ -93,8 +93,8 @@ La \textit{Obligation} di stato necessiterà anche di argomenti su cui eseguire 
 Alla fine della valutazione il \ac{PDP} crea un oggetto di tipo \textit{AuthorisationPDP} che conterrà la decisione e una lista di \textit{FulfilledObligation}, quest'ultime poi andranno al \ac{PEP} per la loro valutazione. Vediamo ora come sono state implementate. \par
 Anche in questo caso è stato necessario un refactoring analogo a quello fatto per le prime.
 \myIjava{FulOblStat.java}{Peculiarità della classe FulfilledObligationStatus}{1}{15}{pecfulstat}
-Come si può notare, in fase di costruzione, gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal \ac{PEP} il metodo \textit{evaluateObl}. \par
-Il \ac{PEP} nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime, è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} .
+Come si può notare, in fase di costruzione gli verrà passato un oggetto di tipo \textit{IExpressionFunctionStatus} che sarà l'azione che andrà a eseguire sullo stato. Quest'azione andrà realmente ad essere eseguita quando verrà chiamato dal \ac{PEP} il metodo \textit{evaluateObl}. \par
+Il \ac{PEP} nella fase di enforcement effettua la valutazione delle \textit{Obligation}, in questo caso le modifiche per permettere al sistema di eseguirle sono state minime: è bastato modificare il metodo \textit{DischargeObligation} in modo che quando gli viene passata una \textit{AbstractFulfilledObligation} chiamasse il metodo \textit{evaluateObl} .
 \myIjava{PEP.java}{Discharge delle Fulfilled Obligation di stato}{102}{106}{PEP}
 \begin{sidewaysfigure}[H]
     \centering
@@ -110,7 +110,7 @@ Il \ac{PEP} nella fase di enforcement effettua la valutazione delle \textit{Obli
 \label{sec:plugin_eclipse}
 
 La sintassi di \ac{FACPL} è definita in Xtext. Quest ultimo è un framework, basato su Java, per lo sviluppo di linguaggi, e fa uso di Xtend per tradurre da \ac{FACPL} a codice Java.
-XTend ha le sue radici in Java, ma si concentra maggiormente su aspetti come una sintassi più concisa, ed altre funzionalità come l'inferenza sui tipi, l'overload degli operatori o l'estensione dei metodi. 
+XTend ha le sue radici in Java, ma si concentra maggiormente su aspetti come una sintassi più concisa ed altre funzionalità come l'inferenza sui tipi, l'overload degli operatori o l'estensione dei metodi. 
 È principalmente un linguaggio Object-oriented, ma integra caratteristiche tipiche di un linguaggio funzionale, come ad esempio le Lambda Expression. Il sistema dei tipi di XTend è lo stesso di Java, ed è quindi statico.\par
 Inizialmente è stata estesa la grammatica, introducendo i nuovi costrutti come lo Stato, gli \statusattribute \ e le nuove Obligation.
 Successivamente sono state scritte le regole di traduzione in Xtend in modo che il codice scritto in $FACPL_{PB}$ venisse tradotto in Java.\par
@@ -125,9 +125,9 @@ Lo step successivo è stato estendere le Obligation e le espressioni.
 Per estendere le obligation è stato necessario modificare la regola ed introdurre nuove funzioni. Per introdurre la valutazione degli \statusattribute \ è stata estesa la regola Function. Tutte queste modifiche sono mostrate in Figura~\ref{fig:obl_fun}.
 \MyFig{obl_fun}{Regole di produzione per obligation e le espressioni}{1}{H}
 Dopo aver esteso la grammatica sono state estese anche le regole di traduzione. Mostriamo ora com'è stato realizzato lo stato.
-Chiamando la funzione in Figura~\ref{fig:stato_xtend} verrà generata una sequenza di caratteri che verrà successivamnete scritta su un file Java, creando così la classe che andrà a definire lo stato.
+Chiamando la funzione in Figura~\ref{fig:stato_xtend} verrà generata una sequenza di caratteri che verrà successivamente scritta su un file Java, creando così la classe che andrà a definire lo stato.
 \MyFig{stato_xtend}{Stato in Xtend}{1.2}{H}
-Lo stato è formato da una hashmap contentente una serie di attributi. Ovviamente quest'ultimi saranno l'unica parte variabile di questa classe, quindi per far si che vengano ogni volta aggiunti in modo corretto è presente un ciclo che scorre i vari attributi e per ognuno di essi genera il codice Java necessario per istanziarli. \par
+Lo stato è formato da una hashmap contentente una serie di attributi. Ovviamente quest'ultimi saranno l'unica parte variabile di questa classe, quindi per far sì che vengano ogni volta aggiunti in modo corretto è presente un ciclo che scorre i vari attributi e per ognuno di essi genera il codice Java necessario per istanziarli. \par
 Il plugin si presenta come in Figura~\ref{fig:plugin}. Le funzionalità di questo plugin sono proprie di un ambiente di sviluppo, in quanto offre l'autocompletamento e il syntax highlighting. 
 \MyFig{plugin}{Plugin di \ac{FACPL}}{0.75}{H}
 
@@ -144,8 +144,8 @@ Per facilitare la lettura verrà proposto una parte del codice in Java degli ese
 \label{sub:primo_std_java}
 
 
-Il punto di partenza del sistema è la classe dov'è contenuto il metodo Main; quest'ultima rappresenta il punto dove il \ac{PDP} e \ac{PEP} vengono inizializzati e preparati all'esecuzione. In questa classe vengono inizializzati gli oggetti che modellano le policy, le richieste. \par
-Le richieste sono modellate da una serie di classi che accolgono al loro interno un contesto, lo stato e diverse Hashmap. Ognuna di questa contiene gli attributi di una determinata categoria che il richiedente manda al sistema e che saranno valutati dalle policy. In Codice~\ref{lst:request_1} si può vedere come è fatta una richiesta, in particolare la seconda di Codice \ref{lst:PrimoEsempioRichieste_FACPL}.
+Il punto di partenza del sistema è la classe dov'è contenuto il metodo Main; quest'ultima rappresenta il punto dove il \ac{PDP} e \ac{PEP} vengono inizializzati e preparati all'esecuzione. In questa classe vengono inizializzati gli oggetti che modellano le policy e  le richieste. \par
+Le richieste sono modellate da una serie di classi che accolgono al loro interno un contesto, lo stato e diverse Hashmap. Ognuna di queste contiene gli attributi di una determinata categoria che il richiedente manda al sistema e che saranno valutati dalle policy. In Codice~\ref{lst:request_1} si può vedere come è fatta una richiesta, in particolare la seconda di Codice \ref{lst:PrimoEsempioRichieste_FACPL}.
 \lstinputlisting[language = Java, caption = {Esempio di richiesta}\label{lst:request_1}]{./Source/CodiceEsempi/Primo/ContextRequest_WriteRequestBob.java}
 Le Hashmap in questo caso sono tre, una per la categoria Name, una per Action e l'ultima per la categoria File. \par
 Lo stato, contenuto all'interno della richiesta è rappresentato da una classe mostrata in Codice~\ref{lst:stato_java}. Questa classe utilizza il pattern singleton per far si che ne esista una sola istanza in tutta l'esecuzione. 
@@ -154,4 +154,4 @@ Come la classe per modellare le richieste, lo stato utilizza una Hashmap per con
 La policy è definita estendendo una classe astratta presente nella libreria. Per aggiungere tutti gli elementi è sufficiente istanziarli e usare i metodi ereditati per inserirli al suo interno.
 La Policy \textit{Write} in Codice \ref{lst:PrimoEsempio_FACPL_write} ha al suo interno un target, una obligation ed una Rule; vediamo, in Codice~\ref{lst:PolicyWrite_java}, com'è il suo corrispettivo in Java.
 \lstinputlisting[firstline = 17, lastline = 53, firstnumber = 17, language = Java, caption = {Policy Write}\label{lst:PolicyWrite_java}]{./Source/CodiceEsempi/Primo/PolicySet_ReadWrite.java}
-Questa classe, come detto in precedenza estende una classe già esistende nella libreria, ovvero la classe PolicySet. In questo caso gli elementi che caratterizzano la Policy sono tre, il target, l'obligation e la rule al suo interno. I primi due vengono istanziati e aggiunti tramite metodi ereditati senza alcun problema. Per la rule invece il discorso è un po' più complicato, in quanto viene creata una classe annidata del tutto analoga a quella creata per la policy. Dopo aver creato questa classe viene semplicemente aggiunta un'istanza di essa attraverso un metodo ereditato.
+Questa classe, come detto in precedenza, estende una classe già esistente nella libreria, ovvero la classe PolicySet. In questo caso gli elementi che caratterizzano la Policy sono tre: il target, l'obligation e la rule al suo interno. I primi due vengono istanziati e aggiunti tramite metodi ereditati senza alcun problema. Per la rule invece il discorso è un po' più complicato, in quanto viene creata una classe annidata del tutto analoga a quella creata per la policy. Dopo aver creato questa classe viene semplicemente aggiunta un'istanza di essa attraverso un metodo ereditato.
