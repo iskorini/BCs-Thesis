@@ -63,7 +63,7 @@ Un utente può anche far parte di più gruppi, per esempio un contabile di un'az
 Come si può vedere in Figura \ref{fig:group2} il concetto di gruppo è implementato nei sistemi operativi moderni, in particolare in OS X, Windows e sistemi UNIX-Like.
 
 \MyFig{group2}{Gruppo in OS X}{0.9}{h}
-\ac{RBAC} però ha i suoi difetti, uno dei più evidenti è l'impossibilità di gestire le autorizzazioni a livello di singola persona, ed è quindi necessario creare diversi gruppi o ricorrere a espedienti per autorizzare, o vietare, singoli utenti appartenti a determinati gruppi.
+\ac{RBAC} però ha i suoi difetti, uno dei più evidenti è l'impossibilità di gestire le autorizzazioni a livello di singola persona, ed è quindi necessario creare diversi gruppi o ricorrere a espedienti per autorizzare, o vietare, singoli utenti appartenenti a determinati gruppi.
 
 % subsection role_based_access_control (end)
 
@@ -76,7 +76,7 @@ In questa nuova architettura è presente un nuovo componente chiamato \ac{PDP} i
 Ogni attributo è un campo distinto dagli altri che il \ac{PDP} compara con un insieme di valori per determinare o meno l'accesso alla risorsa. 
 
 In Figura~\ref{fig:ABAC} viene mostrato il funzionamento di \ac{ABAC}. Di particolare rilevanza è il secondo step, che porta alla raccolta di tutte le informazioni per produrre una decisione finale.
-Inizialmente il sistema richiede al \ac{ACS} le policy, successivamente effettua la raccolta degli attributi dalle varie fonti.
+Inizialmente il sistema richiede le \ac{ACS}, successivamente effettua la raccolta degli attributi dalle varie fonti.
 \MyFig{ABAC}{Scenario ABAC base}{0.8}{} %SOSTITUIRE CON GRAFICO SIMILE
 Questi attributi possono provenire da fonti disparate ed essere di svariati tipi. Per esempio nella valutazione di una richiesta possono essere considerati attributi come la data di assunzione di un dipendente ed il suo grado all'interno dell'azienda. 
 
@@ -134,7 +134,7 @@ Il processo decisionale in Usage Control è diviso in due fasi \cite{UsageContro
 \item La prima fase è una fase di \textit{pre decision} che fondamentalmente è la classica decisione presa in \textit{Access Control}, questa decisione viene presa al momento in cui è effettuata la prima richiesta per produrre la decisione di accesso.
 \item La seconda fase è chiamata \textit{ongoing decision}, ed è un processo che implementa il concetto di continuità in quanto le decisioni vengono prese durante l'accesso.\par
 \end{itemize}
-I componenti necessari a questo tipo di processo decisionale sono dei predicati, che possono essere di tre tipi: \textit{authorizations}, \textit{conditions}oppure \textit{rights}, delle azioni chiamate \textit{obligations} che devono essere eseguite durante l'accesso ed infine uno stato. 
+I componenti necessari a questo tipo di processo decisionale sono dei predicati, che possono essere di tre tipi: \textit{authorizations}, \textit{conditions} oppure \textit{rights}, delle azioni chiamate \textit{obligations} che devono essere eseguite durante l'accesso ed infine uno stato. 
 \MyFig{Usage}{Insieme dei componenti di $UCON_{ABC}$}{1}{}
  Come questi componenti contribuiscono a prendere una decisione viene mostrato in Figura \ref{fig:Usage}. Ad un soggetto (Subject) sono associati dei diritti (Rights) e gli appartengono degli attributi (Subject Attributes) su degli oggetti (Objects). \textit{Authorisation, Obligation} e \textit{Condition} sono predicati che sono valutati per prendere la decisione di Usage Control. Access Control utilizza solo \textit{Authorisation} per prendere decisioni, quindi \textit{Obligation} e \textit{Condition} sono componenti nuove.
 
